@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CicloTech Nexus - Plataforma Avançada de Logística Reversa</title>
+    
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js para Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Leaflet.js para Mapa Interativo -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        },
+                        surface: {
+                            950: '#05080f', // Ultra dark background
+                            900: '#0b1120', // Background
+                            800: '#111827', // Card
+                            700: '#1f2937', // Hover
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite alternate',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        shimmer: {
+                            from: { backgroundPosition: '200% 0' },
+                            to: { backgroundPosition: '-200% 0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        
+        /* Noise Texture Overlay for Premium Feel */
+        .noise-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Mouse Follow Glow */
+        #mouse-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #05080f; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+        /* Core Glass Utilities */
+        .glass-nav {
+            background: rgba(5, 8, 15, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: rgba(17, 24, 39, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(34, 197, 94, 0.3);
+            box-shadow: 0 10px 40px -10px rgba(34, 197, 94, 0.2);
+            transform: translateY(-4px);
+        }
+
+        /* Forms & Inputs */
+        .premium-input {
+            background: rgba(11, 17, 32, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .premium-input:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+            outline: none;
+            background: rgba(17, 24, 39, 1);
+        }
+
+        /* Custom Checkbox */
+        .checkbox-wrapper input[type="checkbox"] {
+            appearance: none;
+            width: 1.5rem; height: 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.375rem;
+            background: rgba(11, 17, 32, 0.8);
+            display: grid;
+            place-content: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .checkbox-wrapper input[type="checkbox"]::before {
+            content: "";
+            width: 0.8rem; height: 0.8rem;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: white;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .checkbox-wrapper input[type="checkbox"]:checked {
+            background-color: #22c55e; border-color: #22c55e;
+        }
+        .checkbox-wrapper input[type="checkbox"]:checked::before { transform: scale(1); }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(to right, #4ade80, #2dd4bf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Wizard Transitions */
+        .wizard-step {
+            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s ease;
+        }
+        .wizard-step.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Reveal on Scroll */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Toast Notifications */
+        #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
+        .toast {
+            background: rgba(17, 24, 39, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            animation: slideInRight 0.3s ease forwards;
+        }
+        .toast.hide { animation: fadeOut 0.3s ease forwards; }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { to { opacity: 0; transform: scale(0.9); } }
+        
+        /* Map Adjustments */
+        .leaflet-container { background: #0b1120; font-family: 'Inter', sans-serif; z-index: 10;}
+        .leaflet-popup-content-wrapper { background: #111827; color: #f1f5f9; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
+        .leaflet-popup-tip { background: #111827; border: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="bg-surface-950 text-slate-300 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500/30 selection:text-brand-300 relative">
+
+    
+    <div class="noise-bg"></div>
+    <div id="mouse-glow"></div>
+
+    <!-- Ambient Blobs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+        <div class="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-teal-600/10 rounded-full mix-blend-screen filter blur-[120px] animate-blob" style="animation-delay: 2s"></div>
+    </div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300" id="mainHeader">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <a href="#" class="flex items-center gap-4 group">
+                <div class="relative w-12 h-12 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-brand-500/20 rounded-xl rotate-3 group-hover:rotate-6 transition-transform duration-300"></div>
+                    <div class="absolute inset-0 bg-surface-800 border border-brand-500/30 rounded-xl flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform duration-300 shadow-lg shadow-brand-500/20">
+                        <i class="fa-solid fa-infinity text-brand-400 text-xl"></i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-display font-bold text-white tracking-tight flex items-center gap-2">
+                        CicloTech 
+                        <span class="px-2 py-0.5 rounded-md bg-brand-500/10 border border-brand-500/20 text-[10px] uppercase tracking-widest text-brand-400 font-sans font-semibold">Nexus V6</span>
+                    </span>
+                    <span class="text-[10px] text-slate-400 font-medium tracking-widest uppercase opacity-80">Reverse Logistics Architecture</span>
+                </div>
+            </a>
+
+            <nav class="hidden lg:flex items-center gap-8 bg-surface-900/60 px-6 py-2.5 rounded-full border border-white/5 backdrop-blur-md">
+                <a href="#hero" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
+                    Hub
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-400 to-teal-400 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#agendamento" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
+                    Operação Coleta
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-400 to-teal-400 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#rastreio" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
+                    Ledger Tracker
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-400 to-teal-400 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#ecopontos" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
+                    Rede Node
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-400 to-teal-400 transition-all group-hover:w-full"></span>
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button onclick="UIController.openModal('statsModal')" class="hidden md:flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
+                    <i class="fa-solid fa-chart-line text-brand-400"></i>
+                    Telemetry ESG
+                </button>
+                <a href="#agendamento" class="group relative inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold text-surface-950 transition-all duration-200 bg-brand-500 font-sans rounded-xl focus:outline-none hover:bg-brand-400 hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] overflow-hidden">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt"></i>
+                        Iniciar Protocolo
+                    </span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow relative z-10">
+        
+        <section id="hero" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center reveal active">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
+                <div class="grid lg:grid-cols-2 gap-16 lg:gap-8 items-center">
+                    
+                    <div class="z-10">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-800 border border-white/10 text-xs font-mono tracking-wide mb-8 shadow-lg">
+                            <div class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></div>
+                            <span class="text-slate-300">Sistema Operacional • <span class="text-brand-400">Status Nominal</span></span>
+                        </div>
+                        
+                        <h1 class="text-5xl lg:text-[5rem] font-display font-bold text-white leading-[1.05] mb-6 tracking-tight">
+                            Descarte <br>
+                            <span class="text-gradient">Criptográfico</span>
+                        </h1>
+                        
+                        <p class="text-xl text-slate-400 mb-10 max-w-xl leading-relaxed font-light">
+                            Plataforma descentralizada para logística reversa de ativos de TI. Sanitização de dados de grau militar (LGPD) e reinserção na economia circular educacional.
+                        </p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4 mb-12">
+                            <button onclick="document.getElementById('agendamento').scrollIntoView({behavior:'smooth'})" class="inline-flex justify-center items-center gap-3 px-8 py-4 bg-white text-surface-950 font-bold rounded-xl hover:bg-slate-200 transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                                Iniciar Manifestação
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button onclick="document.getElementById('rastreio').scrollIntoView({behavior:'smooth'})" class="inline-flex justify-center items-center gap-3 px-8 py-4 bg-surface-800 text-white font-bold rounded-xl border border-white/10 hover:bg-surface-700 transition-all hover:border-brand-500/50">
+                                Acessar Ledger
+                                <i class="fa-solid fa-database text-brand-400"></i>
+                            </button>
+                        </div>
+
+                        <!-- Tech Specs Footer -->
+                        <div class="flex flex-wrap gap-8 items-center border-t border-white/5 pt-8">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-shield-cat text-2xl text-slate-500"></i>
+                                <div>
+                                    <div class="text-white font-bold font-mono">DoD 5220.22-M</div>
+                                    <div class="text-xs text-slate-500 uppercase tracking-widest">Wiping Standard</div>
+                                </div>
+                            </div>
+                            <div class="w-px h-10 bg-white/5"></div>
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-leaf text-2xl text-brand-500"></i>
+                                <div>
+                                    <div class="text-white font-bold font-mono">ODS 12 & 4</div>
+                                    <div class="text-xs text-slate-500 uppercase tracking-widest">ONU Compliance</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3D Card Simulation -->
+                    <div class="relative lg:h-[600px] flex items-center justify-center hidden md:flex" id="tilt-card-container">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-500/20 to-teal-500/20 rounded-3xl blur-2xl transform rotate-6 animate-pulse-slow"></div>
+                        
+                        <div class="relative w-full max-w-lg bg-surface-900/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden" id="tilt-card" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg); transition: transform 0.1s ease-out;">
+                            <!-- Header Code Window -->
+                            <div class="h-10 border-b border-white/10 flex items-center px-4 gap-2 bg-surface-950/50">
+                                <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                                <div class="ml-4 font-mono text-[10px] text-slate-500">~/ciclotech/core/monitor.sh</div>
+                            </div>
+                            
+                            <div class="p-6 space-y-6 font-mono text-sm text-brand-400">
+                                <div><span class="text-slate-500">>></span> Initializing secure node... <span class="text-white">OK</span></div>
+                                <div><span class="text-slate-500">>></span> Verifying encryption keys... <span class="text-white">OK</span></div>
+                                <div class="h-px bg-white/5 my-4"></div>
+                                
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-surface-950 p-4 rounded-xl border border-brand-500/20 relative overflow-hidden group">
+                                        <div class="absolute inset-0 bg-brand-500/10 -translate-x-full group-hover:animate-shimmer"></div>
+                                        <div class="text-slate-500 text-xs mb-1">Mídias Sanitizadas</div>
+                                        <div class="text-2xl text-white font-bold" id="live-wipes">1,204</div>
+                                    </div>
+                                    <div class="bg-surface-950 p-4 rounded-xl border border-teal-500/20 relative overflow-hidden group">
+                                        <div class="absolute inset-0 bg-teal-500/10 -translate-x-full group-hover:animate-shimmer"></div>
+                                        <div class="text-slate-500 text-xs mb-1">Impacto CO2 (t)</div>
+                                        <div class="text-2xl text-white font-bold" id="live-co2">4.85</div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2 pt-4">
+                                    <div class="flex justify-between text-xs">
+                                        <span class="text-slate-400">Processamento de Lote em Tempo Real</span>
+                                        <span class="text-brand-400">Auditoria Ativa</span>
+                                    </div>
+                                    <div class="h-1 w-full bg-surface-950 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-brand-600 to-teal-400 w-[100%] origin-left animate-[scaleX_2s_ease-in-out_infinite_alternate]"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="agendamento" class="py-24 relative border-t border-white/5 bg-surface-950 reveal">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(34,197,94,0.05),transparent_50%)]"></div>
+            
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-display font-bold text-white mb-4">Manifesto de Coleta</h2>
+                    <p class="text-slate-400 text-lg">Crie seu manifesto digital em 3 etapas para garantir rastreabilidade total.</p>
+                </div>
+
+                <div class="glass-card rounded-[2rem] p-2 shadow-2xl">
+                    <div class="bg-surface-900 rounded-[1.8rem] p-6 md:p-12 relative overflow-hidden">
+                        
+                        <!-- Wizard Progress Bar -->
+                        <div class="mb-10 relative">
+                            <div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-800 -translate-y-1/2 z-0"></div>
+                            <div class="absolute top-1/2 left-0 h-0.5 bg-brand-500 -translate-y-1/2 z-0 transition-all duration-500" id="wizard-progress" style="width: 0%;"></div>
+                            
+                            <div class="flex justify-between relative z-10">
+                                <div class="w-10 h-10 rounded-full bg-brand-500 text-surface-950 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors" id="indicator-1">1</div>
+                                <div class="w-10 h-10 rounded-full bg-surface-800 text-slate-500 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors" id="indicator-2">2</div>
+                                <div class="w-10 h-10 rounded-full bg-surface-800 text-slate-500 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors" id="indicator-3">3</div>
+                            </div>
+                        </div>
+
+                        <form id="wizardForm" class="relative">
+                            
+                            <!-- Step 1: Entidade -->
+                            <div class="wizard-step active" id="step1">
+                                <h3 class="text-2xl font-display font-bold text-white mb-6">Identificação da Entidade</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <div class="space-y-2">
+                                        <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Razão Social / Nome Completo *</label>
+                                        <input type="text" id="donorName" class="w-full premium-input rounded-xl px-4 py-3.5 text-white" placeholder="Empresa S.A. ou João Silva" required>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">E-mail Corporativo *</label>
+                                        <input type="email" id="donorEmail" class="w-full premium-input rounded-xl px-4 py-3.5 text-white" placeholder="contato@empresa.com" required>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Telefone / WhatsApp *</label>
+                                        <input type="tel" id="donorPhone" class="w-full premium-input rounded-xl px-4 py-3.5 text-white" placeholder="(11) 90000-0000" required>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">CEP de Origem *</label>
+                                        <input type="text" id="donorAddress" class="w-full premium-input rounded-xl px-4 py-3.5 text-white font-mono" placeholder="00000-000" required>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="button" onclick="WizardController.next(1)" class="bg-white text-surface-950 font-bold px-8 py-3.5 rounded-xl hover:bg-slate-200 transition-colors flex items-center gap-2">
+                                        Continuar <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Ativos -->
+                            <div class="wizard-step" id="step2">
+                                <h3 class="text-2xl font-display font-bold text-white mb-6">Inventário de Ativos (E-waste)</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 checkbox-wrapper">
+                                    <label class="relative p-5 glass-card rounded-xl border border-white/10 hover:border-brand-500/50 cursor-pointer flex flex-col has-[:checked]:border-brand-500 has-[:checked]:bg-brand-500/10 transition-all">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <i class="fa-solid fa-server text-2xl text-brand-400"></i>
+                                            <input type="checkbox" name="itemType" value="Workstations/Servers">
+                                        </div>
+                                        <span class="font-bold text-white mb-1">Computação</span>
+                                        <span class="text-xs text-slate-400">Desktops, Servidores, Notebooks</span>
+                                    </label>
+                                    <label class="relative p-5 glass-card rounded-xl border border-white/10 hover:border-brand-500/50 cursor-pointer flex flex-col has-[:checked]:border-brand-500 has-[:checked]:bg-brand-500/10 transition-all">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <i class="fa-solid fa-mobile-screen text-2xl text-teal-400"></i>
+                                            <input type="checkbox" name="itemType" value="Mobile/Tablets">
+                                        </div>
+                                        <span class="font-bold text-white mb-1">Mobile</span>
+                                        <span class="text-xs text-slate-400">Smartphones e Tablets Corporativos</span>
+                                    </label>
+                                    <label class="relative p-5 glass-card rounded-xl border border-white/10 hover:border-brand-500/50 cursor-pointer flex flex-col has-[:checked]:border-brand-500 has-[:checked]:bg-brand-500/10 transition-all">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <i class="fa-solid fa-plug text-2xl text-blue-400"></i>
+                                            <input type="checkbox" name="itemType" value="Periféricos/Rede">
+                                        </div>
+                                        <span class="font-bold text-white mb-1">Infra/Outros</span>
+                                        <span class="text-xs text-slate-400">Monitores, Switches, Cabeamento</span>
+                                    </label>
+                                </div>
+                                <div class="space-y-2 mb-8">
+                                    <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Notas de Lote (Opcional)</label>
+                                    <textarea id="itemDesc" rows="2" class="w-full premium-input rounded-xl px-4 py-3.5 text-white resize-none" placeholder="Ex: Lote de 10 notebooks Dell Latitude sem disco rígido."></textarea>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <button type="button" onclick="WizardController.prev(2)" class="text-slate-400 hover:text-white font-medium px-4 py-2 transition-colors flex items-center gap-2">
+                                        <i class="fa-solid fa-arrow-left"></i> Voltar
+                                    </button>
+                                    <button type="button" onclick="WizardController.next(2)" class="bg-white text-surface-950 font-bold px-8 py-3.5 rounded-xl hover:bg-slate-200 transition-colors flex items-center gap-2">
+                                        Continuar <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: LGPD -->
+                            <div class="wizard-step" id="step3">
+                                <h3 class="text-2xl font-display font-bold text-white mb-6">Auditoria e Compliance</h3>
+                                <div class="bg-surface-950 border border-brand-500/30 rounded-2xl p-6 mb-8 relative overflow-hidden">
+                                    <div class="absolute top-0 right-0 p-4 opacity-10"><i class="fa-solid fa-fingerprint text-6xl text-brand-500"></i></div>
+                                    <div class="checkbox-wrapper relative z-10">
+                                        <label class="flex items-start gap-4 cursor-pointer">
+                                            <input type="checkbox" id="lgpdCheck" required class="mt-1 flex-shrink-0">
+                                            <div>
+                                                <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                                                    <i class="fa-solid fa-shield-check text-brand-400"></i>
+                                                    Acordo de Sanitização de Dados (LGPD)
+                                                </h4>
+                                                <p class="text-sm text-slate-400 leading-relaxed">
+                                                    Autorizo a execução do protocolo de Data Wiping (substituição multipasso) em todas as mídias de armazenamento contidas neste lote. Declaro ciência de que a destruição lógica dos dados é irreversível e isento a CicloTech de responsabilidade pela perda de informações prévias à coleta.
+                                                </p>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <button type="button" onclick="WizardController.prev(3)" class="text-slate-400 hover:text-white font-medium px-4 py-2 transition-colors flex items-center gap-2">
+                                        <i class="fa-solid fa-arrow-left"></i> Voltar
+                                    </button>
+                                    <button type="submit" class="bg-brand-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-brand-500 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] flex items-center gap-2 group">
+                                        <i class="fa-solid fa-lock group-hover:animate-bounce"></i> Gerar Assinatura Ledger
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rastreio" class="py-24 relative bg-surface-900 border-t border-white/5 reveal">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-display font-bold text-white mb-4">Ledger Tracker</h2>
+                    <p class="text-slate-400 text-lg">Valide a cadeia de custódia e acesse os certificados criptográficos do lote.</p>
+                </div>
+
+                <div class="bg-surface-950 border border-white/10 rounded-[2rem] p-2 shadow-2xl">
+                    <div class="bg-surface-800/50 rounded-[1.8rem] p-6 md:p-10">
+                        
+                        <div class="relative max-w-2xl mx-auto mb-10">
+                            <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                            <input type="text" id="searchProtocol" placeholder="ID da Transação (ex: CT-XXXX-XXXX)" class="w-full premium-input rounded-2xl pl-14 pr-36 py-5 text-white font-mono text-lg uppercase tracking-wider placeholder:text-slate-600 placeholder:normal-case placeholder:tracking-normal placeholder:font-sans">
+                            <button id="btnSearch" class="absolute right-2 top-2 bottom-2 bg-white text-surface-950 hover:bg-slate-200 font-bold px-8 rounded-xl transition-colors flex items-center gap-2">
+                                Localizar
+                            </button>
+                        </div>
+
+                        <!-- Interface de Resultados Controlada por Estado JS -->
+                        <div id="tracker-content" class="transition-all duration-300">
+                            <!-- Estado Vazio -->
+                            <div id="tracker-empty" class="text-center py-12 opacity-50">
+                                <i class="fa-solid fa-box-open text-4xl text-slate-600 mb-4 block"></i>
+                                <p class="text-slate-500 font-medium">Aguardando inserção do ID de rastreio.</p>
+                            </div>
+
+                            <!-- Estado de Erro -->
+                            <div id="tracker-error" class="hidden text-center py-12 bg-red-500/5 border border-red-500/20 rounded-2xl">
+                                <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500/50 mb-4 block"></i>
+                                <h4 class="text-white font-bold mb-1">Hash não localizado</h4>
+                                <p class="text-slate-400 text-sm">Verifique o ID da transação e tente novamente.</p>
+                            </div>
+
+                            <!-- Estado de Sucesso -->
+                            <div id="tracker-success" class="hidden bg-surface-950 border border-white/5 rounded-2xl overflow-hidden shadow-inner">
+                                <div class="bg-surface-800 p-6 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/5 gap-4">
+                                    <div>
+                                        <div class="text-[10px] text-slate-500 uppercase tracking-widest mb-1">Registro na Blockchain Interna</div>
+                                        <div class="text-2xl font-mono font-bold text-white" id="resCode">CT-0000-0000</div>
+                                    </div>
+                                    <div id="resStatusBadge" class="px-4 py-2 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-lg text-sm font-bold flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                                        <span id="resStatusText">Status</span>
+                                    </div>
+                                </div>
+
+                                <div class="p-8">
+                                    <!-- Dynamic Timeline CSS Grid -->
+                                    <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 z-10 before:content-[''] before:absolute before:top-4 before:left-4 md:before:top-4 md:before:left-0 md:before:w-full md:before:h-0.5 before:w-0.5 before:h-full before:bg-surface-800 before:-z-10">
+                                        
+                                        <!-- Nodes populated via JS -->
+                                        <div class="timeline-node" data-step="1">
+                                            <div class="icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-500 mx-auto md:mb-3 transition-colors duration-500"><i class="fa-solid fa-file-contract text-[10px]"></i></div>
+                                            <div class="text-center ml-12 md:ml-0">
+                                                <div class="title text-sm font-bold text-slate-500 transition-colors">Manifesto</div>
+                                                <div class="text-xs text-slate-600 mt-1">Registrado</div>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-node" data-step="2">
+                                            <div class="icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-500 mx-auto md:mb-3 transition-colors duration-500"><i class="fa-solid fa-truck text-[10px]"></i></div>
+                                            <div class="text-center ml-12 md:ml-0">
+                                                <div class="title text-sm font-bold text-slate-500 transition-colors">Logística</div>
+                                                <div class="text-xs text-slate-600 mt-1">Em trânsito</div>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-node" data-step="3">
+                                            <div class="icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-500 mx-auto md:mb-3 transition-colors duration-500"><i class="fa-solid fa-shield-halved text-[10px]"></i></div>
+                                            <div class="text-center ml-12 md:ml-0">
+                                                <div class="title text-sm font-bold text-slate-500 transition-colors">Wiping (LGPD)</div>
+                                                <div class="text-xs text-slate-600 mt-1">Sanitizado</div>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-node" data-step="4">
+                                            <div class="icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-500 mx-auto md:mb-3 transition-colors duration-500"><i class="fa-solid fa-graduation-cap text-[10px]"></i></div>
+                                            <div class="text-center ml-12 md:ml-0">
+                                                <div class="title text-sm font-bold text-slate-500 transition-colors">Destinação</div>
+                                                <div class="text-xs text-slate-600 mt-1">Reaproveitado</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-surface-800/30 p-6 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+                                    <div><span class="text-slate-500 text-[10px] uppercase tracking-widest block mb-1">Entidade</span> <span class="text-white font-medium truncate block" id="resName">-</span></div>
+                                    <div><span class="text-slate-500 text-[10px] uppercase tracking-widest block mb-1">Data Reg</span> <span class="text-white font-mono" id="resDate">-</span></div>
+                                    <div class="col-span-2"><span class="text-slate-500 text-[10px] uppercase tracking-widest block mb-1">Categorias Base</span> <span class="text-white" id="resItems">-</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ecopontos" class="py-24 relative bg-surface-950 border-t border-white/5 reveal">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    
+                    <div class="lg:w-1/3 space-y-8">
+                        <div>
+                            <h2 class="text-4xl font-display font-bold text-white mb-4">Rede Node</h2>
+                            <p class="text-slate-400 leading-relaxed">
+                                Nossos Ecopontos funcionam como nós de rede físicos. Entregue pequenos eletrônicos presencialmente para inserção imediata no fluxo.
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 no-scrollbar" id="eco-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="lg:w-2/3 w-full h-[500px] relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl p-1 bg-surface-800">
+                        <div id="map" class="w-full h-full rounded-[1.4rem] z-0"></div>
+                        
+                        <div class="absolute bottom-6 left-6 right-6 pointer-events-none z-10 flex justify-center">
+                            <div class="bg-surface-950/80 backdrop-blur-md border border-white/10 px-6 py-3 rounded-full flex items-center gap-3 shadow-lg pointer-events-auto">
+                                <i class="fa-solid fa-satellite-dish text-brand-400 animate-pulse"></i>
+                                <span class="text-xs font-mono text-slate-300">Leaflet Geospatial Engine Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-surface-950 border-t border-white/5 py-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+                <span class="font-display font-bold text-white text-xl flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-infinity text-brand-500"></i> CicloTech Nexus
+                </span>
+                <p class="text-xs text-slate-500">Arquitetura de Logística Reversa Baseada em Software.</p>
+            </div>
+            <div class="flex gap-4 text-slate-500">
+                <a href="#" class="hover:text-brand-400 transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+                <a href="#" class="hover:text-brand-400 transition-colors"><i class="fa-solid fa-shield-halved text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-surface-950/90 backdrop-blur-md flex items-center justify-center z-50 p-4 transition-all duration-300 opacity-0">
+        <div class="bg-surface-900 border border-brand-500/20 rounded-3xl p-1 shadow-[0_0_50px_rgba(34,197,94,0.1)] transform scale-95 transition-transform duration-300" id="successModalContent">
+            <div class="bg-surface-950 rounded-[1.8rem] p-8 max-w-md w-full text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.1),transparent_70%)] pointer-events-none"></div>
+                
+                <div class="w-20 h-20 bg-brand-500/10 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border border-brand-500/20">
+                    <i class="fa-solid fa-check text-brand-400"></i>
+                </div>
+                
+                <h3 class="text-2xl font-display font-bold text-white mb-2">Manifesto Registrado</h3>
+                <p class="text-slate-400 text-sm mb-6">Esta é a sua chave criptográfica de rastreamento no ledger:</p>
+                
+                <div class="relative mb-8 cursor-pointer group" onclick="UIController.copyToClipboard('modalProtocolCode')">
+                    <div class="bg-surface-800 border border-white/10 py-4 px-4 rounded-xl font-mono text-2xl font-bold text-brand-400 tracking-wider shadow-inner" id="modalProtocolCode">CT-0000-0000</div>
+                    <div class="absolute inset-0 bg-brand-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center border border-brand-500/50">
+                        <span class="text-sm font-sans font-bold text-brand-400"><i class="fa-solid fa-copy mr-2"></i>Copiar Chave</span>
+                    </div>
+                </div>
+                
+                <button onclick="UIController.closeSuccessModal()" class="w-full bg-white text-surface-950 font-bold py-3.5 rounded-xl hover:bg-slate-200 transition-colors">
+                    Validar no Tracker
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ESG Dashboard Modal (Chart.js Integration) -->
+    <div id="statsModal" class="hidden fixed inset-0 bg-surface-950/95 backdrop-blur-xl flex items-center justify-center z-50 p-4 transition-all duration-300 opacity-0">
+        <div class="bg-surface-900 border border-white/10 rounded-[2rem] w-full max-w-6xl h-[90vh] flex flex-col transform scale-95 transition-transform duration-300 shadow-2xl" id="statsModalContent">
+            
+            <div class="flex justify-between items-center p-6 border-b border-white/5 bg-surface-950/50 rounded-t-[2rem]">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-surface-800 rounded-xl flex items-center justify-center border border-white/5">
+                        <i class="fa-solid fa-chart-pie text-2xl text-gradient"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-display font-bold text-white">Data Intelligence & ESG</h3>
+                        <div class="text-xs text-brand-400 font-mono">LIVE TELEMETRY STREAMING</div>
+                    </div>
+                </div>
+                <button onclick="UIController.closeModal('statsModal')" class="w-10 h-10 rounded-full bg-surface-800 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-grow space-y-6 custom-scrollbar">
+                <!-- KPI Row -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-surface-800 p-5 rounded-2xl border border-white/5">
+                        <div class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Massa Desviada</div>
+                        <div class="text-3xl font-mono text-white">5.8<span class="text-lg text-slate-500 ml-1">ton</span></div>
+                    </div>
+                    <div class="bg-surface-800 p-5 rounded-2xl border border-white/5">
+                        <div class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Ativos Wiped</div>
+                        <div class="text-3xl font-mono text-white">592<span class="text-lg text-slate-500 ml-1">un</span></div>
+                    </div>
+                    <div class="bg-surface-800 p-5 rounded-2xl border border-white/5">
+                        <div class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Taxa Recondic.</div>
+                        <div class="text-3xl font-mono text-brand-400">88.4<span class="text-lg text-brand-500/50 ml-1">%</span></div>
+                    </div>
+                    <div class="bg-surface-800 p-5 rounded-2xl border border-white/5">
+                        <div class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Escolas Nodes</div>
+                        <div class="text-3xl font-mono text-white">16<span class="text-lg text-slate-500 ml-1">inst</span></div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid lg:grid-cols-2 gap-6 h-[350px]">
+                    <div class="bg-surface-800 p-6 rounded-2xl border border-white/5 flex flex-col">
+                        <div class="text-sm font-bold text-white mb-4">Fluxo de Arrecadação (YTD)</div>
+                        <div class="flex-grow relative w-full h-full">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-surface-800 p-6 rounded-2xl border border-white/5 flex flex-col">
+                        <div class="text-sm font-bold text-white mb-4">Distribuição de Tipologia (E-waste)</div>
+                        <div class="flex-grow relative w-full h-full flex justify-center">
+                            <canvas id="doughnutChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * CICLOTECH NEXUS OS - CORE ARCHITECTURE
+         * Enterprise-grade Vanilla JS Implementation
+         */
+
+        // 1. CONFIGURATION & CONSTANTS
+        const AppConfig = {
+            STORAGE_KEY: 'ciclotech_nexus_ledger_v6',
+            MAP_CENTER: [-23.5505, -46.6333], // São Paulo
+            MAP_ZOOM: 12,
+            STEPS_COUNT: 3
+        };
+
+        const ECOPONTOS_DATA = [
+            { id: 1, name: "Hub Central Paulista", lat: -23.5615, lng: -46.6560, type: "Comercial", status: "Active" },
+            { id: 2, name: "Node Faria Lima", lat: -23.5866, lng: -46.6823, type: "Corporativo", status: "Active" },
+            { id: 3, name: "Polo USP Butantã", lat: -23.5600, lng: -46.7300, type: "Universitário", status: "Capacity" }
+        ];
+
+        // 2. STATE MANAGEMENT (Reactive Proxy)
+        const AppState = new Proxy({
+            wizardStep: 1,
+            ledgerData: [],
+            lastGeneratedHash: '',
+            chartsInitialized: false
+        }, {
+            set: function(target, key, value) {
+                target[key] = value;
+                if (key === 'wizardStep') UIController.renderWizard();
+                return true;
+            }
+        });
+
+        // 3. STORAGE SERVICE
+        class StorageService {
+            static init() {
+                const data = localStorage.getItem(AppConfig.STORAGE_KEY);
+                if (!data) {
+                    const mock = [
+                        { code: 'CT-A1B2-C3D4', name: 'Corp Tech LTDA', items: 'Workstations/Servers', address: '01310-100', date: new Date().toLocaleDateString('pt-BR'), status: 'Aguardando Coleta', step: 1 },
+                        { code: 'CT-X9Y8-Z7W6', name: 'João Silva', items: 'Mobile/Tablets', address: '05407-000', date: '21/09/2026', status: 'Sanitizado', step: 3 }
+                    ];
+                    this.save(mock);
+                    AppState.ledgerData = mock;
+                } else {
+                    AppState.ledgerData = JSON.parse(data);
+                }
+            }
+            static save(data) {
+                localStorage.setItem(AppConfig.STORAGE_KEY, JSON.stringify(data));
+                AppState.ledgerData = data;
+            }
+            static addEntry(entry) {
+                const current = AppState.ledgerData;
+                current.push(entry);
+                this.save(current);
+            }
+            static findByCode(code) {
+                return AppState.ledgerData.find(e => e.code === code);
+            }
+        }
+
+        // 4. CRYPTO/UTILITY SERVICE
+        class Utils {
+            static generateHash() {
+                const p1 = Math.random().toString(16).substring(2, 6).toUpperCase();
+                const p2 = Math.random().toString(16).substring(2, 6).toUpperCase();
+                return `CT-${p1}-${p2}`;
+            }
+        }
+
+        // 5. UI CONTROLLER (DOM Manipulation & Interactions)
+        class UIController {
+            
+            // --- Toast System ---
+            static showToast(message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                const icon = type === 'success' ? '<i class="fa-solid fa-check text-brand-400"></i>' : '<i class="fa-solid fa-info-circle text-blue-400"></i>';
+                toast.className = 'toast text-sm text-white font-medium';
+                toast.innerHTML = `${icon} <span>${message}</span>`;
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.classList.add('hide');
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
+            }
+
+            static copyToClipboard(elementId) {
+                const text = document.getElementById(elementId).innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    this.showToast('Hash copiado para a área de transferência', 'success');
+                }).catch(err => {
+                    // Fallback
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    this.showToast('Hash copiado para a área de transferência', 'success');
+                });
+            }
+
+            // --- Modal System ---
+            static openModal(id) {
+                const el = document.getElementById(id);
+                const content = el.querySelector('div');
+                el.classList.remove('hidden');
+                void el.offsetWidth; // Trigger reflow
+                el.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+                document.body.style.overflow = 'hidden';
+
+                if (id === 'statsModal' && !AppState.chartsInitialized) {
+                    ChartService.init();
+                    AppState.chartsInitialized = true;
+                }
+            }
+
+            static closeModal(id) {
+                const el = document.getElementById(id);
+                const content = el.querySelector('div');
+                el.classList.add('opacity-0');
+                content.classList.remove('scale-100');
+                content.classList.add('scale-95');
+                setTimeout(() => {
+                    el.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            }
+
+            static closeSuccessModal() {
+                this.closeModal('successModal');
+                document.getElementById('wizardForm').reset();
+                AppState.wizardStep = 1;
+                document.getElementById('searchProtocol').value = AppState.lastGeneratedHash;
+                document.getElementById('btnSearch').click();
+                document.getElementById('rastreio').scrollIntoView({behavior: 'smooth'});
+            }
+
+            // --- Wizard Logic ---
+            static renderWizard() {
+                const step = AppState.wizardStep;
+                // Update Progress bar
+                document.getElementById('wizard-progress').style.width = `${((step - 1) / (AppConfig.STEPS_COUNT - 1)) * 100}%`;
+                
+                // Update Indicators
+                for(let i=1; i<=AppConfig.STEPS_COUNT; i++) {
+                    const ind = document.getElementById(`indicator-${i}`);
+                    const view = document.getElementById(`step${i}`);
+                    
+                    if (i === step) {
+                        ind.className = "w-10 h-10 rounded-full bg-brand-500 text-surface-950 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors shadow-[0_0_15px_rgba(34,197,94,0.4)]";
+                        view.classList.add('active');
+                    } else if (i < step) {
+                        ind.className = "w-10 h-10 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center border-4 border-surface-900 transition-colors";
+                        ind.innerHTML = '<i class="fa-solid fa-check"></i>';
+                        view.classList.remove('active');
+                    } else {
+                        ind.className = "w-10 h-10 rounded-full bg-surface-800 text-slate-500 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors";
+                        ind.innerHTML = i;
+                        view.classList.remove('active');
+                    }
+                }
+            }
+
+            // --- Tracker Logic ---
+            static updateTracker(result) {
+                const empty = document.getElementById('tracker-empty');
+                const error = document.getElementById('tracker-error');
+                const success = document.getElementById('tracker-success');
+
+                if (!result) {
+                    empty.classList.add('hidden');
+                    success.classList.add('hidden');
+                    error.classList.remove('hidden');
+                    return;
+                }
+
+                empty.classList.add('hidden');
+                error.classList.add('hidden');
+                success.classList.remove('hidden');
+
+                document.getElementById('resCode').textContent = result.code;
+                document.getElementById('resStatusText').textContent = result.status;
+                document.getElementById('resName').textContent = result.name;
+                document.getElementById('resItems').textContent = result.items;
+                document.getElementById('resDate').textContent = result.date;
+
+                const step = result.step || 1;
+                document.querySelectorAll('.timeline-node').forEach(node => {
+                    const nodeStep = parseInt(node.getAttribute('data-step'));
+                    const iconBox = node.querySelector('.icon-box');
+                    const title = node.querySelector('.title');
+                    
+                    if (nodeStep <= step) {
+                        iconBox.className = "icon-box w-8 h-8 rounded-full bg-brand-500 border-4 border-surface-950 flex items-center justify-center text-surface-900 mx-auto md:mb-3 transition-all duration-500 shadow-[0_0_15px_rgba(34,197,94,0.4)]";
+                        title.className = "title text-sm font-bold text-white transition-colors";
+                    } else {
+                        iconBox.className = "icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-600 mx-auto md:mb-3 transition-all duration-500";
+                        title.className = "title text-sm font-bold text-slate-600 transition-colors";
+                    }
+                });
+            }
+        }
+
+        // 6. WIZARD CONTROLLER (Form Validation & Flow)
+        class WizardController {
+            static validateStep(step) {
+                if (step === 1) {
+                    const name = document.getElementById('donorName').value;
+                    const email = document.getElementById('donorEmail').value;
+                    const phone = document.getElementById('donorPhone').value;
+                    const cep = document.getElementById('donorAddress').value;
+                    if(!name || !email || !phone || !cep) {
+                        UIController.showToast('Preencha todos os campos obrigatórios.', 'error');
+                        return false;
+                    }
+                    return true;
+                }
+                if (step === 2) {
+                    const items = document.querySelectorAll('input[name="itemType"]:checked');
+                    if(items.length === 0) {
+                        UIController.showToast('Selecione pelo menos uma categoria de ativo.', 'error');
+                        return false;
+                    }
+                    return true;
+                }
+                return true;
+            }
+
+            static next(currentStep) {
+                if(this.validateStep(currentStep)) {
+                    AppState.wizardStep = currentStep + 1;
+                }
+            }
+
+            static prev(currentStep) {
+                AppState.wizardStep = currentStep - 1;
+            }
+
+            static submit(e) {
+                e.preventDefault();
+                if(!document.getElementById('lgpdCheck').checked) {
+                    UIController.showToast('Aceite o termo de LGPD para continuar.', 'error');
+                    return;
+                }
+
+                const hash = Utils.generateHash();
+                AppState.lastGeneratedHash = hash;
+
+                const items = Array.from(document.querySelectorAll('input[name="itemType"]:checked')).map(el => el.value);
+
+                const entry = {
+                    code: hash,
+                    name: document.getElementById('donorName').value,
+                    items: items.join(', '),
+                    address: document.getElementById('donorAddress').value,
+                    date: new Date().toLocaleDateString('pt-BR'),
+                    status: 'Aguardando Coleta',
+                    step: 1
+                };
+
+                StorageService.addEntry(entry);
+                
+                document.getElementById('modalProtocolCode').textContent = hash;
+                UIController.openModal('successModal');
+            }
+        }
+
+        // 7. CHART.JS SERVICE
+        class ChartService {
+            static init() {
+                Chart.defaults.color = '#94a3b8';
+                Chart.defaults.font.family = 'Inter';
+
+                // Bar Chart
+                const ctxBar = document.getElementById('barChart').getContext('2d');
+                new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out'],
+                        datasets: [{
+                            label: 'Volume Arrecadado (kg)',
+                            data: [300, 450, 400, 600, 850, 700],
+                            backgroundColor: '#22c55e',
+                            borderRadius: 4,
+                            hoverBackgroundColor: '#4ade80'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false } },
+                            x: { grid: { display: false }, border: { display: false } }
+                        }
+                    }
+                });
+
+                // Doughnut Chart
+                const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+                new Chart(ctxDoughnut, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Computação', 'Mobile', 'Periféricos'],
+                        datasets: [{
+                            data: [45, 20, 35],
+                            backgroundColor: ['#22c55e', '#14b8a6', '#3b82f6'],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
+                        }
+                    }
+                });
+            }
+        }
+
+        // 8. LEAFLET MAP SERVICE
+        class MapService {
+            static init() {
+                const map = L.map('map', { zoomControl: false }).setView(AppConfig.MAP_CENTER, AppConfig.MAP_ZOOM);
+                
+                // Dark mode tiles (CartoDB Dark Matter)
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+                }).addTo(map);
+
+                // Custom Leaflet Icon
+                const customIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div class="w-4 h-4 bg-brand-500 rounded-full border-2 border-surface-950 shadow-[0_0_15px_#22c55e] animate-pulse"></div>`,
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                });
+
+                const listContainer = document.getElementById('eco-list');
+
+                ECOPONTOS_DATA.forEach(node => {
+                    // Add Marker
+                    L.marker([node.lat, node.lng], {icon: customIcon})
+                     .addTo(map)
+                     .bindPopup(`<strong class="text-brand-400 font-display">${node.name}</strong><br><span class="text-slate-400 text-xs">${node.type} Node</span>`);
+                    
+                    // Add to UI List
+                    const card = document.createElement('div');
+                    card.className = "bg-surface-800 p-4 rounded-2xl border border-white/5 cursor-pointer hover:border-brand-500/50 transition-colors group";
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-white font-bold group-hover:text-brand-400 transition-colors">${node.name}</h4>
+                            <span class="w-2 h-2 rounded-full ${node.status === 'Active' ? 'bg-brand-500' : 'bg-amber-500'}"></span>
+                        </div>
+                        <div class="text-xs text-slate-400 font-mono">${node.lat.toFixed(4)}, ${node.lng.toFixed(4)}</div>
+                    `;
+                    card.addEventListener('click', () => {
+                        map.flyTo([node.lat, node.lng], 15, { duration: 1.5 });
+                    });
+                    listContainer.appendChild(card);
+                });
+            }
+        }
+
+        // 9. INITIALIZATION & EVENT BINDING
+        document.addEventListener('DOMContentLoaded', () => {
+            StorageService.init();
+            MapService.init();
+            AppState.wizardStep = 1; // trigger render
+
+            // Form Submit
+            document.getElementById('wizardForm').addEventListener('submit', WizardController.submit);
+
+            // Search Tracker
+            document.getElementById('btnSearch').addEventListener('click', () => {
+                const query = document.getElementById('searchProtocol').value.trim().toUpperCase();
+                if(query) {
+                    const res = StorageService.findByCode(query);
+                    UIController.updateTracker(res);
+                }
+            });
+
+            // Intersection Observer for Scroll Reveals
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            // Mouse Glow Effect
+            const glow = document.getElementById('mouse-glow');
+            document.addEventListener('mousemove', (e) => {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
+            });
+
+            // Navbar Scroll Effect
+            window.addEventListener('scroll', () => {
+                const header = document.getElementById('mainHeader');
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-xl', 'bg-surface-950/80');
+                    header.classList.remove('bg-surface-950/0');
+                } else {
+                    header.classList.remove('shadow-xl', 'bg-surface-950/80');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
