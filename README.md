@@ -1,6 +1,6 @@
 O CicloTech é uma plataforma avançada (Single-Page Application) de logística reversa para ativos de TI (e-waste). O projeto foca em resolver a principal barreira do descarte eletrônico: a segurança da informação. Através de protocolos de sanitização de dados (Data Wiping) aderentes à LGPD, o projeto recondiciona hardwares ociosos e os destina à educação pública, promovendo a economia circular.
 
-🔗 Acesse a demonstração ao vivo aqui (ciclotech.online))
+🔗 Acesse a demonstração ao vivo aqui (ciclotech.online)
 
 🚀 Funcionalidades Principais
 
