@@ -95,6 +95,15 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
+        /* Cyber Grid Background */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+        }
+
         /* Mouse Follow Glow */
         #mouse-glow {
             position: fixed;
@@ -217,6 +226,14 @@
         @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes fadeOut { to { opacity: 0; transform: scale(0.9); } }
         
+        /* Form Shake Error Animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; border-color: rgba(239, 68, 68, 0.5) !important; box-shadow: 0 0 20px rgba(239, 68, 68, 0.2) !important; }
+
         /* Map Adjustments */
         .leaflet-container { background: #0b1120; font-family: 'Inter', sans-serif; z-index: 10;}
         .leaflet-popup-content-wrapper { background: #111827; color: #f1f5f9; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
@@ -229,8 +246,8 @@
     <div class="noise-bg"></div>
     <div id="mouse-glow"></div>
 
-    <!-- Ambient Blobs -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <!-- Ambient Blobs com Parallax Container -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0 transition-transform duration-75" id="parallax-blobs">
         <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
         <div class="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-teal-600/10 rounded-full mix-blend-screen filter blur-[120px] animate-blob" style="animation-delay: 2s"></div>
     </div>
@@ -291,6 +308,9 @@
     <main class="flex-grow relative z-10">
         
         <section id="hero" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center reveal active">
+            <!-- Adicionando a malha cibernética -->
+            <div class="absolute inset-0 bg-grid-pattern z-0 opacity-60"></div>
+            
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
                 <div class="grid lg:grid-cols-2 gap-16 lg:gap-8 items-center">
                     
@@ -354,8 +374,9 @@
                             </div>
                             
                             <div class="p-6 space-y-6 font-mono text-sm text-brand-400">
-                                <div><span class="text-slate-500">>></span> Initializing secure node... <span class="text-white">OK</span></div>
-                                <div><span class="text-slate-500">>></span> Verifying encryption keys... <span class="text-white">OK</span></div>
+                                <div class="term-line opacity-0 transition-all duration-500"><span class="text-slate-500">>></span> Initializing secure node... <span class="text-white">OK</span></div>
+                                <div class="term-line opacity-0 transition-all duration-500"><span class="text-slate-500">>></span> Verifying encryption keys... <span class="text-white">OK</span></div>
+                                <div class="term-line opacity-0 transition-all duration-500"><span class="text-slate-500">>></span> Syncing Ledger... <span class="text-brand-500 font-bold">ESTABLISHED</span></div>
                                 <div class="h-px bg-white/5 my-4"></div>
                                 
                                 <div class="grid grid-cols-2 gap-4">
@@ -396,7 +417,7 @@
                     <p class="text-slate-400 text-lg">Crie seu manifesto digital em 3 etapas para garantir rastreabilidade total.</p>
                 </div>
 
-                <div class="glass-card rounded-[2rem] p-2 shadow-2xl">
+                <div class="glass-card rounded-[2rem] p-2 shadow-2xl transition-all duration-300" id="wizard-card-container">
                     <div class="bg-surface-900 rounded-[1.8rem] p-6 md:p-12 relative overflow-hidden">
                         
                         <!-- Wizard Progress Bar -->
@@ -418,19 +439,19 @@
                                 <h3 class="text-2xl font-display font-bold text-white mb-6">Identificação da Entidade</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                                     <div class="space-y-2">
-                                        <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Razão Social / Nome Completo *</label>
+                                        <label for="donorName" class="text-xs font-medium text-slate-400 uppercase tracking-wider">Razão Social / Nome Completo *</label>
                                         <input type="text" id="donorName" class="w-full premium-input rounded-xl px-4 py-3.5 text-white" placeholder="Empresa S.A. ou João Silva" required>
                                     </div>
                                     <div class="space-y-2">
-                                        <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">E-mail Corporativo *</label>
+                                        <label for="donorEmail" class="text-xs font-medium text-slate-400 uppercase tracking-wider">E-mail Corporativo *</label>
                                         <input type="email" id="donorEmail" class="w-full premium-input rounded-xl px-4 py-3.5 text-white" placeholder="contato@empresa.com" required>
                                     </div>
                                     <div class="space-y-2">
-                                        <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Telefone / WhatsApp *</label>
+                                        <label for="donorPhone" class="text-xs font-medium text-slate-400 uppercase tracking-wider">Telefone / WhatsApp *</label>
                                         <input type="tel" id="donorPhone" class="w-full premium-input rounded-xl px-4 py-3.5 text-white" placeholder="(11) 90000-0000" required>
                                     </div>
                                     <div class="space-y-2">
-                                        <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">CEP de Origem *</label>
+                                        <label for="donorAddress" class="text-xs font-medium text-slate-400 uppercase tracking-wider">CEP de Origem *</label>
                                         <input type="text" id="donorAddress" class="w-full premium-input rounded-xl px-4 py-3.5 text-white font-mono" placeholder="00000-000" required>
                                     </div>
                                 </div>
@@ -470,8 +491,21 @@
                                         <span class="text-xs text-slate-400">Monitores, Switches, Cabeamento</span>
                                     </label>
                                 </div>
+                                
+                                <!-- Drag & Drop File Upload -->
+                                <div class="mb-8">
+                                    <label class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2 block">Evidência Fotográfica do Lote (Opcional)</label>
+                                    <div id="dropzone" class="border-2 border-dashed border-white/10 rounded-xl p-8 text-center hover:border-brand-500/50 hover:bg-brand-500/5 transition-all cursor-pointer group">
+                                        <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-600 group-hover:text-brand-400 transition-colors mb-3"></i>
+                                        <p class="text-sm text-slate-400 group-hover:text-white transition-colors">Arraste fotos do lote para cá ou <span class="text-brand-400 font-bold">clique para procurar</span></p>
+                                        <input type="file" id="fileUpload" class="hidden" multiple accept="image/*">
+                                    </div>
+                                    <!-- Container para listar os arquivos -->
+                                    <div id="fileList" class="flex gap-2 mt-3 flex-wrap"></div>
+                                </div>
+
                                 <div class="space-y-2 mb-8">
-                                    <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Notas de Lote (Opcional)</label>
+                                    <label for="itemDesc" class="text-xs font-medium text-slate-400 uppercase tracking-wider">Notas de Lote (Opcional)</label>
                                     <textarea id="itemDesc" rows="2" class="w-full premium-input rounded-xl px-4 py-3.5 text-white resize-none" placeholder="Ex: Lote de 10 notebooks Dell Latitude sem disco rígido."></textarea>
                                 </div>
                                 <div class="flex justify-between items-center">
@@ -554,20 +588,32 @@
 
                             <!-- Estado de Sucesso -->
                             <div id="tracker-success" class="hidden bg-surface-950 border border-white/5 rounded-2xl overflow-hidden shadow-inner">
-                                <div class="bg-surface-800 p-6 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/5 gap-4">
+                                <div class="bg-surface-800 p-6 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/5 gap-4 relative">
                                     <div>
                                         <div class="text-[10px] text-slate-500 uppercase tracking-widest mb-1">Registro na Blockchain Interna</div>
                                         <div class="text-2xl font-mono font-bold text-white" id="resCode">CT-0000-0000</div>
                                     </div>
-                                    <div id="resStatusBadge" class="px-4 py-2 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-lg text-sm font-bold flex items-center gap-2">
-                                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                                        <span id="resStatusText">Status</span>
+                                    <div class="flex items-center gap-4">
+                                        <!-- Botão de Emissão de Comprovante -->
+                                        <button onclick="window.print()" class="text-xs font-bold text-slate-400 hover:text-white px-4 py-2 border border-white/10 rounded-lg hover:bg-white/5 transition-colors flex items-center gap-2 group hidden sm:flex">
+                                            <i class="fa-solid fa-print group-hover:text-brand-400 transition-colors"></i> Imprimir VIA
+                                        </button>
+                                        
+                                        <div id="resStatusBadge" class="px-4 py-2 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-lg text-sm font-bold flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                                            <span id="resStatusText">Status</span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="p-8">
                                     <!-- Dynamic Timeline CSS Grid -->
-                                    <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 z-10 before:content-[''] before:absolute before:top-4 before:left-4 md:before:top-4 md:before:left-0 md:before:w-full md:before:h-0.5 before:w-0.5 before:h-full before:bg-surface-800 before:-z-10">
+                                    <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 z-10">
+                                        
+                                        <!-- Linha de Fundo e Barra de Progresso Animada -->
+                                        <div class="absolute top-4 left-4 md:top-4 md:left-0 md:w-full md:h-0.5 w-0.5 h-full bg-surface-800 -z-10 rounded-full overflow-hidden">
+                                            <div id="timeline-progress-bar" class="bg-brand-500 md:h-full md:w-0 w-full h-0 transition-all duration-1000 ease-out shadow-[0_0_15px_#22c55e]"></div>
+                                        </div>
                                         
                                         <!-- Nodes populated via JS -->
                                         <div class="timeline-node" data-step="1">
@@ -625,6 +671,12 @@
                             </p>
                         </div>
                         
+                        <!-- NEW: Campo de Busca/Filtro -->
+                        <div class="relative">
+                            <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                            <input type="text" id="ecoFilter" placeholder="Filtrar ecopontos por nome ou tipo..." class="w-full premium-input rounded-xl pl-12 pr-4 py-3.5 text-white text-sm">
+                        </div>
+                        
                         <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 no-scrollbar" id="eco-list">
                             <!-- Populated by JS -->
                         </div>
@@ -664,6 +716,11 @@
     
     <!-- Toast Container -->
     <div id="toast-container"></div>
+
+    <!-- Botão Voltar ao Topo -->
+    <button id="btnBackToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-brand-600 text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.3)] opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-40 hover:bg-brand-500 hover:scale-110">
+        <i class="fa-solid fa-arrow-up text-xl"></i>
+    </button>
 
     <!-- Success Modal -->
     <div id="successModal" class="hidden fixed inset-0 bg-surface-950/90 backdrop-blur-md flex items-center justify-center z-50 p-4 transition-all duration-300 opacity-0">
@@ -706,9 +763,15 @@
                         <div class="text-xs text-brand-400 font-mono">LIVE TELEMETRY STREAMING</div>
                     </div>
                 </div>
-                <button onclick="UIController.closeModal('statsModal')" class="w-10 h-10 rounded-full bg-surface-800 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                
+                <div class="flex items-center gap-3">
+                    <button onclick="UIController.showToast('Relatório ESG exportado (.csv) com sucesso!', 'success')" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-surface-800 hover:bg-surface-700 border border-white/10 rounded-lg text-sm font-medium text-white transition-colors">
+                        <i class="fa-solid fa-download"></i> Exportar Data
+                    </button>
+                    <button onclick="UIController.closeModal('statsModal')" class="w-10 h-10 rounded-full bg-surface-800 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="p-6 overflow-y-auto flex-grow space-y-6 custom-scrollbar">
@@ -945,14 +1008,36 @@
                 document.getElementById('resDate').textContent = result.date;
 
                 const step = result.step || 1;
+                
+                // Atualiza barra de progresso da timeline (Visualização Dinâmica)
+                const progressBar = document.getElementById('timeline-progress-bar');
+                if (progressBar) {
+                    const progressPct = ((step - 1) / 3) * 100; // 4 passos = divisor 3
+                    if (window.innerWidth >= 768) {
+                        progressBar.style.width = `${progressPct}%`;
+                        progressBar.style.height = '100%';
+                    } else {
+                        progressBar.style.height = `${progressPct}%`;
+                        progressBar.style.width = '100%';
+                    }
+                }
+
                 document.querySelectorAll('.timeline-node').forEach(node => {
                     const nodeStep = parseInt(node.getAttribute('data-step'));
                     const iconBox = node.querySelector('.icon-box');
                     const title = node.querySelector('.title');
                     
+                    // Reseta classes dinâmicas
+                    iconBox.classList.remove('animate-pulse');
+                    
                     if (nodeStep <= step) {
                         iconBox.className = "icon-box w-8 h-8 rounded-full bg-brand-500 border-4 border-surface-950 flex items-center justify-center text-surface-900 mx-auto md:mb-3 transition-all duration-500 shadow-[0_0_15px_rgba(34,197,94,0.4)]";
                         title.className = "title text-sm font-bold text-white transition-colors";
+                        
+                        // Destaque pulsante na etapa exata atual (Melhoria 4)
+                        if(nodeStep === step) {
+                            iconBox.classList.add('animate-pulse', 'shadow-[0_0_30px_rgba(34,197,94,0.8)]');
+                        }
                     } else {
                         iconBox.className = "icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-600 mx-auto md:mb-3 transition-all duration-500";
                         title.className = "title text-sm font-bold text-slate-600 transition-colors";
@@ -964,6 +1049,8 @@
         // 6. WIZARD CONTROLLER (Form Validation & Flow)
         class WizardController {
             static validateStep(step) {
+                let isValid = true;
+                
                 if (step === 1) {
                     const name = document.getElementById('donorName').value;
                     const email = document.getElementById('donorEmail').value;
@@ -971,18 +1058,26 @@
                     const cep = document.getElementById('donorAddress').value;
                     if(!name || !email || !phone || !cep) {
                         UIController.showToast('Preencha todos os campos obrigatórios.', 'error');
-                        return false;
+                        isValid = false;
                     }
-                    return true;
                 }
-                if (step === 2) {
+                else if (step === 2) {
                     const items = document.querySelectorAll('input[name="itemType"]:checked');
                     if(items.length === 0) {
                         UIController.showToast('Selecione pelo menos uma categoria de ativo.', 'error');
-                        return false;
+                        isValid = false;
                     }
-                    return true;
                 }
+
+                if (!isValid) {
+                    const card = document.getElementById('wizard-card-container');
+                    card.classList.remove('shake'); // Reseta a animação caso já exista
+                    void card.offsetWidth; // Reflow para reiniciar animação
+                    card.classList.add('shake');
+                    setTimeout(() => card.classList.remove('shake'), 400); // Remove a classe após a animação
+                    return false;
+                }
+                
                 return true;
             }
 
@@ -1003,45 +1098,88 @@
                     return;
                 }
 
-                const hash = Utils.generateHash();
-                AppState.lastGeneratedHash = hash;
+                // Loading visual para simular gravação na Blockchain
+                const btnSubmit = e.target.querySelector('button[type="submit"]');
+                const originalHtml = btnSubmit.innerHTML;
+                btnSubmit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Gerando Block Hash...';
+                btnSubmit.disabled = true;
+                btnSubmit.classList.add('opacity-80', 'cursor-not-allowed');
 
-                const items = Array.from(document.querySelectorAll('input[name="itemType"]:checked')).map(el => el.value);
+                setTimeout(() => {
+                    const hash = Utils.generateHash();
+                    AppState.lastGeneratedHash = hash;
 
-                const entry = {
-                    code: hash,
-                    name: document.getElementById('donorName').value,
-                    items: items.join(', '),
-                    address: document.getElementById('donorAddress').value,
-                    date: new Date().toLocaleDateString('pt-BR'),
-                    status: 'Aguardando Coleta',
-                    step: 1
-                };
+                    const items = Array.from(document.querySelectorAll('input[name="itemType"]:checked')).map(el => el.value);
 
-                StorageService.addEntry(entry);
-                
-                document.getElementById('modalProtocolCode').textContent = hash;
-                UIController.openModal('successModal');
+                    const entry = {
+                        code: hash,
+                        name: document.getElementById('donorName').value,
+                        items: items.join(', '),
+                        address: document.getElementById('donorAddress').value,
+                        date: new Date().toLocaleDateString('pt-BR'),
+                        status: 'Aguardando Coleta',
+                        step: 1
+                    };
+
+                    StorageService.addEntry(entry);
+                    
+                    // Limpar rascunho salvo (Melhoria 1)
+                    localStorage.removeItem('ciclotech_draft');
+                    
+                    document.getElementById('modalProtocolCode').textContent = hash;
+                    UIController.openModal('successModal');
+
+                    // Restaura o estado do botão
+                    btnSubmit.innerHTML = originalHtml;
+                    btnSubmit.disabled = false;
+                    btnSubmit.classList.remove('opacity-80', 'cursor-not-allowed');
+                }, 1400); // 1.4s de latência simulada
             }
         }
 
         // 7. CHART.JS SERVICE
         class ChartService {
+            static barChartInstance = null;
+            static doughnutChartInstance = null;
+
             static init() {
                 Chart.defaults.color = '#94a3b8';
                 Chart.defaults.font.family = 'Inter';
 
+                // Customização Global dos Tooltips (Premium Dark Glassmorphism)
+                Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(17, 24, 39, 0.9)';
+                Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
+                Chart.defaults.plugins.tooltip.bodyColor = '#cbd5e1';
+                Chart.defaults.plugins.tooltip.borderColor = 'rgba(255,255,255,0.1)';
+                Chart.defaults.plugins.tooltip.borderWidth = 1;
+                Chart.defaults.plugins.tooltip.padding = 12;
+                Chart.defaults.plugins.tooltip.cornerRadius = 8;
+                Chart.defaults.plugins.tooltip.displayColors = true;
+                Chart.defaults.plugins.tooltip.boxPadding = 4;
+
+                // Destruir instâncias anteriores para evitar o erro 'Canvas is already in use' e vazamento de memória
+                if (this.barChartInstance) this.barChartInstance.destroy();
+                if (this.doughnutChartInstance) this.doughnutChartInstance.destroy();
+
                 // Bar Chart
                 const ctxBar = document.getElementById('barChart').getContext('2d');
-                new Chart(ctxBar, {
+                
+                // Criar um gradiente elegante para as barras
+                const barGradient = ctxBar.createLinearGradient(0, 0, 0, 300);
+                barGradient.addColorStop(0, '#4ade80'); // Verde vibrante (topo)
+                barGradient.addColorStop(1, 'rgba(22, 163, 74, 0.2)'); // Verde escuro translúcido (base)
+
+                this.barChartInstance = new Chart(ctxBar, {
                     type: 'bar',
                     data: {
                         labels: ['Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out'],
                         datasets: [{
                             label: 'Volume Arrecadado (kg)',
                             data: [300, 450, 400, 600, 850, 700],
-                            backgroundColor: '#22c55e',
-                            borderRadius: 4,
+                            backgroundColor: barGradient,
+                            borderRadius: 6,
+                            borderWidth: 1,
+                            borderColor: 'rgba(74, 222, 128, 0.5)', // Borda sutil
                             hoverBackgroundColor: '#4ade80'
                         }]
                     },
@@ -1058,7 +1196,7 @@
 
                 // Doughnut Chart
                 const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
-                new Chart(ctxDoughnut, {
+                this.doughnutChartInstance = new Chart(ctxDoughnut, {
                     type: 'doughnut',
                     data: {
                         labels: ['Computação', 'Mobile', 'Periféricos'],
@@ -1083,6 +1221,8 @@
 
         // 8. LEAFLET MAP SERVICE
         class MapService {
+            static markers = []; // Armazenar referência dos markers
+
             static init() {
                 const map = L.map('map', { zoomControl: false }).setView(AppConfig.MAP_CENTER, AppConfig.MAP_ZOOM);
                 
@@ -1103,13 +1243,17 @@
 
                 ECOPONTOS_DATA.forEach(node => {
                     // Add Marker
-                    L.marker([node.lat, node.lng], {icon: customIcon})
+                    const marker = L.marker([node.lat, node.lng], {icon: customIcon})
                      .addTo(map)
                      .bindPopup(`<strong class="text-brand-400 font-display">${node.name}</strong><br><span class="text-slate-400 text-xs">${node.type} Node</span>`);
                     
+                    this.markers.push(marker);
+
                     // Add to UI List
                     const card = document.createElement('div');
-                    card.className = "bg-surface-800 p-4 rounded-2xl border border-white/5 cursor-pointer hover:border-brand-500/50 transition-colors group";
+                    card.className = "eco-card bg-surface-800 p-4 rounded-2xl border border-white/5 cursor-pointer hover:border-brand-500/50 transition-colors group";
+                    card.dataset.name = node.name.toLowerCase();
+                    card.dataset.type = node.type.toLowerCase();
                     card.innerHTML = `
                         <div class="flex justify-between items-center mb-2">
                             <h4 class="text-white font-bold group-hover:text-brand-400 transition-colors">${node.name}</h4>
@@ -1119,9 +1263,28 @@
                     `;
                     card.addEventListener('click', () => {
                         map.flyTo([node.lat, node.lng], 15, { duration: 1.5 });
+                        setTimeout(() => marker.openPopup(), 1500); 
                     });
+                    
+                    // Melhoria 5: Hover na lista abre o popup
+                    card.addEventListener('mouseenter', () => marker.openPopup());
+                    card.addEventListener('mouseleave', () => marker.closePopup());
+
                     listContainer.appendChild(card);
                 });
+
+                // Melhoria 3: Filtro de Ecopontos
+                const filterInput = document.getElementById('ecoFilter');
+                if (filterInput) {
+                    filterInput.addEventListener('input', (e) => {
+                        const term = e.target.value.toLowerCase();
+                        const cards = document.querySelectorAll('.eco-card');
+                        cards.forEach(c => {
+                            const isMatch = c.dataset.name.includes(term) || c.dataset.type.includes(term);
+                            c.style.display = isMatch ? 'block' : 'none';
+                        });
+                    });
+                }
             }
         }
 
@@ -1131,16 +1294,122 @@
             MapService.init();
             AppState.wizardStep = 1; // trigger render
 
+            const termLines = document.querySelectorAll('.term-line');
+            termLines.forEach((line, index) => {
+                setTimeout(() => {
+                    line.classList.remove('opacity-0');
+                    line.classList.add('opacity-100', 'translate-y-0');
+                }, 800 + (index * 600)); // Delay em cascata
+            });
+
+            const dropzone = document.getElementById('dropzone');
+            const fileUpload = document.getElementById('fileUpload');
+            const fileList = document.getElementById('fileList');
+
+            if (dropzone && fileUpload) {
+                dropzone.addEventListener('click', () => fileUpload.click());
+                
+                // Previne comportamento padrão de abrir a imagem no navegador
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    dropzone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }, false);
+                });
+
+                // Efeitos visuais de Hover
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropzone.addEventListener(eventName, () => dropzone.classList.add('border-brand-500', 'bg-brand-500/10'), false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropzone.addEventListener(eventName, () => dropzone.classList.remove('border-brand-500', 'bg-brand-500/10'), false);
+                });
+
+                // Lida com os arquivos
+                dropzone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
+                fileUpload.addEventListener('change', function() { handleFiles(this.files); });
+
+                function handleFiles(files) {
+                    [...files].forEach(file => {
+                        const badge = document.createElement('div');
+                        badge.className = 'px-3 py-1.5 bg-surface-800 border border-brand-500/30 rounded-lg text-xs font-mono text-white flex items-center gap-2 animate-slide-up shadow-lg';
+                        badge.innerHTML = `<i class="fa-solid fa-file-image text-brand-400"></i> ${file.name.substring(0,18)}${file.name.length > 18 ? '...' : ''}`;
+                        fileList.appendChild(badge);
+                    });
+                }
+            }
+
+            // Melhoria 1: Auto-Save de Rascunho (Form Persistence)
+            const formFields = ['donorName', 'donorEmail', 'donorPhone', 'donorAddress', 'itemDesc'];
+            formFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    // Salva ao digitar
+                    el.addEventListener('input', () => {
+                        const draft = JSON.parse(localStorage.getItem('ciclotech_draft') || '{}');
+                        draft[id] = el.value;
+                        localStorage.setItem('ciclotech_draft', JSON.stringify(draft));
+                    });
+                    // Restaura ao carregar
+                    const savedDraft = JSON.parse(localStorage.getItem('ciclotech_draft') || '{}');
+                    if (savedDraft[id]) {
+                        el.value = savedDraft[id];
+                        // Dispara evento para formatar máscaras se necessário
+                        el.dispatchEvent(new Event('input', { bubbles: true })); 
+                    }
+                }
+            });
+
+            // Máscara de Formatação para Telefone (Ex: (11) 98888-7777)
+            const phoneInput = document.getElementById('donorPhone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+                    e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+                });
+            }
+
+            // Máscara de Formatação para CEP (Ex: 00000-000)
+            const cepInput = document.getElementById('donorAddress');
+            if (cepInput) {
+                cepInput.addEventListener('input', function(e) {
+                    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,5})(\d{0,3})/);
+                    e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2];
+                });
+            }
+
             // Form Submit
             document.getElementById('wizardForm').addEventListener('submit', WizardController.submit);
 
             // Search Tracker
-            document.getElementById('btnSearch').addEventListener('click', () => {
+            const performSearch = () => {
                 const query = document.getElementById('searchProtocol').value.trim().toUpperCase();
+                const btnSearch = document.getElementById('btnSearch');
+                
                 if(query) {
-                    const res = StorageService.findByCode(query);
-                    UIController.updateTracker(res);
+                    // Simula estado de carregamento / delay da rede Blockchain
+                    const originalText = btnSearch.innerHTML;
+                    btnSearch.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Validando...';
+                    btnSearch.disabled = true;
+                    btnSearch.classList.add('opacity-80', 'cursor-not-allowed');
+
+                    setTimeout(() => {
+                        const res = StorageService.findByCode(query);
+                        UIController.updateTracker(res);
+                        
+                        // Restaura botão
+                        btnSearch.innerHTML = originalText;
+                        btnSearch.disabled = false;
+                        btnSearch.classList.remove('opacity-80', 'cursor-not-allowed');
+                    }, 800); // 800ms de latência simulada
                 }
+            };
+
+            document.getElementById('btnSearch').addEventListener('click', performSearch);
+            
+            document.getElementById('searchProtocol').addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') performSearch();
             });
 
             // Intersection Observer for Scroll Reveals
@@ -1152,6 +1421,27 @@
                 });
             }, { threshold: 0.1 });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            
+            // Melhoria 2: ScrollSpy Nav (Destaque do Menu)
+            const navLinks = document.querySelectorAll('nav a');
+            const sections = document.querySelectorAll('section');
+            const spyObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-white');
+                            link.querySelector('span').classList.remove('w-full');
+                            link.querySelector('span').classList.add('w-0'); // esconde traço
+                            if (link.getAttribute('href') === '#' + entry.target.id) {
+                                link.classList.add('text-white');
+                                link.querySelector('span').classList.remove('w-0');
+                                link.querySelector('span').classList.add('w-full'); // mostra traço
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.4 }); // Dispara quando 40% da seção está visível
+            sections.forEach(sec => spyObserver.observe(sec));
 
             // Mouse Glow Effect
             const glow = document.getElementById('mouse-glow');
@@ -1160,15 +1450,63 @@
                 glow.style.top = e.clientY + 'px';
             });
 
-            // Navbar Scroll Effect
+            // Tilt Card Effect (Hero Section)
+            const tiltCardContainer = document.getElementById('tilt-card-container');
+            const tiltCard = document.getElementById('tilt-card');
+            
+            if(tiltCardContainer && tiltCard) {
+                tiltCardContainer.addEventListener('mousemove', (e) => {
+                    const rect = tiltCardContainer.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -10; // Intensidade Y
+                    const rotateY = ((x - centerX) / centerX) * 10;  // Intensidade X
+                    
+                    tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                tiltCardContainer.addEventListener('mouseleave', () => {
+                    tiltCard.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                });
+            }
+
+            // Live Telemetry Simulation (Hero Section)
+            let wipes = 1204;
+            let co2 = 4.85;
+            // Navbar Scroll Effect e Parallax
             window.addEventListener('scroll', () => {
                 const header = document.getElementById('mainHeader');
-                if (window.scrollY > 50) {
+                const btnBackToTop = document.getElementById('btnBackToTop');
+                const parallaxBlobs = document.getElementById('parallax-blobs');
+                const scrolled = window.scrollY;
+
+                // Efeito Parallax nos Blobs
+                if(parallaxBlobs) {
+                    parallaxBlobs.style.transform = `translateY(${scrolled * 0.35}px)`;
+                }
+
+                if (scrolled > 50) {
                     header.classList.add('shadow-xl', 'bg-surface-950/80');
                     header.classList.remove('bg-surface-950/0');
                 } else {
                     header.classList.remove('shadow-xl', 'bg-surface-950/80');
                 }
+
+                // Controle do botão Voltar ao Topo
+                if (window.scrollY > 600) {
+                    btnBackToTop.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    btnBackToTop.classList.add('opacity-100', 'translate-y-0', 'cursor-pointer');
+                } else {
+                    btnBackToTop.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+                    btnBackToTop.classList.remove('opacity-100', 'translate-y-0', 'cursor-pointer');
+                }
+            });
+
+            // Ação do Botão Voltar ao Topo
+            document.getElementById('btnBackToTop').addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
 
