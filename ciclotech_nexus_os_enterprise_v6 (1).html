@@ -2,27 +2,20 @@
 <html lang="pt-BR" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CicloTech Nexus - Plataforma Avançada de Logística Reversa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CicloTech OS v10 | Quantum Matrix</title>
     
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter & Space Grotesk -->
+    <!-- Fonts: Inter, Space Grotesk, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome Icons -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Chart.js para Data Visualization -->
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Leaflet.js para Mapa Interativo -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
         tailwind.config = {
@@ -32,50 +25,51 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         display: ['Space Grotesk', 'sans-serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            300: '#86efac',
-                            400: '#4ade80',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
-                            950: '#052e16',
-                        },
-                        surface: {
-                            950: '#05080f', // Ultra dark background
-                            900: '#0b1120', // Background
-                            800: '#111827', // Card
-                            700: '#1f2937', // Hover
+                        quantum: {
+                            base: '#000000',      // Pure OLED Black
+                            surface: '#020a06',   // Extreme Dark Green
+                            card: '#03120b',      // Elevated Card
+                            border: 'rgba(0, 255, 163, 0.15)',
+                            neon: '#00ffa3',      // Hyper-Green
+                            cyan: '#00e5ff',      // Accent Cyan
+                            warning: '#ffb300',   // Warning
+                            error: '#ef4444'      // Error Red
                         }
                     },
                     animation: {
-                        'blob': 'blob 10s infinite alternate',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'shimmer': 'shimmer 2s linear infinite',
-                        'spin-slow': 'spin 8s linear infinite',
+                        'radar-sweep': 'radarSweep 4s linear infinite',
+                        'glitch': 'glitch 0.2s cubic-bezier(.25, .46, .45, .94) both infinite',
+                        'hud-scan': 'hudScan 3s ease-in-out infinite alternate',
+                        'glow-pulse': 'glowPulse 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        radarSweep: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' }
                         },
-                        slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        glitch: {
+                            '0%': { transform: 'translate(0)' },
+                            '20%': { transform: 'translate(-2px, 2px)' },
+                            '40%': { transform: 'translate(-2px, -2px)' },
+                            '60%': { transform: 'translate(2px, 2px)' },
+                            '80%': { transform: 'translate(2px, -2px)' },
+                            '100%': { transform: 'translate(0)' }
                         },
-                        shimmer: {
-                            from: { backgroundPosition: '200% 0' },
-                            to: { backgroundPosition: '-200% 0' },
+                        hudScan: {
+                            '0%': { top: '0%' },
+                            '100%': { top: '100%' }
+                        },
+                        glowPulse: {
+                            '0%': { boxShadow: '0 0 10px rgba(0,255,163,0.2)' },
+                            '100%': { boxShadow: '0 0 30px rgba(0,255,163,0.6)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
                         }
                     }
                 }
@@ -83,322 +77,243 @@
         }
     </script>
 
-    <style>
-        
-        /* Noise Texture Overlay for Premium Feel */
-        .noise-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass-morphism {
+                @apply bg-quantum-card/60 backdrop-blur-xl border border-quantum-border shadow-[0_8px_32px_0_rgba(0,0,0,0.8)];
+            }
+            .text-gradient {
+                @apply bg-clip-text text-transparent bg-gradient-to-r from-quantum-neon via-white to-quantum-cyan;
+            }
+            .input-quantum {
+                @apply bg-black/50 border border-quantum-border text-white placeholder-zinc-600 transition-all duration-300 focus:outline-none focus:border-quantum-neon focus:ring-1 focus:ring-quantum-neon focus:bg-quantum-card shadow-inner;
+            }
+            .input-error {
+                @apply border-quantum-error focus:border-quantum-error focus:ring-quantum-error;
+            }
         }
 
-        /* Cyber Grid Background */
-        .bg-grid-pattern {
-            background-image: linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
-            background-size: 50px 50px;
-            mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
-            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
-        }
-
-        /* Mouse Follow Glow */
-        #mouse-glow {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #05080f; }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #374151; }
-
-        /* Core Glass Utilities */
-        .glass-nav {
-            background: rgba(5, 8, 15, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        /* Fundamentos Visuais */
+        body { 
+            background-color: theme('colors.quantum.base'); 
+            color: #a1a1aa; 
+            overflow-x: hidden; 
         }
         
-        .glass-card {
-            background: rgba(17, 24, 39, 0.4);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Ocultar cursor nativo apenas se suportar mouse fino */
+        @media (pointer: fine) {
+            body.custom-cursor-active { cursor: none; }
+            body.custom-cursor-active .interactive,
+            body.custom-cursor-active a,
+            body.custom-cursor-active button,
+            body.custom-cursor-active input,
+            body.custom-cursor-active textarea,
+            body.custom-cursor-active label {
+                cursor: none;
+            }
         }
 
-        .glass-card:hover {
-            border-color: rgba(34, 197, 94, 0.3);
-            box-shadow: 0 10px 40px -10px rgba(34, 197, 94, 0.2);
-            transform: translateY(-4px);
-        }
+        ::selection { background: rgba(0,255,163,0.2); color: #00ffa3; }
 
-        /* Forms & Inputs */
-        .premium-input {
-            background: rgba(11, 17, 32, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        .premium-input:focus {
-            border-color: #22c55e;
-            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
-            outline: none;
-            background: rgba(17, 24, 39, 1);
-        }
+        /* Cursores Magnéticos & Ambientais */
+        #cursor-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: #00ffa3; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; box-shadow: 0 0 10px #00ffa3; opacity: 0; }
+        #cursor-ring { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(0,255,163,0.4); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.15s ease-out, width 0.2s, height 0.2s, background 0.2s; opacity: 0; }
+        .magnetic-hover #cursor-ring { width: 60px; height: 60px; background: rgba(0,255,163,0.05); border-color: #00ffa3; }
 
-        /* Custom Checkbox */
-        .checkbox-wrapper input[type="checkbox"] {
-            appearance: none;
-            width: 1.5rem; height: 1.5rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.375rem;
-            background: rgba(11, 17, 32, 0.8);
-            display: grid;
-            place-content: center;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        .checkbox-wrapper input[type="checkbox"]::before {
-            content: "";
-            width: 0.8rem; height: 0.8rem;
-            transform: scale(0);
-            transition: 120ms transform ease-in-out;
-            box-shadow: inset 1em 1em white;
-            background-color: white;
-            transform-origin: center;
-            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-        }
-        .checkbox-wrapper input[type="checkbox"]:checked {
-            background-color: #22c55e; border-color: #22c55e;
-        }
-        .checkbox-wrapper input[type="checkbox"]:checked::before { transform: scale(1); }
+        /* Canvas Particle Network */
+        #network-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.6; }
 
-        /* Text Gradient */
-        .text-gradient {
-            background: linear-gradient(to right, #4ade80, #2dd4bf);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        /* Efeitos Holográficos (UI/HUD) */
+        .hologram-border { position: relative; }
+        .hologram-border::before { content: ''; position: absolute; inset: -1px; background: linear-gradient(135deg, rgba(0,255,163,0.5), transparent 40%, transparent 60%, rgba(0,229,255,0.5)); z-index: -1; border-radius: inherit; animation: rotateGradient 4s linear infinite; }
+        @keyframes rotateGradient { 100% { filter: hue-rotate(360deg); } }
 
-        /* Wizard Transitions */
-        .wizard-step {
-            display: none;
-            opacity: 0;
-            transform: translateX(20px);
-            transition: all 0.4s ease;
-        }
-        .wizard-step.active {
-            display: block;
-            opacity: 1;
-            transform: translateX(0);
-        }
+        /* Física 3D Elevada */
+        .scene { perspective: 2500px; transform-style: preserve-3d; }
+        .card-3d { transform-style: preserve-3d; transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform; }
+        .z-layer-1 { transform: translateZ(30px); }
+        .z-layer-2 { transform: translateZ(60px); }
+        .glare { position: absolute; inset: 0; pointer-events: none; z-index: 50; border-radius: inherit; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent 50%); opacity: 0; transition: opacity 0.2s; mix-blend-mode: overlay; }
 
-        /* Reveal on Scroll */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        /* Form Wizard */
+        .wizard-container { position: relative; overflow: hidden; transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .wizard-step { position: absolute; top: 0; left: 0; width: 100%; opacity: 0; visibility: hidden; transform: translateX(50px) scale(0.95); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .wizard-step.active { opacity: 1; visibility: visible; transform: translateX(0) scale(1); position: relative; }
 
-        /* Toast Notifications */
-        #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-        .toast {
-            background: rgba(17, 24, 39, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 16px 20px;
-            border-radius: 12px;
-            display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-            animation: slideInRight 0.3s ease forwards;
-        }
-        .toast.hide { animation: fadeOut 0.3s ease forwards; }
-        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes fadeOut { to { opacity: 0; transform: scale(0.9); } }
+        /* Checkboxes Cyberpunk */
+        .cyber-check label { cursor: pointer; } /* Fallback cursor if custom is off */
+        @media (pointer: fine) { .cyber-check label { cursor: none; } }
+        .cyber-check input:checked + div { border-color: #00ffa3; background: rgba(0,255,163,0.05); transform: translateY(-4px); box-shadow: 0 10px 20px -5px rgba(0,255,163,0.2), inset 0 0 15px rgba(0,255,163,0.1); }
+        .cyber-check input:checked + div .check-icon { opacity: 1; transform: scale(1); background: #00ffa3; border-color: #00ffa3; color: black; }
         
-        /* Form Shake Error Animation */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; border-color: rgba(239, 68, 68, 0.5) !important; box-shadow: 0 0 20px rgba(239, 68, 68, 0.2) !important; }
+        /* Preloader */
+        #quantum-boot { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.6s ease; }
+        .loader-ring { width: 150px; height: 150px; border: 2px solid rgba(0,255,163,0.1); border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; }
+        .loader-ring::before { content: ''; position: absolute; inset: -2px; border: 2px solid transparent; border-top-color: #00ffa3; border-right-color: #00ffa3; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Map Adjustments */
-        .leaflet-container { background: #0b1120; font-family: 'Inter', sans-serif; z-index: 10;}
-        .leaflet-popup-content-wrapper { background: #111827; color: #f1f5f9; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
-        .leaflet-popup-tip { background: #111827; border: 1px solid rgba(255,255,255,0.1); }
+        /* HUD do Mapa */
+        .map-hud-container { position: relative; border-radius: 1.5rem; overflow: hidden; }
+        .map-hud-corner { position: absolute; width: 30px; height: 30px; border-color: #00ffa3; z-index: 10; pointer-events: none; transition: all 0.3s ease; }
+        .hud-tl { top: 10px; left: 10px; border-top: 3px solid; border-left: 3px solid; }
+        .hud-tr { top: 10px; right: 10px; border-top: 3px solid; border-right: 3px solid; }
+        .hud-bl { bottom: 10px; left: 10px; border-bottom: 3px solid; border-left: 3px solid; }
+        .hud-br { bottom: 10px; right: 10px; border-bottom: 3px solid; border-right: 3px solid; }
+        .map-scanline { position: absolute; top: 0; left: 0; width: 100%; height: 15px; background: linear-gradient(to bottom, transparent, rgba(0,255,163,0.4), transparent); z-index: 9; pointer-events: none; animation: hudScan 4s linear infinite; }
+        .map-filter { filter: invert(100%) hue-rotate(150deg) contrast(1.2) sepia(0.3) saturate(1.5) opacity(0.85); transition: filter 0.5s ease; }
+        .map-hud-container:hover .map-filter { filter: invert(100%) hue-rotate(150deg) contrast(1.3) sepia(0.2) saturate(2) opacity(1); }
+        .map-hud-container:hover .map-hud-corner { width: 40px; height: 40px; border-width: 4px; }
+
+        /* Tipografia Criptográfica */
+        .brute-force-text { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+        
+        /* Scrollbar Premium */
+        ::-webkit-scrollbar { width: 6px; } 
+        ::-webkit-scrollbar-track { background: #000; } 
+        ::-webkit-scrollbar-thumb { background: rgba(0, 255, 163, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 163, 0.6); }
+        
+        /* Reveals */
+        .reveal { opacity: 0; transform: translateY(40px) scale(0.95); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
     </style>
 </head>
-<body class="bg-surface-950 text-slate-300 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500/30 selection:text-brand-300 relative">
 
-    
-    <div class="noise-bg"></div>
-    <div id="mouse-glow"></div>
+<body class="selection:bg-quantum-neon/30 selection:text-quantum-neon">
 
-    <!-- Ambient Blobs com Parallax Container -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0 transition-transform duration-75" id="parallax-blobs">
-        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
-        <div class="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-teal-600/10 rounded-full mix-blend-screen filter blur-[120px] animate-blob" style="animation-delay: 2s"></div>
+    <!-- Sequência de Boot (Preloader) -->
+    <div id="quantum-boot">
+        <div class="loader-ring mb-8">
+            <div class="text-3xl font-display font-bold text-white tracking-widest"><span id="boot-counter">0</span><span class="text-quantum-neon text-lg">%</span></div>
+        </div>
+        <div class="font-mono text-xs text-quantum-neon tracking-[0.3em] uppercase animate-pulse">Iniciando Matrix Kernel</div>
+        <div class="font-mono text-[10px] text-zinc-600 mt-2 h-4" id="boot-log">Carregando módulos...</div>
     </div>
 
-    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300" id="mainHeader">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
-            <a href="#" class="flex items-center gap-4 group">
-                <div class="relative w-12 h-12 flex items-center justify-center">
-                    <div class="absolute inset-0 bg-brand-500/20 rounded-xl rotate-3 group-hover:rotate-6 transition-transform duration-300"></div>
-                    <div class="absolute inset-0 bg-surface-800 border border-brand-500/30 rounded-xl flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform duration-300 shadow-lg shadow-brand-500/20">
-                        <i class="fa-solid fa-infinity text-brand-400 text-xl"></i>
+    <!-- Motores Visuais (Cursor + Canvas Network) -->
+    <div id="cursor-dot" class="hidden md:block"></div>
+    <div id="cursor-ring" class="hidden md:block"></div>
+    <canvas id="network-canvas"></canvas>
+
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] bg-quantum-neon/5 rounded-full mix-blend-screen filter blur-[150px] animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-quantum-cyan/5 rounded-full mix-blend-screen filter blur-[120px] animate-pulse" style="animation-duration: 10s; animation-direction: reverse;"></div>
+    </div>
+
+    <!-- Cabeçalho (Header) -->
+    <header class="fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-[96%] max-w-6xl rounded-2xl border border-transparent" id="nav-header">
+        <div class="px-6 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-4 interactive group">
+                <div class="relative w-10 h-10 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-quantum-neon to-quantum-cyan rounded-xl blur opacity-40 group-hover:opacity-80 transition-opacity duration-500"></div>
+                    <div class="absolute inset-0 bg-black border border-white/10 rounded-xl flex items-center justify-center z-10 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                        <i class="fa-solid fa-infinity text-quantum-neon text-lg"></i>
                     </div>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-2xl font-display font-bold text-white tracking-tight flex items-center gap-2">
-                        CicloTech 
-                        <span class="px-2 py-0.5 rounded-md bg-brand-500/10 border border-brand-500/20 text-[10px] uppercase tracking-widest text-brand-400 font-sans font-semibold">Nexus V6</span>
+                    <span class="text-lg font-display font-bold text-white tracking-tight flex items-center gap-2 leading-none">
+                        CicloTech <span class="bg-quantum-neon/10 text-quantum-neon border border-quantum-neon/30 px-1.5 py-0.5 rounded text-[9px] uppercase font-mono font-bold tracking-widest shadow-[0_0_10px_rgba(0,255,163,0.1)]">Apex v10</span>
                     </span>
-                    <span class="text-[10px] text-slate-400 font-medium tracking-widest uppercase opacity-80">Reverse Logistics Architecture</span>
+                    <span class="text-[9px] text-zinc-500 font-mono tracking-widest uppercase mt-1">Quantum Logistics</span>
                 </div>
             </a>
 
-            <nav class="hidden lg:flex items-center gap-8 bg-surface-900/60 px-6 py-2.5 rounded-full border border-white/5 backdrop-blur-md">
-                <a href="#hero" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
-                    Hub
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-400 to-teal-400 transition-all group-hover:w-full"></span>
-                </a>
-                <a href="#agendamento" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
-                    Operação Coleta
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-400 to-teal-400 transition-all group-hover:w-full"></span>
-                </a>
-                <a href="#rastreio" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
-                    Ledger Tracker
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-400 to-teal-400 transition-all group-hover:w-full"></span>
-                </a>
-                <a href="#ecopontos" class="text-sm font-medium text-slate-300 hover:text-white transition-colors relative group">
-                    Rede Node
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-400 to-teal-400 transition-all group-hover:w-full"></span>
-                </a>
+            <nav class="hidden md:flex items-center gap-2 glass-morphism px-2 py-1.5 rounded-full">
+                <a href="#hero" class="text-xs font-mono uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 px-4 py-2 rounded-full transition-all interactive">Core</a>
+                <a href="#manifesto" class="text-xs font-mono uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 px-4 py-2 rounded-full transition-all interactive">Protocolo</a>
+                <a href="#ledger" class="text-xs font-mono uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 px-4 py-2 rounded-full transition-all interactive">Ledger</a>
+                <a href="#nodes" class="text-xs font-mono uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 px-4 py-2 rounded-full transition-all interactive">Map-HUD</a>
             </nav>
 
             <div class="flex items-center gap-4">
-                <button onclick="UIController.openModal('statsModal')" class="hidden md:flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/10">
-                    <i class="fa-solid fa-chart-line text-brand-400"></i>
-                    Telemetry ESG
+                <button onclick="SystemOS.Telemetry.open()" class="hidden sm:flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-quantum-neon px-3 py-2 transition-colors interactive group">
+                    <i class="fa-solid fa-satellite-dish group-hover:animate-pulse"></i> [TEL]
                 </button>
-                <a href="#agendamento" class="group relative inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold text-surface-950 transition-all duration-200 bg-brand-500 font-sans rounded-xl focus:outline-none hover:bg-brand-400 hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] overflow-hidden">
-                    <span class="relative z-10 flex items-center gap-2">
-                        <i class="fa-solid fa-bolt"></i>
-                        Iniciar Protocolo
-                    </span>
+                <a href="#manifesto" class="interactive relative inline-flex h-10 items-center justify-center rounded-xl bg-quantum-neon px-6 text-xs font-bold text-black transition-all hover:bg-white hover:shadow-[0_0_25px_rgba(0,255,163,0.6)] shadow-[0_0_15px_rgba(0,255,163,0.2)]">
+                    DEPLOY
                 </a>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow relative z-10">
-        
-        <section id="hero" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center reveal active">
-            <!-- Adicionando a malha cibernética -->
-            <div class="absolute inset-0 bg-grid-pattern z-0 opacity-60"></div>
-            
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
+    <main class="relative z-10">
+        <!-- Hero Section (3D & Tipografia Quântica) -->
+        <section id="hero" class="relative pt-32 pb-20 lg:pt-44 lg:pb-32 min-h-screen flex items-center reveal">
+            <div class="max-w-7xl mx-auto px-6 relative w-full">
                 <div class="grid lg:grid-cols-2 gap-16 lg:gap-8 items-center">
                     
-                    <div class="z-10">
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-800 border border-white/10 text-xs font-mono tracking-wide mb-8 shadow-lg">
-                            <div class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></div>
-                            <span class="text-slate-300">Sistema Operacional • <span class="text-brand-400">Status Nominal</span></span>
+                    <div class="z-10 relative">
+                        <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-morphism text-[10px] font-mono tracking-widest mb-8 text-zinc-300 border-quantum-neon/30">
+                            <div class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-quantum-neon opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-quantum-neon shadow-[0_0_8px_#00ffa3]"></span>
+                            </div>
+                            Protocolo DoD 5220.22-M Online
                         </div>
                         
-                        <h1 class="text-5xl lg:text-[5rem] font-display font-bold text-white leading-[1.05] mb-6 tracking-tight">
-                            Descarte <br>
-                            <span class="text-gradient">Criptográfico</span>
+                        <h1 class="text-5xl lg:text-7xl font-display font-bold text-white leading-[1.05] mb-8 tracking-tighter">
+                            Sanitização & <br>
+                            <span class="text-gradient drop-shadow-[0_0_40px_rgba(0,255,163,0.25)]">Criptografia.</span>
                         </h1>
                         
-                        <p class="text-xl text-slate-400 mb-10 max-w-xl leading-relaxed font-light">
-                            Plataforma descentralizada para logística reversa de ativos de TI. Sanitização de dados de grau militar (LGPD) e reinserção na economia circular educacional.
+                        <p class="text-lg text-zinc-400 mb-12 max-w-xl leading-relaxed font-light">
+                            A mais avançada arquitetura de logística reversa corporativa. Destruição lógica irreparável atrelada a uma rede neural blockchain e economia circular global.
                         </p>
                         
-                        <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                            <button onclick="document.getElementById('agendamento').scrollIntoView({behavior:'smooth'})" class="inline-flex justify-center items-center gap-3 px-8 py-4 bg-white text-surface-950 font-bold rounded-xl hover:bg-slate-200 transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                                Iniciar Manifestação
-                                <i class="fa-solid fa-arrow-right"></i>
+                        <div class="flex flex-col sm:flex-row gap-5">
+                            <button onclick="document.getElementById('manifesto').scrollIntoView({behavior:'smooth'})" class="interactive inline-flex justify-center items-center gap-3 px-8 py-4 bg-quantum-neon text-black font-bold rounded-xl hover:bg-white transition-all text-sm shadow-[0_0_20px_rgba(0,255,163,0.4)]">
+                                Iniciar Protocolo <i class="fa-solid fa-arrow-right text-xs"></i>
                             </button>
-                            <button onclick="document.getElementById('rastreio').scrollIntoView({behavior:'smooth'})" class="inline-flex justify-center items-center gap-3 px-8 py-4 bg-surface-800 text-white font-bold rounded-xl border border-white/10 hover:bg-surface-700 transition-all hover:border-brand-500/50">
-                                Acessar Ledger
-                                <i class="fa-solid fa-database text-brand-400"></i>
+                            <button onclick="document.getElementById('ledger').scrollIntoView({behavior:'smooth'})" class="interactive inline-flex justify-center items-center gap-3 px-8 py-4 glass-morphism text-white font-bold rounded-xl hover:bg-white/5 transition-all text-sm hover:border-quantum-neon/50 group">
+                                Consultar Ledger <i class="fa-brands fa-hive text-quantum-neon group-hover:rotate-180 transition-transform duration-700"></i>
                             </button>
-                        </div>
-
-                        <!-- Tech Specs Footer -->
-                        <div class="flex flex-wrap gap-8 items-center border-t border-white/5 pt-8">
-                            <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-shield-cat text-2xl text-slate-500"></i>
-                                <div>
-                                    <div class="text-white font-bold font-mono">DoD 5220.22-M</div>
-                                    <div class="text-xs text-slate-500 uppercase tracking-widest">Wiping Standard</div>
-                                </div>
-                            </div>
-                            <div class="w-px h-10 bg-white/5"></div>
-                            <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-leaf text-2xl text-brand-500"></i>
-                                <div>
-                                    <div class="text-white font-bold font-mono">ODS 12 & 4</div>
-                                    <div class="text-xs text-slate-500 uppercase tracking-widest">ONU Compliance</div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
-                    <!-- 3D Card Simulation -->
-                    <div class="relative lg:h-[600px] flex items-center justify-center hidden md:flex" id="tilt-card-container">
-                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-500/20 to-teal-500/20 rounded-3xl blur-2xl transform rotate-6 animate-pulse-slow"></div>
+                    <!-- Holographic 3D Terminal -->
+                    <div class="relative h-[600px] hidden lg:flex items-center justify-center scene animate-float" id="3d-scene">
+                        <div class="absolute bottom-4 w-[80%] h-12 bg-quantum-neon/20 blur-[40px] rounded-[100%] transform rotateX(75deg) animate-pulse"></div>
                         
-                        <div class="relative w-full max-w-lg bg-surface-900/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden" id="tilt-card" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg); transition: transform 0.1s ease-out;">
-                            <!-- Header Code Window -->
-                            <div class="h-10 border-b border-white/10 flex items-center px-4 gap-2 bg-surface-950/50">
-                                <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-                                <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                                <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-                                <div class="ml-4 font-mono text-[10px] text-slate-500">~/ciclotech/core/monitor.sh</div>
+                        <div class="card-3d w-full max-w-[500px] glass-morphism rounded-2xl relative overflow-hidden hologram-border shadow-[0_40px_80px_-20px_rgba(0,0,0,1)]" id="3d-card">
+                            <div class="glare" id="3d-glare"></div>
+                            
+                            <!-- Header Bar -->
+                            <div class="h-12 border-b border-white/5 flex items-center px-5 gap-3 bg-black/80 relative z-10">
+                                <div class="flex gap-2 z-layer-1">
+                                    <div class="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+                                    <div class="w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                                </div>
+                                <div class="flex-1 text-center font-mono text-[10px] text-zinc-500 tracking-widest pr-8 z-layer-1">sys_admin@quantum-core:~</div>
                             </div>
                             
-                            <div class="p-6 space-y-6 font-mono text-sm text-brand-400">
-                                <div class="term-line opacity-0 transition-all duration-500"><span class="text-slate-500">>></span> Initializing secure node... <span class="text-white">OK</span></div>
-                                <div class="term-line opacity-0 transition-all duration-500"><span class="text-slate-500">>></span> Verifying encryption keys... <span class="text-white">OK</span></div>
-                                <div class="term-line opacity-0 transition-all duration-500"><span class="text-slate-500">>></span> Syncing Ledger... <span class="text-brand-500 font-bold">ESTABLISHED</span></div>
-                                <div class="h-px bg-white/5 my-4"></div>
+                            <!-- Terminal Content -->
+                            <div class="p-8 font-mono text-sm space-y-8 h-[450px] flex flex-col justify-between bg-gradient-to-b from-quantum-card/50 to-black/80">
                                 
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="bg-surface-950 p-4 rounded-xl border border-brand-500/20 relative overflow-hidden group">
-                                        <div class="absolute inset-0 bg-brand-500/10 -translate-x-full group-hover:animate-shimmer"></div>
-                                        <div class="text-slate-500 text-xs mb-1">Mídias Sanitizadas</div>
-                                        <div class="text-2xl text-white font-bold" id="live-wipes">1,204</div>
+                                <div id="terminal-logs" class="text-quantum-neon space-y-2 h-[120px] overflow-hidden relative z-layer-2 text-shadow-glow">
+                                    <div class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black to-transparent z-10"></div>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-5 z-layer-2">
+                                    <div class="bg-black/80 p-5 rounded-xl border border-white/5 shadow-inner relative overflow-hidden group">
+                                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-quantum-neon/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                                        <div class="text-zinc-500 text-[9px] uppercase tracking-widest mb-2 font-bold">Mídias Sanitizadas</div>
+                                        <div class="text-3xl text-white font-display font-bold tracking-tight" id="stat-wiped">0</div>
                                     </div>
-                                    <div class="bg-surface-950 p-4 rounded-xl border border-teal-500/20 relative overflow-hidden group">
-                                        <div class="absolute inset-0 bg-teal-500/10 -translate-x-full group-hover:animate-shimmer"></div>
-                                        <div class="text-slate-500 text-xs mb-1">Impacto CO2 (t)</div>
-                                        <div class="text-2xl text-white font-bold" id="live-co2">4.85</div>
+                                    <div class="bg-black/80 p-5 rounded-xl border border-white/5 shadow-inner relative overflow-hidden group">
+                                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-quantum-cyan/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                                        <div class="text-zinc-500 text-[9px] uppercase tracking-widest mb-2 font-bold">CO₂ Offset (t)</div>
+                                        <div class="text-3xl text-quantum-cyan font-display font-bold tracking-tight drop-shadow-[0_0_15px_rgba(0,229,255,0.3)]" id="stat-co2">0.0</div>
                                     </div>
                                 </div>
 
-                                <div class="space-y-2 pt-4">
-                                    <div class="flex justify-between text-xs">
-                                        <span class="text-slate-400">Processamento de Lote em Tempo Real</span>
-                                        <span class="text-brand-400">Auditoria Ativa</span>
+                                <div class="pt-2 z-layer-1 bg-black/50 p-4 rounded-xl border border-white/5">
+                                    <div class="flex justify-between text-[9px] uppercase tracking-widest mb-3 font-bold">
+                                        <span class="text-zinc-500">Node Sync (AES-256)</span>
+                                        <span class="text-quantum-neon flex items-center gap-2"><i class="fa-solid fa-lock text-[10px]"></i> Encrypted</span>
                                     </div>
-                                    <div class="h-1 w-full bg-surface-950 rounded-full overflow-hidden">
-                                        <div class="h-full bg-gradient-to-r from-brand-600 to-teal-400 w-[100%] origin-left animate-[scaleX_2s_ease-in-out_infinite_alternate]"></div>
+                                    <div class="h-1.5 w-full bg-black rounded-full overflow-hidden border border-white/10 shadow-inner">
+                                        <div class="h-full bg-gradient-to-r from-quantum-cyan to-quantum-neon w-[100%] origin-left animate-[scaleX_1.5s_ease-in-out_infinite_alternate] shadow-[0_0_15px_#00ffa3]"></div>
                                     </div>
                                 </div>
                             </div>
@@ -408,142 +323,158 @@
             </div>
         </section>
 
-        <section id="agendamento" class="py-24 relative border-t border-white/5 bg-surface-950 reveal">
-            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(34,197,94,0.05),transparent_50%)]"></div>
-            
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-display font-bold text-white mb-4">Manifesto de Coleta</h2>
-                    <p class="text-slate-400 text-lg">Crie seu manifesto digital em 3 etapas para garantir rastreabilidade total.</p>
+        <!-- Manifesto Wizard (Multi-step) -->
+        <section id="manifesto" class="py-24 relative border-t border-white/5 reveal">
+            <div class="max-w-4xl mx-auto px-6 relative z-10">
+                <div class="mb-16 text-center">
+                    <h2 class="text-4xl lg:text-5xl font-display font-bold text-white mb-4">Manifesto Criptográfico</h2>
+                    <p class="text-zinc-400 text-lg font-light">Gere chaves descentralizadas para coleta e destruição auditável de ativos.</p>
                 </div>
 
-                <div class="glass-card rounded-[2rem] p-2 shadow-2xl transition-all duration-300" id="wizard-card-container">
-                    <div class="bg-surface-900 rounded-[1.8rem] p-6 md:p-12 relative overflow-hidden">
+                <div class="glass-morphism rounded-3xl p-2 shadow-[0_0_60px_rgba(0,255,163,0.05)]">
+                    <div class="bg-black rounded-[1.8rem] p-6 md:p-12 relative overflow-hidden border border-white/5">
                         
-                        <!-- Wizard Progress Bar -->
-                        <div class="mb-10 relative">
-                            <div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-800 -translate-y-1/2 z-0"></div>
-                            <div class="absolute top-1/2 left-0 h-0.5 bg-brand-500 -translate-y-1/2 z-0 transition-all duration-500" id="wizard-progress" style="width: 0%;"></div>
+                        <!-- Barra de Progresso Neural -->
+                        <div class="mb-14 relative px-4">
+                            <div class="absolute top-1/2 left-4 right-4 h-1 bg-zinc-900 -translate-y-1/2 rounded-full border border-white/5"></div>
+                            <div class="absolute top-1/2 left-4 h-1 bg-quantum-neon -translate-y-1/2 transition-all duration-700 ease-out shadow-[0_0_15px_#00ffa3] rounded-full" id="wizard-bar" style="width: 0%;"></div>
                             
                             <div class="flex justify-between relative z-10">
-                                <div class="w-10 h-10 rounded-full bg-brand-500 text-surface-950 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors" id="indicator-1">1</div>
-                                <div class="w-10 h-10 rounded-full bg-surface-800 text-slate-500 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors" id="indicator-2">2</div>
-                                <div class="w-10 h-10 rounded-full bg-surface-800 text-slate-500 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors" id="indicator-3">3</div>
+                                <div class="step-indicator w-12 h-12 rounded-full bg-quantum-neon text-black font-bold flex items-center justify-center border-4 border-black text-sm transition-all duration-500 shadow-[0_0_20px_rgba(0,255,163,0.4)]" data-step="1">1</div>
+                                <div class="step-indicator w-12 h-12 rounded-full bg-zinc-900 text-zinc-600 font-bold flex items-center justify-center border-4 border-black text-sm transition-all duration-500" data-step="2">2</div>
+                                <div class="step-indicator w-12 h-12 rounded-full bg-zinc-900 text-zinc-600 font-bold flex items-center justify-center border-4 border-black text-sm transition-all duration-500" data-step="3">3</div>
                             </div>
                         </div>
 
-                        <form id="wizardForm" class="relative">
+                        <!-- O Formulário -->
+                        <form id="wizard-form" class="wizard-container min-h-[350px]">
                             
-                            <!-- Step 1: Entidade -->
-                            <div class="wizard-step active" id="step1">
-                                <h3 class="text-2xl font-display font-bold text-white mb-6">Identificação da Entidade</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <!-- Step 1 -->
+                            <div class="wizard-step active" id="step-1">
+                                <h3 class="text-2xl font-display font-bold text-white mb-8 flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-quantum-card border border-white/10 flex items-center justify-center"><i class="fa-regular fa-building text-quantum-neon text-sm"></i></div>
+                                    Origem Corporativa
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-2">
-                                        <label for="donorName" class="text-xs font-medium text-slate-400 uppercase tracking-wider">Razão Social / Nome Completo *</label>
-                                        <input type="text" id="donorName" class="w-full premium-input rounded-xl px-4 py-3.5 text-white" placeholder="Empresa S.A. ou João Silva" required>
+                                        <label class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold ml-1">Razão Social / Entidade *</label>
+                                        <input type="text" name="name" class="w-full input-quantum rounded-xl px-5 py-4 text-sm interactive" placeholder="Quantum Corp S.A." required>
                                     </div>
                                     <div class="space-y-2">
-                                        <label for="donorEmail" class="text-xs font-medium text-slate-400 uppercase tracking-wider">E-mail Corporativo *</label>
-                                        <input type="email" id="donorEmail" class="w-full premium-input rounded-xl px-4 py-3.5 text-white" placeholder="contato@empresa.com" required>
+                                        <label class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold ml-1">E-mail Corporativo *</label>
+                                        <input type="email" name="email" class="w-full input-quantum rounded-xl px-5 py-4 text-sm interactive" placeholder="admin@empresa.com" required>
                                     </div>
                                     <div class="space-y-2">
-                                        <label for="donorPhone" class="text-xs font-medium text-slate-400 uppercase tracking-wider">Telefone / WhatsApp *</label>
-                                        <input type="tel" id="donorPhone" class="w-full premium-input rounded-xl px-4 py-3.5 text-white" placeholder="(11) 90000-0000" required>
+                                        <label class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold ml-1">WhatsApp de Contato *</label>
+                                        <input type="tel" name="phone" class="w-full input-quantum rounded-xl px-5 py-4 text-sm interactive" placeholder="(11) 90000-0000" required>
                                     </div>
                                     <div class="space-y-2">
-                                        <label for="donorAddress" class="text-xs font-medium text-slate-400 uppercase tracking-wider">CEP de Origem *</label>
-                                        <input type="text" id="donorAddress" class="w-full premium-input rounded-xl px-4 py-3.5 text-white font-mono" placeholder="00000-000" required>
+                                        <label class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold ml-1">CEP para Roteamento *</label>
+                                        <input type="text" name="cep" class="w-full input-quantum rounded-xl px-5 py-4 font-mono text-sm interactive" placeholder="00000-000" required>
                                     </div>
                                 </div>
-                                <div class="flex justify-end">
-                                    <button type="button" onclick="WizardController.next(1)" class="bg-white text-surface-950 font-bold px-8 py-3.5 rounded-xl hover:bg-slate-200 transition-colors flex items-center gap-2">
-                                        Continuar <i class="fa-solid fa-arrow-right"></i>
+                                <div class="mt-10 flex justify-end">
+                                    <button type="button" onclick="SystemOS.Wizard.next()" class="interactive bg-white text-black font-bold px-10 py-4 rounded-xl hover:bg-zinc-200 transition-colors text-sm flex items-center gap-3 shadow-lg">
+                                        Avançar <i class="fa-solid fa-arrow-right"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Step 2: Ativos -->
-                            <div class="wizard-step" id="step2">
-                                <h3 class="text-2xl font-display font-bold text-white mb-6">Inventário de Ativos (E-waste)</h3>
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 checkbox-wrapper">
-                                    <label class="relative p-5 glass-card rounded-xl border border-white/10 hover:border-brand-500/50 cursor-pointer flex flex-col has-[:checked]:border-brand-500 has-[:checked]:bg-brand-500/10 transition-all">
-                                        <div class="flex justify-between items-start mb-4">
-                                            <i class="fa-solid fa-server text-2xl text-brand-400"></i>
-                                            <input type="checkbox" name="itemType" value="Workstations/Servers">
+                            <!-- Step 2 -->
+                            <div class="wizard-step" id="step-2">
+                                <h3 class="text-2xl font-display font-bold text-white mb-8 flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-quantum-card border border-white/10 flex items-center justify-center"><i class="fa-solid fa-server text-quantum-neon text-sm"></i></div>
+                                    Inventário de Mídias
+                                </h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8 cyber-check">
+                                    <label class="relative block interactive">
+                                        <input type="checkbox" name="category" value="Computadores" class="sr-only">
+                                        <div class="h-full p-6 bg-zinc-900/50 border border-white/5 rounded-xl flex flex-col transition-all overflow-hidden relative">
+                                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                                <i class="fa-solid fa-laptop text-2xl text-zinc-500 transition-colors"></i>
+                                                <div class="w-5 h-5 rounded-md border border-zinc-700 flex items-center justify-center bg-transparent transition-all check-icon">
+                                                    <i class="fa-solid fa-check text-[10px] opacity-0 transition-opacity"></i>
+                                                </div>
+                                            </div>
+                                            <span class="font-bold text-white text-sm relative z-10">Computação</span>
+                                            <span class="text-[10px] text-zinc-500 mt-1 relative z-10">Desktops e Laptops</span>
                                         </div>
-                                        <span class="font-bold text-white mb-1">Computação</span>
-                                        <span class="text-xs text-slate-400">Desktops, Servidores, Notebooks</span>
                                     </label>
-                                    <label class="relative p-5 glass-card rounded-xl border border-white/10 hover:border-brand-500/50 cursor-pointer flex flex-col has-[:checked]:border-brand-500 has-[:checked]:bg-brand-500/10 transition-all">
-                                        <div class="flex justify-between items-start mb-4">
-                                            <i class="fa-solid fa-mobile-screen text-2xl text-teal-400"></i>
-                                            <input type="checkbox" name="itemType" value="Mobile/Tablets">
+                                    <label class="relative block interactive">
+                                        <input type="checkbox" name="category" value="Mobile" class="sr-only">
+                                        <div class="h-full p-6 bg-zinc-900/50 border border-white/5 rounded-xl flex flex-col transition-all overflow-hidden relative">
+                                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                                <i class="fa-solid fa-mobile-screen text-2xl text-zinc-500 transition-colors"></i>
+                                                <div class="w-5 h-5 rounded-md border border-zinc-700 flex items-center justify-center bg-transparent transition-all check-icon">
+                                                    <i class="fa-solid fa-check text-[10px] opacity-0 transition-opacity"></i>
+                                                </div>
+                                            </div>
+                                            <span class="font-bold text-white text-sm relative z-10">Mobile</span>
+                                            <span class="text-[10px] text-zinc-500 mt-1 relative z-10">Smartphones, Tablets</span>
                                         </div>
-                                        <span class="font-bold text-white mb-1">Mobile</span>
-                                        <span class="text-xs text-slate-400">Smartphones e Tablets Corporativos</span>
                                     </label>
-                                    <label class="relative p-5 glass-card rounded-xl border border-white/10 hover:border-brand-500/50 cursor-pointer flex flex-col has-[:checked]:border-brand-500 has-[:checked]:bg-brand-500/10 transition-all">
-                                        <div class="flex justify-between items-start mb-4">
-                                            <i class="fa-solid fa-plug text-2xl text-blue-400"></i>
-                                            <input type="checkbox" name="itemType" value="Periféricos/Rede">
+                                    <label class="relative block interactive">
+                                        <input type="checkbox" name="category" value="Infraestrutura" class="sr-only">
+                                        <div class="h-full p-6 bg-zinc-900/50 border border-white/5 rounded-xl flex flex-col transition-all overflow-hidden relative">
+                                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                                <i class="fa-solid fa-network-wired text-2xl text-zinc-500 transition-colors"></i>
+                                                <div class="w-5 h-5 rounded-md border border-zinc-700 flex items-center justify-center bg-transparent transition-all check-icon">
+                                                    <i class="fa-solid fa-check text-[10px] opacity-0 transition-opacity"></i>
+                                                </div>
+                                            </div>
+                                            <span class="font-bold text-white text-sm relative z-10">Infraestrutura</span>
+                                            <span class="text-[10px] text-zinc-500 mt-1 relative z-10">Servidores, Switches</span>
                                         </div>
-                                        <span class="font-bold text-white mb-1">Infra/Outros</span>
-                                        <span class="text-xs text-slate-400">Monitores, Switches, Cabeamento</span>
                                     </label>
                                 </div>
                                 
-                                <!-- Drag & Drop File Upload -->
-                                <div class="mb-8">
-                                    <label class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2 block">Evidência Fotográfica do Lote (Opcional)</label>
-                                    <div id="dropzone" class="border-2 border-dashed border-white/10 rounded-xl p-8 text-center hover:border-brand-500/50 hover:bg-brand-500/5 transition-all cursor-pointer group">
-                                        <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-600 group-hover:text-brand-400 transition-colors mb-3"></i>
-                                        <p class="text-sm text-slate-400 group-hover:text-white transition-colors">Arraste fotos do lote para cá ou <span class="text-brand-400 font-bold">clique para procurar</span></p>
-                                        <input type="file" id="fileUpload" class="hidden" multiple accept="image/*">
-                                    </div>
-                                    <!-- Container para listar os arquivos -->
-                                    <div id="fileList" class="flex gap-2 mt-3 flex-wrap"></div>
+                                <div class="space-y-2">
+                                    <label class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold ml-1">Detalhes do Lote (Opcional)</label>
+                                    <textarea name="details" rows="2" class="w-full input-quantum rounded-xl px-5 py-4 text-sm resize-none interactive" placeholder="Ex: 20x Dell Latitude sem disco rígido..."></textarea>
                                 </div>
-
-                                <div class="space-y-2 mb-8">
-                                    <label for="itemDesc" class="text-xs font-medium text-slate-400 uppercase tracking-wider">Notas de Lote (Opcional)</label>
-                                    <textarea id="itemDesc" rows="2" class="w-full premium-input rounded-xl px-4 py-3.5 text-white resize-none" placeholder="Ex: Lote de 10 notebooks Dell Latitude sem disco rígido."></textarea>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <button type="button" onclick="WizardController.prev(2)" class="text-slate-400 hover:text-white font-medium px-4 py-2 transition-colors flex items-center gap-2">
-                                        <i class="fa-solid fa-arrow-left"></i> Voltar
+                                
+                                <div class="mt-10 flex justify-between items-center">
+                                    <button type="button" onclick="SystemOS.Wizard.prev()" class="interactive text-zinc-500 hover:text-white text-xs font-bold px-4 py-2 transition-colors">
+                                        <i class="fa-solid fa-arrow-left mr-2"></i> Retornar
                                     </button>
-                                    <button type="button" onclick="WizardController.next(2)" class="bg-white text-surface-950 font-bold px-8 py-3.5 rounded-xl hover:bg-slate-200 transition-colors flex items-center gap-2">
-                                        Continuar <i class="fa-solid fa-arrow-right"></i>
+                                    <button type="button" onclick="SystemOS.Wizard.next()" class="interactive bg-white text-black font-bold px-10 py-4 rounded-xl hover:bg-zinc-200 transition-colors text-sm flex items-center gap-3 shadow-lg">
+                                        Avançar <i class="fa-solid fa-arrow-right"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Step 3: LGPD -->
-                            <div class="wizard-step" id="step3">
-                                <h3 class="text-2xl font-display font-bold text-white mb-6">Auditoria e Compliance</h3>
-                                <div class="bg-surface-950 border border-brand-500/30 rounded-2xl p-6 mb-8 relative overflow-hidden">
-                                    <div class="absolute top-0 right-0 p-4 opacity-10"><i class="fa-solid fa-fingerprint text-6xl text-brand-500"></i></div>
-                                    <div class="checkbox-wrapper relative z-10">
-                                        <label class="flex items-start gap-4 cursor-pointer">
-                                            <input type="checkbox" id="lgpdCheck" required class="mt-1 flex-shrink-0">
-                                            <div>
-                                                <h4 class="text-white font-bold mb-2 flex items-center gap-2">
-                                                    <i class="fa-solid fa-shield-check text-brand-400"></i>
-                                                    Acordo de Sanitização de Dados (LGPD)
-                                                </h4>
-                                                <p class="text-sm text-slate-400 leading-relaxed">
-                                                    Autorizo a execução do protocolo de Data Wiping (substituição multipasso) em todas as mídias de armazenamento contidas neste lote. Declaro ciência de que a destruição lógica dos dados é irreversível e isento a CicloTech de responsabilidade pela perda de informações prévias à coleta.
-                                                </p>
+                            <!-- Step 3 -->
+                            <div class="wizard-step" id="step-3">
+                                <h3 class="text-2xl font-display font-bold text-white mb-8 flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-quantum-card border border-white/10 flex items-center justify-center"><i class="fa-solid fa-fingerprint text-quantum-neon text-sm"></i></div>
+                                    Validação Criptográfica
+                                </h3>
+                                
+                                <div class="bg-zinc-950 border border-quantum-neon/20 rounded-2xl p-6 mb-10 shadow-inner relative overflow-hidden group">
+                                    <div class="absolute -right-20 -top-20 w-60 h-60 bg-quantum-neon/5 rounded-full blur-3xl group-hover:bg-quantum-neon/10 transition-colors"></div>
+                                    
+                                    <label class="flex items-start gap-5 interactive relative z-10 cursor-pointer">
+                                        <div class="mt-1 relative flex items-center justify-center flex-shrink-0">
+                                            <input type="checkbox" name="lgpd" class="peer sr-only">
+                                            <div class="w-6 h-6 border-2 border-zinc-700 rounded bg-black peer-checked:bg-quantum-neon peer-checked:border-quantum-neon transition-all flex items-center justify-center shadow-inner" id="lgpd-checkbox-visual">
+                                                <i class="fa-solid fa-check text-black text-[12px] opacity-0 peer-checked:opacity-100 transition-opacity"></i>
                                             </div>
-                                        </label>
-                                    </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-white font-bold text-sm mb-2">Termo de Sanitização DoD 5220.22-M</h4>
+                                            <p class="text-sm text-zinc-400 leading-relaxed font-light">
+                                                Autorizo formalmente a execução do protocolo de destruição lógica (Wiping) nos ativos. Reconheço a irreversibilidade total e eximo a CicloTech de qualquer responsabilidade sobre dados legados pré-sanitização.
+                                            </p>
+                                        </div>
+                                    </label>
                                 </div>
+
                                 <div class="flex justify-between items-center">
-                                    <button type="button" onclick="WizardController.prev(3)" class="text-slate-400 hover:text-white font-medium px-4 py-2 transition-colors flex items-center gap-2">
-                                        <i class="fa-solid fa-arrow-left"></i> Voltar
+                                    <button type="button" onclick="SystemOS.Wizard.prev()" class="interactive text-zinc-500 hover:text-white text-xs font-bold px-4 py-2 transition-colors">
+                                        <i class="fa-solid fa-arrow-left mr-2"></i> Retornar
                                     </button>
-                                    <button type="submit" class="bg-brand-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-brand-500 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] flex items-center gap-2 group">
-                                        <i class="fa-solid fa-lock group-hover:animate-bounce"></i> Gerar Assinatura Ledger
+                                    <button type="button" onclick="SystemOS.Wizard.submit()" id="btn-submit" class="interactive bg-quantum-neon text-black font-bold px-10 py-4 rounded-xl hover:bg-white transition-all text-sm flex items-center gap-3 shadow-[0_0_20px_rgba(0,255,163,0.4)] group">
+                                        <i class="fa-solid fa-lock group-hover:animate-bounce"></i> Encriptar Manifesto
                                     </button>
                                 </div>
                             </div>
@@ -553,104 +484,107 @@
             </div>
         </section>
 
-        <section id="rastreio" class="py-24 relative bg-surface-900 border-t border-white/5 reveal">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-display font-bold text-white mb-4">Ledger Tracker</h2>
-                    <p class="text-slate-400 text-lg">Valide a cadeia de custódia e acesse os certificados criptográficos do lote.</p>
+        <!-- Ledger Tracker (Matrix Brute Force Simulation) -->
+        <section id="ledger" class="py-32 relative border-t border-white/5 reveal">
+            <div class="max-w-5xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                    <div>
+                        <h2 class="text-4xl font-display font-bold text-white mb-3">Auditoria Ledger</h2>
+                        <p class="text-zinc-400 text-lg font-light">Validação criptográfica com visibilidade total da cadeia de custódia.</p>
+                    </div>
+                    <div class="flex items-center gap-2 px-4 py-2 bg-quantum-neon/10 border border-quantum-neon/20 rounded-xl text-xs font-mono text-quantum-neon shadow-inner">
+                        <span class="relative flex h-2 w-2 mr-1">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-quantum-neon opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-quantum-neon"></span>
+                        </span>
+                        Node Synced
+                    </div>
                 </div>
 
-                <div class="bg-surface-950 border border-white/10 rounded-[2rem] p-2 shadow-2xl">
-                    <div class="bg-surface-800/50 rounded-[1.8rem] p-6 md:p-10">
+                <div class="glass-morphism rounded-3xl p-2 shadow-2xl relative">
+                    <div class="bg-black border border-white/5 rounded-[1.8rem] p-6 md:p-12 relative overflow-hidden min-h-[450px]">
                         
-                        <div class="relative max-w-2xl mx-auto mb-10">
-                            <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                            <input type="text" id="searchProtocol" placeholder="ID da Transação (ex: CT-XXXX-XXXX)" class="w-full premium-input rounded-2xl pl-14 pr-36 py-5 text-white font-mono text-lg uppercase tracking-wider placeholder:text-slate-600 placeholder:normal-case placeholder:tracking-normal placeholder:font-sans">
-                            <button id="btnSearch" class="absolute right-2 top-2 bottom-2 bg-white text-surface-950 hover:bg-slate-200 font-bold px-8 rounded-xl transition-colors flex items-center gap-2">
-                                Localizar
+                        <!-- Barra de Busca Neural -->
+                        <div class="relative max-w-2xl mx-auto mb-12 z-20">
+                            <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-zinc-500"></i>
+                            <input type="text" id="hash-input" placeholder="Insira o Hash (Ex: CT-A1B2-C3D4)" class="w-full input-quantum rounded-2xl pl-14 pr-36 py-5 font-mono text-base uppercase tracking-wider placeholder:normal-case placeholder:font-sans placeholder:text-zinc-600 shadow-2xl interactive">
+                            <button onclick="SystemOS.Tracker.search()" id="btn-search" class="absolute right-2 top-2 bottom-2 bg-white text-black hover:bg-zinc-200 font-bold px-8 rounded-xl transition-colors text-sm interactive">
+                                Decrypt
                             </button>
                         </div>
 
-                        <!-- Interface de Resultados Controlada por Estado JS -->
-                        <div id="tracker-content" class="transition-all duration-300">
+                        <!-- Interface Dinâmica -->
+                        <div id="tracker-view" class="relative">
+                            
                             <!-- Estado Vazio -->
-                            <div id="tracker-empty" class="text-center py-12 opacity-50">
-                                <i class="fa-solid fa-box-open text-4xl text-slate-600 mb-4 block"></i>
-                                <p class="text-slate-500 font-medium">Aguardando inserção do ID de rastreio.</p>
+                            <div id="state-empty" class="absolute inset-0 flex flex-col items-center justify-center text-center transition-opacity duration-500 pt-8 opacity-100">
+                                <div class="w-20 h-20 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center mb-6 shadow-inner">
+                                    <i class="fa-brands fa-hive text-4xl text-zinc-700"></i>
+                                </div>
+                                <p class="text-zinc-500 font-mono text-sm">Aguardando chave criptográfica.</p>
                             </div>
 
-                            <!-- Estado de Erro -->
-                            <div id="tracker-error" class="hidden text-center py-12 bg-red-500/5 border border-red-500/20 rounded-2xl">
-                                <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500/50 mb-4 block"></i>
-                                <h4 class="text-white font-bold mb-1">Hash não localizado</h4>
-                                <p class="text-slate-400 text-sm">Verifique o ID da transação e tente novamente.</p>
+                            <!-- Simulação Brute Force / Matrix -->
+                            <div id="state-loading" class="absolute inset-0 flex flex-col transition-opacity duration-300 opacity-0 pointer-events-none z-10 bg-black/90 backdrop-blur-sm rounded-xl p-6">
+                                <div class="flex justify-between items-end mb-6 border-b border-white/10 pb-4">
+                                    <div class="font-mono text-quantum-neon text-2xl animate-glitch" id="loading-hash">CT-XXXX-XXXX</div>
+                                    <div class="text-[10px] font-mono text-quantum-cyan animate-pulse">BRUTE FORCING BLOCK...</div>
+                                </div>
+                                <div class="font-mono text-xs leading-relaxed text-zinc-600 overflow-hidden relative h-[200px]" id="hex-dump">
+                                    <!-- JS vai jogar chuva de caracteres aqui -->
+                                    <div class="absolute bottom-0 w-full h-24 bg-gradient-to-t from-black to-transparent"></div>
+                                </div>
                             </div>
 
-                            <!-- Estado de Sucesso -->
-                            <div id="tracker-success" class="hidden bg-surface-950 border border-white/5 rounded-2xl overflow-hidden shadow-inner">
-                                <div class="bg-surface-800 p-6 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/5 gap-4 relative">
-                                    <div>
-                                        <div class="text-[10px] text-slate-500 uppercase tracking-widest mb-1">Registro na Blockchain Interna</div>
-                                        <div class="text-2xl font-mono font-bold text-white" id="resCode">CT-0000-0000</div>
-                                    </div>
-                                    <div class="flex items-center gap-4">
-                                        <!-- Botão de Emissão de Comprovante -->
-                                        <button onclick="window.print()" class="text-xs font-bold text-slate-400 hover:text-white px-4 py-2 border border-white/10 rounded-lg hover:bg-white/5 transition-colors flex items-center gap-2 group hidden sm:flex">
-                                            <i class="fa-solid fa-print group-hover:text-brand-400 transition-colors"></i> Imprimir VIA
-                                        </button>
-                                        
-                                        <div id="resStatusBadge" class="px-4 py-2 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-lg text-sm font-bold flex items-center gap-2">
-                                            <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                                            <span id="resStatusText">Status</span>
+                            <!-- Resultado (Bloco Validado) -->
+                            <div id="state-result" class="opacity-0 transition-opacity duration-700 pointer-events-none relative z-20 hidden">
+                                <div class="bg-zinc-950 border border-white/10 rounded-2xl overflow-hidden shadow-inner">
+                                    
+                                    <div class="p-8 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/5 gap-6 relative bg-gradient-to-r from-quantum-card to-transparent">
+                                        <div class="absolute top-0 right-0 w-40 h-40 bg-quantum-neon/5 rounded-bl-full pointer-events-none"></div>
+                                        <div>
+                                            <div class="text-[10px] text-zinc-500 uppercase tracking-widest mb-2 font-bold flex items-center gap-2"><i class="fa-solid fa-check text-quantum-neon"></i> Assinatura Validada</div>
+                                            <div class="text-3xl font-mono font-bold text-white tracking-widest drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] brute-force-text" id="res-hash">CT-0000-0000</div>
+                                        </div>
+                                        <div class="px-5 py-2.5 bg-quantum-neon/10 border border-quantum-neon/20 rounded-xl text-xs font-bold flex items-center gap-2 text-quantum-neon shadow-inner">
+                                            Status: <span id="res-status" class="text-white">Auditado</span>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="p-8">
-                                    <!-- Dynamic Timeline CSS Grid -->
-                                    <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 z-10">
+                                    <div class="p-10 pb-16 relative">
+                                        <!-- Timeline UX -->
+                                        <div class="absolute top-16 left-12 w-[calc(100%-96px)] h-[2px] bg-white/5 z-0 hidden md:block"></div>
+                                        <div class="absolute top-16 left-12 h-[2px] bg-quantum-neon z-0 hidden md:block transition-all duration-1000 shadow-[0_0_10px_#00ffa3]" id="res-progress" style="width: 0%;"></div>
                                         
-                                        <!-- Linha de Fundo e Barra de Progresso Animada -->
-                                        <div class="absolute top-4 left-4 md:top-4 md:left-0 md:w-full md:h-0.5 w-0.5 h-full bg-surface-800 -z-10 rounded-full overflow-hidden">
-                                            <div id="timeline-progress-bar" class="bg-brand-500 md:h-full md:w-0 w-full h-0 transition-all duration-1000 ease-out shadow-[0_0_15px_#22c55e]"></div>
-                                        </div>
-                                        
-                                        <!-- Nodes populated via JS -->
-                                        <div class="timeline-node" data-step="1">
-                                            <div class="icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-500 mx-auto md:mb-3 transition-colors duration-500"><i class="fa-solid fa-file-contract text-[10px]"></i></div>
-                                            <div class="text-center ml-12 md:ml-0">
-                                                <div class="title text-sm font-bold text-slate-500 transition-colors">Manifesto</div>
-                                                <div class="text-xs text-slate-600 mt-1">Registrado</div>
+                                        <div class="relative grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-4">
+                                            <div class="t-node text-center group" data-step="1">
+                                                <div class="t-icon w-16 h-16 rounded-full bg-zinc-900 border-4 border-black flex items-center justify-center text-zinc-600 mx-auto md:mb-5 transition-all duration-700 relative z-10 shadow-inner group-hover:scale-110"><i class="fa-solid fa-file-contract text-xl"></i></div>
+                                                <div class="t-title text-sm font-bold text-zinc-600 transition-colors">Manifesto</div>
+                                                <div class="t-date text-[10px] text-zinc-700 font-mono mt-1">--/--/--</div>
                                             </div>
-                                        </div>
-                                        <div class="timeline-node" data-step="2">
-                                            <div class="icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-500 mx-auto md:mb-3 transition-colors duration-500"><i class="fa-solid fa-truck text-[10px]"></i></div>
-                                            <div class="text-center ml-12 md:ml-0">
-                                                <div class="title text-sm font-bold text-slate-500 transition-colors">Logística</div>
-                                                <div class="text-xs text-slate-600 mt-1">Em trânsito</div>
+                                            <div class="t-node text-center group" data-step="2">
+                                                <div class="t-icon w-16 h-16 rounded-full bg-zinc-900 border-4 border-black flex items-center justify-center text-zinc-600 mx-auto md:mb-5 transition-all duration-700 relative z-10 shadow-inner group-hover:scale-110"><i class="fa-solid fa-truck-fast text-xl"></i></div>
+                                                <div class="t-title text-sm font-bold text-zinc-600 transition-colors">Logística</div>
+                                                <div class="t-date text-[10px] text-zinc-700 font-mono mt-1">Pendente</div>
                                             </div>
-                                        </div>
-                                        <div class="timeline-node" data-step="3">
-                                            <div class="icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-500 mx-auto md:mb-3 transition-colors duration-500"><i class="fa-solid fa-shield-halved text-[10px]"></i></div>
-                                            <div class="text-center ml-12 md:ml-0">
-                                                <div class="title text-sm font-bold text-slate-500 transition-colors">Wiping (LGPD)</div>
-                                                <div class="text-xs text-slate-600 mt-1">Sanitizado</div>
+                                            <div class="t-node text-center group" data-step="3">
+                                                <div class="t-icon w-16 h-16 rounded-full bg-zinc-900 border-4 border-black flex items-center justify-center text-zinc-600 mx-auto md:mb-5 transition-all duration-700 relative z-10 shadow-inner group-hover:scale-110"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+                                                <div class="t-title text-sm font-bold text-zinc-600 transition-colors">Wiping (DoD)</div>
+                                                <div class="t-date text-[10px] text-zinc-700 font-mono mt-1">Pendente</div>
                                             </div>
-                                        </div>
-                                        <div class="timeline-node" data-step="4">
-                                            <div class="icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-500 mx-auto md:mb-3 transition-colors duration-500"><i class="fa-solid fa-graduation-cap text-[10px]"></i></div>
-                                            <div class="text-center ml-12 md:ml-0">
-                                                <div class="title text-sm font-bold text-slate-500 transition-colors">Destinação</div>
-                                                <div class="text-xs text-slate-600 mt-1">Reaproveitado</div>
+                                            <div class="t-node text-center group" data-step="4">
+                                                <div class="t-icon w-16 h-16 rounded-full bg-zinc-900 border-4 border-black flex items-center justify-center text-zinc-600 mx-auto md:mb-5 transition-all duration-700 relative z-10 shadow-inner group-hover:scale-110"><i class="fa-solid fa-recycle text-xl"></i></div>
+                                                <div class="t-title text-sm font-bold text-zinc-600 transition-colors">Circularidade</div>
+                                                <div class="t-date text-[10px] text-zinc-700 font-mono mt-1">Pendente</div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="bg-surface-800/30 p-6 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
-                                    <div><span class="text-slate-500 text-[10px] uppercase tracking-widest block mb-1">Entidade</span> <span class="text-white font-medium truncate block" id="resName">-</span></div>
-                                    <div><span class="text-slate-500 text-[10px] uppercase tracking-widest block mb-1">Data Reg</span> <span class="text-white font-mono" id="resDate">-</span></div>
-                                    <div class="col-span-2"><span class="text-slate-500 text-[10px] uppercase tracking-widest block mb-1">Categorias Base</span> <span class="text-white" id="resItems">-</span></div>
+                                    <div class="bg-black/50 p-6 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+                                        <div><span class="text-zinc-600 text-[10px] uppercase tracking-widest block mb-1 font-bold">Origem</span> <span class="text-white font-medium truncate block brute-force-text" id="res-name">-</span></div>
+                                        <div><span class="text-zinc-600 text-[10px] uppercase tracking-widest block mb-1 font-bold">Localização (CEP)</span> <span class="text-white font-mono block brute-force-text" id="res-cep">-</span></div>
+                                        <div class="col-span-2"><span class="text-zinc-600 text-[10px] uppercase tracking-widest block mb-1 font-bold">Matriz de Inventário</span> <span class="text-quantum-cyan font-mono truncate block text-xs brute-force-text" id="res-items">-</span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -658,858 +592,931 @@
                 </div>
             </div>
         </section>
-
-        <section id="ecopontos" class="py-24 relative bg-surface-950 border-t border-white/5 reveal">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col lg:flex-row gap-12 items-center">
+        
+        <!-- Map HUD (Google Maps com Efeitos UI) -->
+        <section id="nodes" class="py-32 relative border-t border-white/5 reveal">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-col lg:flex-row gap-12 items-stretch">
                     
-                    <div class="lg:w-1/3 space-y-8">
-                        <div>
-                            <h2 class="text-4xl font-display font-bold text-white mb-4">Rede Node</h2>
-                            <p class="text-slate-400 leading-relaxed">
-                                Nossos Ecopontos funcionam como nós de rede físicos. Entregue pequenos eletrônicos presencialmente para inserção imediata no fluxo.
+                    <!-- HUD MAPA -->
+                    <div class="lg:w-2/3 w-full h-[600px] relative rounded-3xl overflow-hidden glass-morphism p-2 order-2 lg:order-1 shadow-2xl">
+                        
+                        <!-- Camada de HUD -->
+                        <div class="map-hud-container w-full h-full relative">
+                            <!-- Retículas Animadas -->
+                            <div class="map-hud-corner hud-tl"></div>
+                            <div class="map-hud-corner hud-tr"></div>
+                            <div class="map-hud-corner hud-bl"></div>
+                            <div class="map-hud-corner hud-br"></div>
+                            
+                            <!-- Laser Scanner -->
+                            <div class="map-scanline"></div>
+                            
+                            <!-- Google Maps com Filtro "Matrix" -->
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d467692.3953624561!2d-46.924941164668596!3d-23.68143466479646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce448183a461d1%3A0x9ba94b08ff335bae!2zU8OjbyBQYXVsbywgU1A!5e0!3m2!1spt-BR!2sbr!4v1790122904527!5m2!1spt-BR!2sbr" 
+                                class="w-full h-full rounded-2xl z-0 pointer-events-auto map-filter"
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="strict-origin-when-cross-origin">
+                            </iframe>
+                            
+                            <!-- Status Overlay -->
+                            <div class="absolute bottom-6 left-6 pointer-events-none z-10 hidden sm:block">
+                                <div class="bg-black/80 backdrop-blur-xl border border-white/10 px-5 py-3 rounded-xl flex items-center gap-4 shadow-lg">
+                                    <div class="relative">
+                                        <i class="fa-solid fa-crosshairs text-quantum-neon animate-spin" style="animation-duration: 3s;"></i>
+                                        <div class="absolute inset-0 bg-quantum-neon/30 blur-md"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-[10px] font-mono text-white uppercase tracking-widest leading-none">Global Node Network</div>
+                                        <div class="text-[9px] font-mono text-quantum-cyan mt-1">TRACKING SECURE</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/3 w-full flex flex-col order-1 lg:order-2">
+                        <div class="mb-8">
+                            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-white/5 text-[10px] font-mono tracking-widest text-zinc-400 mb-4 shadow-inner">
+                                <i class="fa-solid fa-satellite text-quantum-cyan"></i> SAT-LINK
+                            </div>
+                            <h2 class="text-4xl font-display font-bold text-white mb-4">Geo-Nodes</h2>
+                            <p class="text-zinc-400 text-sm leading-relaxed font-light">
+                                Hubs homologados pela malha descentralizada CicloTech. Roteamento vetorial para entrega segura de ativos.
                             </p>
                         </div>
                         
-                        <!-- NEW: Campo de Busca/Filtro -->
-                        <div class="relative">
-                            <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                            <input type="text" id="ecoFilter" placeholder="Filtrar ecopontos por nome ou tipo..." class="w-full premium-input rounded-xl pl-12 pr-4 py-3.5 text-white text-sm">
-                        </div>
-                        
-                        <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 no-scrollbar" id="eco-list">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-
-                    <div class="lg:w-2/3 w-full h-[500px] relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl p-1 bg-surface-800">
-                        <div id="map" class="w-full h-full rounded-[1.4rem] z-0"></div>
-                        
-                        <div class="absolute bottom-6 left-6 right-6 pointer-events-none z-10 flex justify-center">
-                            <div class="bg-surface-950/80 backdrop-blur-md border border-white/10 px-6 py-3 rounded-full flex items-center gap-3 shadow-lg pointer-events-auto">
-                                <i class="fa-solid fa-satellite-dish text-brand-400 animate-pulse"></i>
-                                <span class="text-xs font-mono text-slate-300">Leaflet Geospatial Engine Active</span>
+                        <div class="flex-grow space-y-4 overflow-y-auto pr-2 custom-scrollbar max-h-[450px]">
+                            <!-- Mock Data -->
+                            <div class="bg-black p-5 rounded-2xl border border-white/5 transition-all shadow-inner interactive hover:border-quantum-neon/50">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-white font-bold text-sm">Hub Principal Faria Lima</h4>
+                                    <span class="px-2 py-0.5 rounded text-[8px] uppercase tracking-widest font-bold bg-quantum-neon/10 text-quantum-neon border border-quantum-neon/20">Online</span>
+                                </div>
+                                <div class="text-[10px] text-zinc-500 font-mono"><i class="fa-solid fa-location-crosshairs mr-1 text-quantum-cyan"></i> LAT: -23.586, LNG: -46.682</div>
+                            </div>
+                            <div class="bg-black p-5 rounded-2xl border border-white/5 transition-all shadow-inner interactive hover:border-quantum-neon/50">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-white font-bold text-sm">Polo USP Butantã</h4>
+                                    <span class="px-2 py-0.5 rounded text-[8px] uppercase tracking-widest font-bold bg-quantum-neon/10 text-quantum-neon border border-quantum-neon/20">Online</span>
+                                </div>
+                                <div class="text-[10px] text-zinc-500 font-mono"><i class="fa-solid fa-location-crosshairs mr-1 text-quantum-cyan"></i> LAT: -23.560, LNG: -46.730</div>
+                            </div>
+                            <div class="bg-black p-5 rounded-2xl border border-white/5 transition-all shadow-inner interactive hover:border-warning/50">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-white font-bold text-sm">Node Paulista Alpha</h4>
+                                    <span class="px-2 py-0.5 rounded text-[8px] uppercase tracking-widest font-bold bg-warning/10 text-warning border border-warning/20">Warning</span>
+                                </div>
+                                <div class="text-[10px] text-zinc-500 font-mono"><i class="fa-solid fa-location-crosshairs mr-1 text-quantum-cyan"></i> LAT: -23.561, LNG: -46.656</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
     </main>
 
-    <footer class="bg-surface-950 border-t border-white/5 py-12 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-                <span class="font-display font-bold text-white text-xl flex items-center gap-2 mb-2">
-                    <i class="fa-solid fa-infinity text-brand-500"></i> CicloTech Nexus
-                </span>
-                <p class="text-xs text-slate-500">Arquitetura de Logística Reversa Baseada em Software.</p>
+    <footer class="bg-black border-t border-white/5 py-12 relative z-10 mt-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4 opacity-70 hover:opacity-100 transition-opacity interactive">
+                <div class="w-10 h-10 rounded-xl bg-zinc-900 flex items-center justify-center border border-white/5 shadow-inner"><i class="fa-solid fa-infinity text-quantum-neon"></i></div>
+                <div>
+                    <div class="font-display font-bold text-white text-sm">CicloTech OS</div>
+                    <div class="text-[9px] font-mono text-zinc-600 tracking-widest">QUANTUM-MATRIX v10</div>
+                </div>
             </div>
-            <div class="flex gap-4 text-slate-500">
-                <a href="#" class="hover:text-brand-400 transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
-                <a href="#" class="hover:text-brand-400 transition-colors"><i class="fa-solid fa-shield-halved text-xl"></i></a>
-            </div>
+            <p class="text-[10px] text-zinc-600 font-mono uppercase tracking-widest flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved text-zinc-700"></i> Next-Gen Reverse Logistics
+            </p>
         </div>
     </footer>
 
-    
-    <!-- Toast Container -->
-    <div id="toast-container"></div>
-
-    <!-- Botão Voltar ao Topo -->
-    <button id="btnBackToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-brand-600 text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.3)] opacity-0 translate-y-10 pointer-events-none transition-all duration-300 z-40 hover:bg-brand-500 hover:scale-110">
-        <i class="fa-solid fa-arrow-up text-xl"></i>
-    </button>
+    <!-- Toast Notifications -->
+    <div id="toast-bin" class="fixed bottom-8 right-8 z-[9999] flex flex-col gap-4 pointer-events-none"></div>
 
     <!-- Success Modal -->
-    <div id="successModal" class="hidden fixed inset-0 bg-surface-950/90 backdrop-blur-md flex items-center justify-center z-50 p-4 transition-all duration-300 opacity-0">
-        <div class="bg-surface-900 border border-brand-500/20 rounded-3xl p-1 shadow-[0_0_50px_rgba(34,197,94,0.1)] transform scale-95 transition-transform duration-300" id="successModalContent">
-            <div class="bg-surface-950 rounded-[1.8rem] p-8 max-w-md w-full text-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.1),transparent_70%)] pointer-events-none"></div>
+    <div id="modal-success" class="hidden fixed inset-0 bg-black/95 backdrop-blur-3xl flex items-center justify-center z-[100] p-4 transition-all duration-500 opacity-0 pointer-events-none" onclick="SystemOS.Wizard.finish(event)">
+        <div class="glass-morphism rounded-3xl p-1 shadow-[0_0_100px_rgba(0,255,163,0.15)] transform scale-95 transition-transform duration-500 w-full max-w-md modal-content pointer-events-auto border-quantum-neon/30" onclick="event.stopPropagation()">
+            <div class="bg-black rounded-[1.7rem] p-10 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,255,163,0.15),transparent_60%)]"></div>
                 
-                <div class="w-20 h-20 bg-brand-500/10 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border border-brand-500/20">
-                    <i class="fa-solid fa-check text-brand-400"></i>
+                <div class="w-20 h-20 bg-zinc-900 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-8 border border-quantum-neon/50 shadow-[0_0_30px_rgba(0,255,163,0.3)] relative z-10">
+                    <i class="fa-solid fa-check text-quantum-neon"></i>
                 </div>
                 
-                <h3 class="text-2xl font-display font-bold text-white mb-2">Manifesto Registrado</h3>
-                <p class="text-slate-400 text-sm mb-6">Esta é a sua chave criptográfica de rastreamento no ledger:</p>
+                <h3 class="text-2xl font-display font-bold text-white mb-3 relative z-10">Manifesto Criptografado</h3>
+                <p class="text-zinc-400 text-sm mb-8 relative z-10 font-light">Guarde a chave descentralizada abaixo para auditar a custódia no Ledger:</p>
                 
-                <div class="relative mb-8 cursor-pointer group" onclick="UIController.copyToClipboard('modalProtocolCode')">
-                    <div class="bg-surface-800 border border-white/10 py-4 px-4 rounded-xl font-mono text-2xl font-bold text-brand-400 tracking-wider shadow-inner" id="modalProtocolCode">CT-0000-0000</div>
-                    <div class="absolute inset-0 bg-brand-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center border border-brand-500/50">
-                        <span class="text-sm font-sans font-bold text-brand-400"><i class="fa-solid fa-copy mr-2"></i>Copiar Chave</span>
+                <div class="relative mb-8 interactive group z-10 cursor-pointer" onclick="SystemOS.UI.copyHash()">
+                    <div class="bg-zinc-950 border border-white/10 py-5 px-4 rounded-xl font-mono text-2xl font-bold text-white tracking-widest transition-all group-hover:border-quantum-neon/80 shadow-inner text-shadow-glow" id="hash-display">CT-0000-0000</div>
+                    <div class="absolute inset-0 bg-quantum-neon/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm border border-quantum-neon">
+                        <span class="text-sm font-bold text-black flex items-center gap-2"><i class="fa-solid fa-copy"></i> Copiar</span>
                     </div>
                 </div>
                 
-                <button onclick="UIController.closeSuccessModal()" class="w-full bg-white text-surface-950 font-bold py-3.5 rounded-xl hover:bg-slate-200 transition-colors">
-                    Validar no Tracker
+                <button onclick="SystemOS.Wizard.finish()" class="interactive w-full bg-white text-black font-bold py-4 rounded-xl hover:bg-zinc-200 transition-colors text-sm shadow-xl relative z-10">
+                    Acessar Ledger Tracker
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- ESG Dashboard Modal (Chart.js Integration) -->
-    <div id="statsModal" class="hidden fixed inset-0 bg-surface-950/95 backdrop-blur-xl flex items-center justify-center z-50 p-4 transition-all duration-300 opacity-0">
-        <div class="bg-surface-900 border border-white/10 rounded-[2rem] w-full max-w-6xl h-[90vh] flex flex-col transform scale-95 transition-transform duration-300 shadow-2xl" id="statsModalContent">
+    <!-- Telemetry Modal -->
+    <div id="modal-telemetry" class="hidden fixed inset-0 bg-black/95 backdrop-blur-3xl flex items-center justify-center z-[100] p-4 lg:p-8 transition-all duration-500 opacity-0 pointer-events-none" onclick="SystemOS.Telemetry.close(event)">
+        <div class="glass-morphism rounded-[2rem] w-full max-w-6xl h-[90vh] max-h-[900px] flex flex-col transform scale-95 transition-transform duration-500 shadow-2xl modal-content pointer-events-auto border-white/5" onclick="event.stopPropagation()">
             
-            <div class="flex justify-between items-center p-6 border-b border-white/5 bg-surface-950/50 rounded-t-[2rem]">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-surface-800 rounded-xl flex items-center justify-center border border-white/5">
-                        <i class="fa-solid fa-chart-pie text-2xl text-gradient"></i>
+            <div class="flex justify-between items-center p-6 lg:p-8 border-b border-white/5 bg-zinc-950/50">
+                <div class="flex items-center gap-5">
+                    <div class="w-14 h-14 bg-black rounded-2xl flex items-center justify-center border border-white/10 shadow-inner">
+                        <i class="fa-solid fa-chart-line text-quantum-neon text-2xl"></i>
                     </div>
                     <div>
-                        <h3 class="text-2xl font-display font-bold text-white">Data Intelligence & ESG</h3>
-                        <div class="text-xs text-brand-400 font-mono">LIVE TELEMETRY STREAMING</div>
+                        <h3 class="text-2xl font-display font-bold text-white leading-tight">Data Intelligence</h3>
+                        <div class="text-[10px] text-quantum-cyan font-mono tracking-widest mt-1 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-quantum-neon animate-pulse shadow-[0_0_8px_#00ffa3]"></span> LIVE ESG STREAM
+                        </div>
                     </div>
                 </div>
-                
-                <div class="flex items-center gap-3">
-                    <button onclick="UIController.showToast('Relatório ESG exportado (.csv) com sucesso!', 'success')" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-surface-800 hover:bg-surface-700 border border-white/10 rounded-lg text-sm font-medium text-white transition-colors">
-                        <i class="fa-solid fa-download"></i> Exportar Data
-                    </button>
-                    <button onclick="UIController.closeModal('statsModal')" class="w-10 h-10 rounded-full bg-surface-800 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
+                <button onclick="SystemOS.Telemetry.close()" class="interactive w-12 h-12 rounded-full bg-black hover:bg-zinc-800 text-zinc-500 hover:text-white flex items-center justify-center transition-colors border border-white/5">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
             </div>
 
-            <div class="p-6 overflow-y-auto flex-grow space-y-6 custom-scrollbar">
-                <!-- KPI Row -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-surface-800 p-5 rounded-2xl border border-white/5">
-                        <div class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Massa Desviada</div>
-                        <div class="text-3xl font-mono text-white">5.8<span class="text-lg text-slate-500 ml-1">ton</span></div>
+            <div class="p-6 lg:p-8 overflow-y-auto flex-grow space-y-8 custom-scrollbar">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+                    <div class="bg-black p-6 rounded-2xl border border-white/5 shadow-inner relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><i class="fa-solid fa-weight-scale text-5xl"></i></div>
+                        <div class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-2 relative z-10">Massa Desviada</div>
+                        <div class="text-4xl font-display font-bold text-white relative z-10">18.4<span class="text-sm font-sans text-zinc-600 ml-1">ton</span></div>
                     </div>
-                    <div class="bg-surface-800 p-5 rounded-2xl border border-white/5">
-                        <div class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Ativos Wiped</div>
-                        <div class="text-3xl font-mono text-white">592<span class="text-lg text-slate-500 ml-1">un</span></div>
+                    <div class="bg-black p-6 rounded-2xl border border-white/5 shadow-inner relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><i class="fa-solid fa-server text-5xl"></i></div>
+                        <div class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-2 relative z-10">Ativos Wiped</div>
+                        <div class="text-4xl font-display font-bold text-white relative z-10">3,142<span class="text-sm font-sans text-zinc-600 ml-1">un</span></div>
                     </div>
-                    <div class="bg-surface-800 p-5 rounded-2xl border border-white/5">
-                        <div class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Taxa Recondic.</div>
-                        <div class="text-3xl font-mono text-brand-400">88.4<span class="text-lg text-brand-500/50 ml-1">%</span></div>
+                    <div class="bg-black p-6 rounded-2xl border border-quantum-neon/30 shadow-[inset_0_0_30px_rgba(0,255,163,0.05)] relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-quantum-neon"><i class="fa-solid fa-recycle text-5xl"></i></div>
+                        <div class="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-2 relative z-10">Taxa Circular</div>
+                        <div class="text-4xl font-display font-bold text-quantum-neon drop-shadow-[0_0_10px_rgba(0,255,163,0.3)] relative z-10">96.8<span class="text-sm font-sans text-brand-700 ml-1">%</span></div>
                     </div>
-                    <div class="bg-surface-800 p-5 rounded-2xl border border-white/5">
-                        <div class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Escolas Nodes</div>
-                        <div class="text-3xl font-mono text-white">16<span class="text-lg text-slate-500 ml-1">inst</span></div>
+                    <div class="bg-black p-6 rounded-2xl border border-white/5 shadow-inner relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><i class="fa-solid fa-graduation-cap text-5xl"></i></div>
+                        <div class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-2 relative z-10">Escolas Nodes</div>
+                        <div class="text-4xl font-display font-bold text-white relative z-10">45<span class="text-sm font-sans text-zinc-600 ml-1">inst</span></div>
                     </div>
                 </div>
 
-                <!-- Charts Row -->
-                <div class="grid lg:grid-cols-2 gap-6 h-[350px]">
-                    <div class="bg-surface-800 p-6 rounded-2xl border border-white/5 flex flex-col">
+                <div class="grid lg:grid-cols-3 gap-6 h-[400px]">
+                    <div class="bg-black p-6 rounded-2xl border border-white/5 flex flex-col lg:col-span-2 shadow-inner">
                         <div class="text-sm font-bold text-white mb-4">Fluxo de Arrecadação (YTD)</div>
-                        <div class="flex-grow relative w-full h-full">
-                            <canvas id="barChart"></canvas>
-                        </div>
+                        <div class="flex-grow relative w-full h-full"><canvas id="chart-line"></canvas></div>
                     </div>
-                    <div class="bg-surface-800 p-6 rounded-2xl border border-white/5 flex flex-col">
-                        <div class="text-sm font-bold text-white mb-4">Distribuição de Tipologia (E-waste)</div>
-                        <div class="flex-grow relative w-full h-full flex justify-center">
-                            <canvas id="doughnutChart"></canvas>
-                        </div>
+                    <div class="bg-black p-6 rounded-2xl border border-white/5 flex flex-col shadow-inner">
+                        <div class="text-sm font-bold text-white mb-4">Distribuição de Mídias</div>
+                        <div class="flex-grow relative w-full h-full flex justify-center items-center"><canvas id="chart-doughnut"></canvas></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- LOGIC KERNEL (Senior Vanilla JS Refactored) -->
     <script>
+        'use strict';
+
         /**
-         * CICLOTECH NEXUS OS - CORE ARCHITECTURE
-         * Enterprise-grade Vanilla JS Implementation
+         * SystemOS - Quantum Matrix Kernel
+         * Padrões: Singleton, Module Pattern, RequestAnimationFrame optimizações
          */
-
-        // 1. CONFIGURATION & CONSTANTS
-        const AppConfig = {
-            STORAGE_KEY: 'ciclotech_nexus_ledger_v6',
-            MAP_CENTER: [-23.5505, -46.6333], // São Paulo
-            MAP_ZOOM: 12,
-            STEPS_COUNT: 3
-        };
-
-        const ECOPONTOS_DATA = [
-            { id: 1, name: "Hub Central Paulista", lat: -23.5615, lng: -46.6560, type: "Comercial", status: "Active" },
-            { id: 2, name: "Node Faria Lima", lat: -23.5866, lng: -46.6823, type: "Corporativo", status: "Active" },
-            { id: 3, name: "Polo USP Butantã", lat: -23.5600, lng: -46.7300, type: "Universitário", status: "Capacity" }
-        ];
-
-        // 2. STATE MANAGEMENT (Reactive Proxy)
-        const AppState = new Proxy({
-            wizardStep: 1,
-            ledgerData: [],
-            lastGeneratedHash: '',
-            chartsInitialized: false
-        }, {
-            set: function(target, key, value) {
-                target[key] = value;
-                if (key === 'wizardStep') UIController.renderWizard();
-                return true;
-            }
-        });
-
-        // 3. STORAGE SERVICE
-        class StorageService {
-            static init() {
-                const data = localStorage.getItem(AppConfig.STORAGE_KEY);
-                if (!data) {
-                    const mock = [
-                        { code: 'CT-A1B2-C3D4', name: 'Corp Tech LTDA', items: 'Workstations/Servers', address: '01310-100', date: new Date().toLocaleDateString('pt-BR'), status: 'Aguardando Coleta', step: 1 },
-                        { code: 'CT-X9Y8-Z7W6', name: 'João Silva', items: 'Mobile/Tablets', address: '05407-000', date: '21/09/2026', status: 'Sanitizado', step: 3 }
-                    ];
-                    this.save(mock);
-                    AppState.ledgerData = mock;
-                } else {
-                    AppState.ledgerData = JSON.parse(data);
-                }
-            }
-            static save(data) {
-                localStorage.setItem(AppConfig.STORAGE_KEY, JSON.stringify(data));
-                AppState.ledgerData = data;
-            }
-            static addEntry(entry) {
-                const current = AppState.ledgerData;
-                current.push(entry);
-                this.save(current);
-            }
-            static findByCode(code) {
-                return AppState.ledgerData.find(e => e.code === code);
-            }
-        }
-
-        // 4. CRYPTO/UTILITY SERVICE
-        class Utils {
-            static generateHash() {
-                const p1 = Math.random().toString(16).substring(2, 6).toUpperCase();
-                const p2 = Math.random().toString(16).substring(2, 6).toUpperCase();
-                return `CT-${p1}-${p2}`;
-            }
-        }
-
-        // 5. UI CONTROLLER (DOM Manipulation & Interactions)
-        class UIController {
+        const SystemOS = (function() {
             
-            // --- Toast System ---
-            static showToast(message, type = 'info') {
-                const container = document.getElementById('toast-container');
-                const toast = document.createElement('div');
-                const icon = type === 'success' ? '<i class="fa-solid fa-check text-brand-400"></i>' : '<i class="fa-solid fa-info-circle text-blue-400"></i>';
-                toast.className = 'toast text-sm text-white font-medium';
-                toast.innerHTML = `${icon} <span>${message}</span>`;
-                container.appendChild(toast);
+            // Constantes e Estado
+            const DB_KEY = 'ciclotech_os_v10';
+            const state = {
+                step: 1, 
+                ledger: [], 
+                hash: '', 
+                isDecoding: false, 
+                chartsReady: false
+            };
 
-                setTimeout(() => {
-                    toast.classList.add('hide');
-                    setTimeout(() => toast.remove(), 300);
-                }, 4000);
-            }
-
-            static copyToClipboard(elementId) {
-                const text = document.getElementById(elementId).innerText;
-                navigator.clipboard.writeText(text).then(() => {
-                    this.showToast('Hash copiado para a área de transferência', 'success');
-                }).catch(err => {
-                    // Fallback
-                    const textArea = document.createElement("textarea");
-                    textArea.value = text;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    this.showToast('Hash copiado para a área de transferência', 'success');
-                });
-            }
-
-            // --- Modal System ---
-            static openModal(id) {
-                const el = document.getElementById(id);
-                const content = el.querySelector('div');
-                el.classList.remove('hidden');
-                void el.offsetWidth; // Trigger reflow
-                el.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
-                document.body.style.overflow = 'hidden';
-
-                if (id === 'statsModal' && !AppState.chartsInitialized) {
-                    ChartService.init();
-                    AppState.chartsInitialized = true;
-                }
-            }
-
-            static closeModal(id) {
-                const el = document.getElementById(id);
-                const content = el.querySelector('div');
-                el.classList.add('opacity-0');
-                content.classList.remove('scale-100');
-                content.classList.add('scale-95');
-                setTimeout(() => {
-                    el.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
-
-            static closeSuccessModal() {
-                this.closeModal('successModal');
-                document.getElementById('wizardForm').reset();
-                AppState.wizardStep = 1;
-                document.getElementById('searchProtocol').value = AppState.lastGeneratedHash;
-                document.getElementById('btnSearch').click();
-                document.getElementById('rastreio').scrollIntoView({behavior: 'smooth'});
-            }
-
-            // --- Wizard Logic ---
-            static renderWizard() {
-                const step = AppState.wizardStep;
-                // Update Progress bar
-                document.getElementById('wizard-progress').style.width = `${((step - 1) / (AppConfig.STEPS_COUNT - 1)) * 100}%`;
-                
-                // Update Indicators
-                for(let i=1; i<=AppConfig.STEPS_COUNT; i++) {
-                    const ind = document.getElementById(`indicator-${i}`);
-                    const view = document.getElementById(`step${i}`);
+            // --- 1. ENGINE: CANVAS PARTICLE NETWORK ---
+            const NetworkEngine = {
+                init: () => {
+                    const cvs = document.getElementById('network-canvas');
+                    const ctx = cvs.getContext('2d');
+                    let w, h, particles = [];
                     
-                    if (i === step) {
-                        ind.className = "w-10 h-10 rounded-full bg-brand-500 text-surface-950 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors shadow-[0_0_15px_rgba(34,197,94,0.4)]";
-                        view.classList.add('active');
-                    } else if (i < step) {
-                        ind.className = "w-10 h-10 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center border-4 border-surface-900 transition-colors";
-                        ind.innerHTML = '<i class="fa-solid fa-check"></i>';
-                        view.classList.remove('active');
-                    } else {
-                        ind.className = "w-10 h-10 rounded-full bg-surface-800 text-slate-500 font-bold flex items-center justify-center border-4 border-surface-900 transition-colors";
-                        ind.innerHTML = i;
-                        view.classList.remove('active');
-                    }
-                }
-            }
+                    // Suporte a monitores Retina/Alta Densidade
+                    const dpr = window.devicePixelRatio || 1;
 
-            // --- Tracker Logic ---
-            static updateTracker(result) {
-                const empty = document.getElementById('tracker-empty');
-                const error = document.getElementById('tracker-error');
-                const success = document.getElementById('tracker-success');
-
-                if (!result) {
-                    empty.classList.add('hidden');
-                    success.classList.add('hidden');
-                    error.classList.remove('hidden');
-                    return;
-                }
-
-                empty.classList.add('hidden');
-                error.classList.add('hidden');
-                success.classList.remove('hidden');
-
-                document.getElementById('resCode').textContent = result.code;
-                document.getElementById('resStatusText').textContent = result.status;
-                document.getElementById('resName').textContent = result.name;
-                document.getElementById('resItems').textContent = result.items;
-                document.getElementById('resDate').textContent = result.date;
-
-                const step = result.step || 1;
-                
-                // Atualiza barra de progresso da timeline (Visualização Dinâmica)
-                const progressBar = document.getElementById('timeline-progress-bar');
-                if (progressBar) {
-                    const progressPct = ((step - 1) / 3) * 100; // 4 passos = divisor 3
-                    if (window.innerWidth >= 768) {
-                        progressBar.style.width = `${progressPct}%`;
-                        progressBar.style.height = '100%';
-                    } else {
-                        progressBar.style.height = `${progressPct}%`;
-                        progressBar.style.width = '100%';
-                    }
-                }
-
-                document.querySelectorAll('.timeline-node').forEach(node => {
-                    const nodeStep = parseInt(node.getAttribute('data-step'));
-                    const iconBox = node.querySelector('.icon-box');
-                    const title = node.querySelector('.title');
-                    
-                    // Reseta classes dinâmicas
-                    iconBox.classList.remove('animate-pulse');
-                    
-                    if (nodeStep <= step) {
-                        iconBox.className = "icon-box w-8 h-8 rounded-full bg-brand-500 border-4 border-surface-950 flex items-center justify-center text-surface-900 mx-auto md:mb-3 transition-all duration-500 shadow-[0_0_15px_rgba(34,197,94,0.4)]";
-                        title.className = "title text-sm font-bold text-white transition-colors";
-                        
-                        // Destaque pulsante na etapa exata atual (Melhoria 4)
-                        if(nodeStep === step) {
-                            iconBox.classList.add('animate-pulse', 'shadow-[0_0_30px_rgba(34,197,94,0.8)]');
-                        }
-                    } else {
-                        iconBox.className = "icon-box w-8 h-8 rounded-full bg-surface-800 border-4 border-surface-950 flex items-center justify-center text-slate-600 mx-auto md:mb-3 transition-all duration-500";
-                        title.className = "title text-sm font-bold text-slate-600 transition-colors";
-                    }
-                });
-            }
-        }
-
-        // 6. WIZARD CONTROLLER (Form Validation & Flow)
-        class WizardController {
-            static validateStep(step) {
-                let isValid = true;
-                
-                if (step === 1) {
-                    const name = document.getElementById('donorName').value;
-                    const email = document.getElementById('donorEmail').value;
-                    const phone = document.getElementById('donorPhone').value;
-                    const cep = document.getElementById('donorAddress').value;
-                    if(!name || !email || !phone || !cep) {
-                        UIController.showToast('Preencha todos os campos obrigatórios.', 'error');
-                        isValid = false;
-                    }
-                }
-                else if (step === 2) {
-                    const items = document.querySelectorAll('input[name="itemType"]:checked');
-                    if(items.length === 0) {
-                        UIController.showToast('Selecione pelo menos uma categoria de ativo.', 'error');
-                        isValid = false;
-                    }
-                }
-
-                if (!isValid) {
-                    const card = document.getElementById('wizard-card-container');
-                    card.classList.remove('shake'); // Reseta a animação caso já exista
-                    void card.offsetWidth; // Reflow para reiniciar animação
-                    card.classList.add('shake');
-                    setTimeout(() => card.classList.remove('shake'), 400); // Remove a classe após a animação
-                    return false;
-                }
-                
-                return true;
-            }
-
-            static next(currentStep) {
-                if(this.validateStep(currentStep)) {
-                    AppState.wizardStep = currentStep + 1;
-                }
-            }
-
-            static prev(currentStep) {
-                AppState.wizardStep = currentStep - 1;
-            }
-
-            static submit(e) {
-                e.preventDefault();
-                if(!document.getElementById('lgpdCheck').checked) {
-                    UIController.showToast('Aceite o termo de LGPD para continuar.', 'error');
-                    return;
-                }
-
-                // Loading visual para simular gravação na Blockchain
-                const btnSubmit = e.target.querySelector('button[type="submit"]');
-                const originalHtml = btnSubmit.innerHTML;
-                btnSubmit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Gerando Block Hash...';
-                btnSubmit.disabled = true;
-                btnSubmit.classList.add('opacity-80', 'cursor-not-allowed');
-
-                setTimeout(() => {
-                    const hash = Utils.generateHash();
-                    AppState.lastGeneratedHash = hash;
-
-                    const items = Array.from(document.querySelectorAll('input[name="itemType"]:checked')).map(el => el.value);
-
-                    const entry = {
-                        code: hash,
-                        name: document.getElementById('donorName').value,
-                        items: items.join(', '),
-                        address: document.getElementById('donorAddress').value,
-                        date: new Date().toLocaleDateString('pt-BR'),
-                        status: 'Aguardando Coleta',
-                        step: 1
+                    const resize = () => { 
+                        w = window.innerWidth; 
+                        h = window.innerHeight; 
+                        cvs.width = w * dpr;
+                        cvs.height = h * dpr;
+                        ctx.scale(dpr, dpr);
+                        cvs.style.width = `${w}px`;
+                        cvs.style.height = `${h}px`;
                     };
-
-                    StorageService.addEntry(entry);
                     
-                    // Limpar rascunho salvo (Melhoria 1)
-                    localStorage.removeItem('ciclotech_draft');
-                    
-                    document.getElementById('modalProtocolCode').textContent = hash;
-                    UIController.openModal('successModal');
+                    window.addEventListener('resize', resize); 
+                    resize();
 
-                    // Restaura o estado do botão
-                    btnSubmit.innerHTML = originalHtml;
-                    btnSubmit.disabled = false;
-                    btnSubmit.classList.remove('opacity-80', 'cursor-not-allowed');
-                }, 1400); // 1.4s de latência simulada
-            }
-        }
-
-        // 7. CHART.JS SERVICE
-        class ChartService {
-            static barChartInstance = null;
-            static doughnutChartInstance = null;
-
-            static init() {
-                Chart.defaults.color = '#94a3b8';
-                Chart.defaults.font.family = 'Inter';
-
-                // Customização Global dos Tooltips (Premium Dark Glassmorphism)
-                Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(17, 24, 39, 0.9)';
-                Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
-                Chart.defaults.plugins.tooltip.bodyColor = '#cbd5e1';
-                Chart.defaults.plugins.tooltip.borderColor = 'rgba(255,255,255,0.1)';
-                Chart.defaults.plugins.tooltip.borderWidth = 1;
-                Chart.defaults.plugins.tooltip.padding = 12;
-                Chart.defaults.plugins.tooltip.cornerRadius = 8;
-                Chart.defaults.plugins.tooltip.displayColors = true;
-                Chart.defaults.plugins.tooltip.boxPadding = 4;
-
-                // Destruir instâncias anteriores para evitar o erro 'Canvas is already in use' e vazamento de memória
-                if (this.barChartInstance) this.barChartInstance.destroy();
-                if (this.doughnutChartInstance) this.doughnutChartInstance.destroy();
-
-                // Bar Chart
-                const ctxBar = document.getElementById('barChart').getContext('2d');
-                
-                // Criar um gradiente elegante para as barras
-                const barGradient = ctxBar.createLinearGradient(0, 0, 0, 300);
-                barGradient.addColorStop(0, '#4ade80'); // Verde vibrante (topo)
-                barGradient.addColorStop(1, 'rgba(22, 163, 74, 0.2)'); // Verde escuro translúcido (base)
-
-                this.barChartInstance = new Chart(ctxBar, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out'],
-                        datasets: [{
-                            label: 'Volume Arrecadado (kg)',
-                            data: [300, 450, 400, 600, 850, 700],
-                            backgroundColor: barGradient,
-                            borderRadius: 6,
-                            borderWidth: 1,
-                            borderColor: 'rgba(74, 222, 128, 0.5)', // Borda sutil
-                            hoverBackgroundColor: '#4ade80'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false } },
-                            x: { grid: { display: false }, border: { display: false } }
+                    class Particle {
+                        constructor() { 
+                            this.x = Math.random() * w; 
+                            this.y = Math.random() * h; 
+                            this.vx = (Math.random() - 0.5) * 0.5; 
+                            this.vy = (Math.random() - 0.5) * 0.5; 
+                            this.r = Math.random() * 1.5 + 0.5; 
                         }
-                    }
-                });
-
-                // Doughnut Chart
-                const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
-                this.doughnutChartInstance = new Chart(ctxDoughnut, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Computação', 'Mobile', 'Periféricos'],
-                        datasets: [{
-                            data: [45, 20, 35],
-                            backgroundColor: ['#22c55e', '#14b8a6', '#3b82f6'],
-                            borderWidth: 0,
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '70%',
-                        plugins: {
-                            legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }
-                        }
-                    }
-                });
-            }
-        }
-
-        // 8. LEAFLET MAP SERVICE
-        class MapService {
-            static markers = []; // Armazenar referência dos markers
-
-            static init() {
-                const map = L.map('map', { zoomControl: false }).setView(AppConfig.MAP_CENTER, AppConfig.MAP_ZOOM);
-                
-                // Dark mode tiles (CartoDB Dark Matter)
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-                }).addTo(map);
-
-                // Custom Leaflet Icon
-                const customIcon = L.divIcon({
-                    className: 'custom-div-icon',
-                    html: `<div class="w-4 h-4 bg-brand-500 rounded-full border-2 border-surface-950 shadow-[0_0_15px_#22c55e] animate-pulse"></div>`,
-                    iconSize: [16, 16],
-                    iconAnchor: [8, 8]
-                });
-
-                const listContainer = document.getElementById('eco-list');
-
-                ECOPONTOS_DATA.forEach(node => {
-                    // Add Marker
-                    const marker = L.marker([node.lat, node.lng], {icon: customIcon})
-                     .addTo(map)
-                     .bindPopup(`<strong class="text-brand-400 font-display">${node.name}</strong><br><span class="text-slate-400 text-xs">${node.type} Node</span>`);
-                    
-                    this.markers.push(marker);
-
-                    // Add to UI List
-                    const card = document.createElement('div');
-                    card.className = "eco-card bg-surface-800 p-4 rounded-2xl border border-white/5 cursor-pointer hover:border-brand-500/50 transition-colors group";
-                    card.dataset.name = node.name.toLowerCase();
-                    card.dataset.type = node.type.toLowerCase();
-                    card.innerHTML = `
-                        <div class="flex justify-between items-center mb-2">
-                            <h4 class="text-white font-bold group-hover:text-brand-400 transition-colors">${node.name}</h4>
-                            <span class="w-2 h-2 rounded-full ${node.status === 'Active' ? 'bg-brand-500' : 'bg-amber-500'}"></span>
-                        </div>
-                        <div class="text-xs text-slate-400 font-mono">${node.lat.toFixed(4)}, ${node.lng.toFixed(4)}</div>
-                    `;
-                    card.addEventListener('click', () => {
-                        map.flyTo([node.lat, node.lng], 15, { duration: 1.5 });
-                        setTimeout(() => marker.openPopup(), 1500); 
-                    });
-                    
-                    // Melhoria 5: Hover na lista abre o popup
-                    card.addEventListener('mouseenter', () => marker.openPopup());
-                    card.addEventListener('mouseleave', () => marker.closePopup());
-
-                    listContainer.appendChild(card);
-                });
-
-                // Melhoria 3: Filtro de Ecopontos
-                const filterInput = document.getElementById('ecoFilter');
-                if (filterInput) {
-                    filterInput.addEventListener('input', (e) => {
-                        const term = e.target.value.toLowerCase();
-                        const cards = document.querySelectorAll('.eco-card');
-                        cards.forEach(c => {
-                            const isMatch = c.dataset.name.includes(term) || c.dataset.type.includes(term);
-                            c.style.display = isMatch ? 'block' : 'none';
-                        });
-                    });
-                }
-            }
-        }
-
-        // 9. INITIALIZATION & EVENT BINDING
-        document.addEventListener('DOMContentLoaded', () => {
-            StorageService.init();
-            MapService.init();
-            AppState.wizardStep = 1; // trigger render
-
-            const termLines = document.querySelectorAll('.term-line');
-            termLines.forEach((line, index) => {
-                setTimeout(() => {
-                    line.classList.remove('opacity-0');
-                    line.classList.add('opacity-100', 'translate-y-0');
-                }, 800 + (index * 600)); // Delay em cascata
-            });
-
-            const dropzone = document.getElementById('dropzone');
-            const fileUpload = document.getElementById('fileUpload');
-            const fileList = document.getElementById('fileList');
-
-            if (dropzone && fileUpload) {
-                dropzone.addEventListener('click', () => fileUpload.click());
-                
-                // Previne comportamento padrão de abrir a imagem no navegador
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    dropzone.addEventListener(eventName, (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }, false);
-                });
-
-                // Efeitos visuais de Hover
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    dropzone.addEventListener(eventName, () => dropzone.classList.add('border-brand-500', 'bg-brand-500/10'), false);
-                });
-
-                ['dragleave', 'drop'].forEach(eventName => {
-                    dropzone.addEventListener(eventName, () => dropzone.classList.remove('border-brand-500', 'bg-brand-500/10'), false);
-                });
-
-                // Lida com os arquivos
-                dropzone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
-                fileUpload.addEventListener('change', function() { handleFiles(this.files); });
-
-                function handleFiles(files) {
-                    [...files].forEach(file => {
-                        const badge = document.createElement('div');
-                        badge.className = 'px-3 py-1.5 bg-surface-800 border border-brand-500/30 rounded-lg text-xs font-mono text-white flex items-center gap-2 animate-slide-up shadow-lg';
-                        badge.innerHTML = `<i class="fa-solid fa-file-image text-brand-400"></i> ${file.name.substring(0,18)}${file.name.length > 18 ? '...' : ''}`;
-                        fileList.appendChild(badge);
-                    });
-                }
-            }
-
-            // Melhoria 1: Auto-Save de Rascunho (Form Persistence)
-            const formFields = ['donorName', 'donorEmail', 'donorPhone', 'donorAddress', 'itemDesc'];
-            formFields.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    // Salva ao digitar
-                    el.addEventListener('input', () => {
-                        const draft = JSON.parse(localStorage.getItem('ciclotech_draft') || '{}');
-                        draft[id] = el.value;
-                        localStorage.setItem('ciclotech_draft', JSON.stringify(draft));
-                    });
-                    // Restaura ao carregar
-                    const savedDraft = JSON.parse(localStorage.getItem('ciclotech_draft') || '{}');
-                    if (savedDraft[id]) {
-                        el.value = savedDraft[id];
-                        // Dispara evento para formatar máscaras se necessário
-                        el.dispatchEvent(new Event('input', { bubbles: true })); 
-                    }
-                }
-            });
-
-            // Máscara de Formatação para Telefone (Ex: (11) 98888-7777)
-            const phoneInput = document.getElementById('donorPhone');
-            if (phoneInput) {
-                phoneInput.addEventListener('input', function(e) {
-                    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-                    e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-                });
-            }
-
-            // Máscara de Formatação para CEP (Ex: 00000-000)
-            const cepInput = document.getElementById('donorAddress');
-            if (cepInput) {
-                cepInput.addEventListener('input', function(e) {
-                    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,5})(\d{0,3})/);
-                    e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2];
-                });
-            }
-
-            // Form Submit
-            document.getElementById('wizardForm').addEventListener('submit', WizardController.submit);
-
-            // Search Tracker
-            const performSearch = () => {
-                const query = document.getElementById('searchProtocol').value.trim().toUpperCase();
-                const btnSearch = document.getElementById('btnSearch');
-                
-                if(query) {
-                    // Simula estado de carregamento / delay da rede Blockchain
-                    const originalText = btnSearch.innerHTML;
-                    btnSearch.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Validando...';
-                    btnSearch.disabled = true;
-                    btnSearch.classList.add('opacity-80', 'cursor-not-allowed');
-
-                    setTimeout(() => {
-                        const res = StorageService.findByCode(query);
-                        UIController.updateTracker(res);
                         
-                        // Restaura botão
-                        btnSearch.innerHTML = originalText;
-                        btnSearch.disabled = false;
-                        btnSearch.classList.remove('opacity-80', 'cursor-not-allowed');
-                    }, 800); // 800ms de latência simulada
+                        update() { 
+                            this.x += this.vx; 
+                            this.y += this.vy; 
+                            if (this.x < 0 || this.x > w) this.vx *= -1; 
+                            if (this.y < 0 || this.y > h) this.vy *= -1; 
+                        }
+                        
+                        draw() { 
+                            ctx.beginPath(); 
+                            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); 
+                            ctx.fillStyle = 'rgba(0, 255, 163, 0.5)'; 
+                            ctx.fill(); 
+                        }
+                    }
+
+                    // Gerar as partículas
+                    for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+                    let mouse = { x: null, y: null };
+                    document.addEventListener('mousemove', e => { 
+                        mouse.x = e.clientX; 
+                        mouse.y = e.clientY; 
+                    });
+
+                    const animate = () => {
+                        ctx.clearRect(0, 0, w, h);
+                        
+                        for (let i = 0; i < particles.length; i++) {
+                            particles[i].update(); 
+                            particles[i].draw();
+                            
+                            // Linhas entre partículas
+                            for (let j = i; j < particles.length; j++) {
+                                const dx = particles[i].x - particles[j].x; 
+                                const dy = particles[i].y - particles[j].y;
+                                const dist = Math.sqrt(dx * dx + dy * dy);
+                                
+                                if (dist < 120) { 
+                                    ctx.beginPath(); 
+                                    ctx.strokeStyle = `rgba(0, 255, 163, ${0.15 - dist/800})`; 
+                                    ctx.lineWidth = 0.5; 
+                                    ctx.moveTo(particles[i].x, particles[i].y); 
+                                    ctx.lineTo(particles[j].x, particles[j].y); 
+                                    ctx.stroke(); 
+                                }
+                            }
+                            
+                            // Interação com o Mouse
+                            if (mouse.x != null) {
+                                const dx = particles[i].x - mouse.x; 
+                                const dy = particles[i].y - mouse.y; 
+                                const dist = Math.sqrt(dx * dx + dy * dy);
+                                
+                                if (dist < 150) { 
+                                    ctx.beginPath(); 
+                                    ctx.strokeStyle = `rgba(0, 229, 255, ${0.2 - dist/750})`; 
+                                    ctx.lineWidth = 1; 
+                                    ctx.moveTo(particles[i].x, particles[i].y); 
+                                    ctx.lineTo(mouse.x, mouse.y); 
+                                    ctx.stroke(); 
+                                }
+                            }
+                        }
+                        requestAnimationFrame(animate);
+                    };
+                    
+                    animate();
                 }
             };
 
-            document.getElementById('btnSearch').addEventListener('click', performSearch);
-            
-            document.getElementById('searchProtocol').addEventListener('keyup', (e) => {
-                if (e.key === 'Enter') performSearch();
-            });
+            // --- 2. ENGINE: UI & MAGNETIC CURSOR ---
+            const UIEngine = {
+                boot: () => {
+                    const boot = document.getElementById('quantum-boot');
+                    const counter = document.getElementById('boot-counter');
+                    const log = document.getElementById('boot-log');
+                    let c = 0;
+                    const logs = [
+                        'Montando Volumes AES-256...', 
+                        'Conectando malha P2P...', 
+                        'Sincronizando Nodes Geográficos...', 
+                        'Bypass Firewalls ODS...', 
+                        'Kernel SystemOS Pronto.'
+                    ];
+                    
+                    const ival = setInterval(() => {
+                        c += Math.floor(Math.random() * 15); 
+                        if(c > 100) c = 100;
+                        counter.innerText = c;
+                        
+                        if(c % 25 === 0 && c < 100) {
+                            log.innerText = logs[Math.floor(c/25)];
+                        }
+                        
+                        if(c === 100) {
+                            clearInterval(ival); 
+                            log.innerText = logs[4];
+                            setTimeout(() => { 
+                                boot.style.opacity = '0'; 
+                                setTimeout(() => boot.style.display = 'none', 600); 
+                            }, 500);
+                        }
+                    }, 100);
+                },
 
-            // Intersection Observer for Scroll Reveals
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
+                cursor: () => {
+                    // Prevenir bugs em telas touch (mobile)
+                    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+                    if (isTouchDevice) return;
+
+                    const dot = document.getElementById('cursor-dot'); 
+                    const ring = document.getElementById('cursor-ring');
+                    
+                    // Exibir os elementos caso passem no teste
+                    dot.style.opacity = '1';
+                    ring.style.opacity = '1';
+                    document.body.classList.add('custom-cursor-active');
+
+                    let isMoving = false;
+
+                    document.addEventListener('mousemove', e => { 
+                        if (!isMoving) {
+                            requestAnimationFrame(() => { 
+                                dot.style.left = `${e.clientX}px`; 
+                                dot.style.top = `${e.clientY}px`; 
+                                ring.style.left = `${e.clientX}px`; 
+                                ring.style.top = `${e.clientY}px`; 
+                                isMoving = false;
+                            });
+                            isMoving = true;
+                        }
+                    });
+
+                    document.querySelectorAll('.interactive, button, a, label, input, textarea').forEach(el => {
+                        el.addEventListener('mouseenter', () => document.body.classList.add('magnetic-hover'));
+                        el.addEventListener('mouseleave', () => document.body.classList.remove('magnetic-hover'));
+                    });
+                },
+
+                parallax3D: () => {
+                    const scene = document.getElementById('3d-scene'); 
+                    const card = document.getElementById('3d-card'); 
+                    const glare = document.getElementById('3d-glare');
+                    
+                    if(!scene || !card) return;
+                    
+                    let isProcessing = false;
+
+                    scene.addEventListener('mousemove', e => {
+                        if (isProcessing) return;
+                        
+                        requestAnimationFrame(() => {
+                            const r = scene.getBoundingClientRect(); 
+                            const x = e.clientX - r.left; 
+                            const y = e.clientY - r.top;
+                            
+                            const rotateX = ((y - r.height/2) / (r.height/2)) * -12;
+                            const rotateY = ((x - r.width/2) / (r.width/2)) * 12;
+
+                            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                            glare.style.opacity = '1'; 
+                            glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.15), transparent 50%)`;
+                            
+                            isProcessing = false;
+                        });
+                        isProcessing = true;
+                    });
+                    
+                    scene.addEventListener('mouseleave', () => { 
+                        card.style.transform = 'rotateX(0) rotateY(0)'; 
+                        glare.style.opacity = '0'; 
+                    });
+                },
+
+                scrollReveal: () => {
+                    const obs = new IntersectionObserver(entries => entries.forEach(en => { 
+                        if(en.isIntersecting) {
+                            en.target.classList.add('active'); 
+                            // Desconectar após aparecer a primeira vez (opcional)
+                            // obs.unobserve(en.target);
+                        }
+                    }), { threshold: 0.1 });
+                    
+                    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+                },
+
+                header: () => {
+                    const h = document.getElementById('nav-header');
+                    window.addEventListener('scroll', () => { 
+                        if(window.scrollY > 50) {
+                            h.classList.add('bg-black/70','backdrop-blur-xl','border-white/10','shadow-2xl'); 
+                        } else {
+                            h.classList.remove('bg-black/70','backdrop-blur-xl','border-white/10','shadow-2xl'); 
+                        }
+                    });
+                },
+
+                terminal: () => {
+                    const logs = [
+                        "Kernel 10.0.1...", 
+                        "AES-256 volumes: OK", 
+                        "P2P Mesh: 12 nodes [SYNCED]", 
+                        "Awaiting DoD 5220.22-M manifest..."
+                    ];
+                    const cont = document.getElementById('terminal-logs');
+                    let i = 0;
+                    
+                    const type = () => {
+                        if(i >= logs.length) return;
+                        const div = document.createElement('div'); 
+                        div.className = 'opacity-0 transform translate-y-2 transition-all duration-300';
+                        div.innerHTML = `<span class="text-zinc-600">></span> <span class="text-white">${logs[i]}</span>`;
+                        cont.insertBefore(div, cont.firstChild);
+                        
+                        requestAnimationFrame(() => div.classList.remove('opacity-0', 'translate-y-2'));
+                        
+                        i++; 
+                        setTimeout(type, Math.random() * 500 + 400);
+                    };
+                    
+                    setTimeout(type, 2000);
+                    
+                    // Iniciar os contadores após um pequeno delay
+                    setTimeout(() => { 
+                        UIEngine.animateNum(document.getElementById('stat-wiped'), 14092); 
+                        UIEngine.animateNum(document.getElementById('stat-co2'), 842.5); 
+                    }, 3000);
+                },
+
+                animateNum: (el, tgt) => { 
+                    let c = 0; 
+                    const inc = tgt / 30; 
+                    
+                    const tmr = setInterval(() => {
+                        c += inc; 
+                        if (c >= tgt) {
+                            clearInterval(tmr); 
+                            el.innerText = tgt.toLocaleString('pt-BR');
+                        } else {
+                            el.innerText = Math.floor(c).toLocaleString('pt-BR');
+                        }
+                    }, 40); 
+                },
+
+                toast: (msg, isErr = false) => {
+                    const bin = document.getElementById('toast-bin'); 
+                    const el = document.createElement('div');
+                    
+                    el.className = 'bg-black/90 backdrop-blur-xl border border-white/10 px-5 py-4 rounded-xl flex items-center gap-3 text-sm text-white font-medium shadow-2xl transform translate-x-full transition-transform duration-300';
+                    el.innerHTML = `${isErr ? '<i class="fa-solid fa-triangle-exclamation text-quantum-error"></i>' : '<i class="fa-solid fa-check text-quantum-neon"></i>'} <span>${msg}</span>`;
+                    
+                    bin.appendChild(el); 
+                    requestAnimationFrame(() => el.style.transform = 'translateX(0)');
+                    
+                    setTimeout(() => { 
+                        el.style.transform = 'translateX(120%)'; 
+                        setTimeout(() => el.remove(), 300); 
+                    }, 4000);
+                },
+
+                bruteForceText: (el, final, dur = 1500) => {
+                    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>'; 
+                    let start = Date.now();
+                    
+                    let iv = setInterval(() => {
+                        if (Date.now() - start >= dur) { 
+                            clearInterval(iv); 
+                            el.innerText = final; 
+                        } else {
+                            el.innerText = final.split('').map(c => (c === ' ' || c === '-') ? c : chars[Math.floor(Math.random() * chars.length)]).join('');
+                        }
+                    }, 40);
+                }
+            };
+
+            // --- 3. STORAGE & DATA ---
+            const DataStore = {
+                init: () => {
+                    try {
+                        const d = localStorage.getItem(DB_KEY);
+                        if (!d) { 
+                            state.ledger = [{ 
+                                hash: 'CT-A1B2-C3D4', 
+                                name: 'Corp Tech LTDA', 
+                                cep: '01310-100', 
+                                items: 'Computação', 
+                                date: new Date().toLocaleDateString('pt-BR'), 
+                                step: 1 
+                            }]; 
+                            localStorage.setItem(DB_KEY, JSON.stringify(state.ledger)); 
+                        } else {
+                            state.ledger = JSON.parse(d);
+                        }
+                    } catch (e) {
+                        console.error('Falha ao acessar LocalStorage', e);
                     }
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-            
-            // Melhoria 2: ScrollSpy Nav (Destaque do Menu)
-            const navLinks = document.querySelectorAll('nav a');
-            const sections = document.querySelectorAll('section');
-            const spyObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        navLinks.forEach(link => {
-                            link.classList.remove('text-white');
-                            link.querySelector('span').classList.remove('w-full');
-                            link.querySelector('span').classList.add('w-0'); // esconde traço
-                            if (link.getAttribute('href') === '#' + entry.target.id) {
-                                link.classList.add('text-white');
-                                link.querySelector('span').classList.remove('w-0');
-                                link.querySelector('span').classList.add('w-full'); // mostra traço
+                },
+                save: (entry) => { 
+                    state.ledger.push(entry); 
+                    localStorage.setItem(DB_KEY, JSON.stringify(state.ledger)); 
+                },
+                find: (h) => state.ledger.find(e => e.hash === h)
+            };
+
+            // --- 4. WIZARD ---
+            const WizardEngine = {
+                render: () => {
+                    const c = document.getElementById('wizard-form'); 
+                    const b = document.getElementById('wizard-bar'); 
+                    let th = 0;
+                    
+                    b.style.width = `${((state.step - 1) / 2) * 100}%`;
+                    
+                    for (let i = 1; i <= 3; i++) {
+                        const ind = document.querySelector(`.step-indicator[data-step="${i}"]`); 
+                        const v = document.getElementById(`step-${i}`);
+                        
+                        if (i === state.step) { 
+                            ind.className = "step-indicator w-12 h-12 rounded-full bg-quantum-neon text-black font-bold flex items-center justify-center border-4 border-black text-sm transition-all duration-500 shadow-[0_0_20px_rgba(0,255,163,0.4)] scale-110 z-10"; 
+                            v.classList.add('active'); 
+                            th = v.offsetHeight; 
+                        } else if (i < state.step) { 
+                            ind.className = "step-indicator w-12 h-12 rounded-full bg-zinc-900 text-quantum-neon flex items-center justify-center border-4 border-black text-sm transition-all duration-500 z-10"; 
+                            ind.innerHTML = '<i class="fa-solid fa-check"></i>'; 
+                            v.classList.remove('active'); 
+                        } else { 
+                            ind.className = "step-indicator w-12 h-12 rounded-full bg-zinc-900 text-zinc-600 font-bold flex items-center justify-center border-4 border-black text-sm transition-all duration-500 z-10"; 
+                            ind.innerHTML = i; 
+                            v.classList.remove('active'); 
+                        }
+                    }
+                    
+                    // Atualiza a altura do contêiner fluidamente
+                    c.style.height = `${th}px`;
+                },
+
+                validate: (stepNumber) => {
+                    let isValid = true;
+
+                    if (stepNumber === 1) { 
+                        const inputs = document.querySelectorAll('#step-1 input[required]');
+                        inputs.forEach(i => {
+                            if (!i.value.trim()) {
+                                isValid = false;
+                                i.classList.add('input-error'); // Feedback visual vermelho
+                            } else {
+                                i.classList.remove('input-error');
                             }
                         });
+                        if (!isValid) UIEngine.toast('Preencha os campos obrigatórios em vermelho.', true);
                     }
-                });
-            }, { threshold: 0.4 }); // Dispara quando 40% da seção está visível
-            sections.forEach(sec => spyObserver.observe(sec));
+                    else if (stepNumber === 2) { 
+                        const checked = document.querySelectorAll('input[name="category"]:checked');
+                        if (checked.length === 0) { 
+                            UIEngine.toast('Selecione pelo menos uma categoria de mídia.', true); 
+                            isValid = false; 
+                        } 
+                    }
+                    return isValid;
+                },
 
-            // Mouse Glow Effect
-            const glow = document.getElementById('mouse-glow');
-            document.addEventListener('mousemove', (e) => {
-                glow.style.left = e.clientX + 'px';
-                glow.style.top = e.clientY + 'px';
-            });
+                next: () => { 
+                    if (WizardEngine.validate(state.step)) { 
+                        state.step++; 
+                        WizardEngine.render(); 
+                    } 
+                },
 
-            // Tilt Card Effect (Hero Section)
-            const tiltCardContainer = document.getElementById('tilt-card-container');
-            const tiltCard = document.getElementById('tilt-card');
-            
-            if(tiltCardContainer && tiltCard) {
-                tiltCardContainer.addEventListener('mousemove', (e) => {
-                    const rect = tiltCardContainer.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -10; // Intensidade Y
-                    const rotateY = ((x - centerX) / centerX) * 10;  // Intensidade X
+                prev: () => { 
+                    state.step--; 
+                    WizardEngine.render(); 
+                },
+
+                submit: () => {
+                    const lgpdInput = document.querySelector('input[name="lgpd"]');
+                    const lgpdVisual = document.getElementById('lgpd-checkbox-visual');
+
+                    if (!lgpdInput.checked) { 
+                        UIEngine.toast('O aceite dos termos (LGPD) é obrigatório.', true); 
+                        lgpdVisual.classList.add('border-quantum-error');
+                        setTimeout(() => lgpdVisual.classList.remove('border-quantum-error'), 1000);
+                        return; 
+                    }
                     
-                    tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                });
+                    const b = document.getElementById('btn-submit'); 
+                    b.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Encrypting...';
+                    
+                    setTimeout(() => {
+                        const hashPart1 = Math.random().toString(16).slice(2, 6).toUpperCase();
+                        const hashPart2 = Math.random().toString(16).slice(2, 6).toUpperCase();
+                        const h = `CT-${hashPart1}-${hashPart2}`; 
+                        state.hash = h;
+                        
+                        const itemsSelected = Array.from(document.querySelectorAll('input[name="category"]:checked'))
+                                                 .map(e => e.value)
+                                                 .join(', ');
+                        
+                        DataStore.save({ 
+                            hash: h, 
+                            name: document.querySelector('input[name="name"]').value, 
+                            cep: document.querySelector('input[name="cep"]').value, 
+                            items: itemsSelected, 
+                            date: new Date().toLocaleDateString('pt-BR'), 
+                            step: 1 
+                        });
+                        
+                        document.getElementById('hash-display').innerText = h;
+                        
+                        // Exibir Modal de Sucesso
+                        const modal = document.getElementById('modal-success');
+                        modal.classList.remove('hidden'); 
+                        
+                        // Espera o proximo frame para animar opacidade e escala
+                        requestAnimationFrame(() => {
+                            modal.classList.remove('opacity-0', 'pointer-events-none');
+                            modal.querySelector('.modal-content').classList.replace('scale-95', 'scale-100');
+                        });
+                        
+                        // Reseta o botao
+                        b.innerHTML = '<i class="fa-solid fa-lock"></i> Encriptar Manifesto';
+                    }, 800);
+                },
 
-                tiltCardContainer.addEventListener('mouseleave', () => {
-                    tiltCard.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-                });
-            }
+                finish: (e) => { 
+                    // Evita disparar ao clicar dentro do conteúdo se foi passado o evento
+                    if(e && e.target !== e.currentTarget) return;
 
-            // Live Telemetry Simulation (Hero Section)
-            let wipes = 1204;
-            let co2 = 4.85;
-            // Navbar Scroll Effect e Parallax
-            window.addEventListener('scroll', () => {
-                const header = document.getElementById('mainHeader');
-                const btnBackToTop = document.getElementById('btnBackToTop');
-                const parallaxBlobs = document.getElementById('parallax-blobs');
-                const scrolled = window.scrollY;
-
-                // Efeito Parallax nos Blobs
-                if(parallaxBlobs) {
-                    parallaxBlobs.style.transform = `translateY(${scrolled * 0.35}px)`;
+                    const modal = document.getElementById('modal-success');
+                    modal.classList.add('opacity-0', 'pointer-events-none'); 
+                    modal.querySelector('.modal-content').classList.replace('scale-100', 'scale-95');
+                    
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                        document.getElementById('wizard-form').reset(); 
+                        state.step = 1; 
+                        WizardEngine.render();
+                        
+                        // Auto-preencher o Tracker com o hash gerado
+                        document.getElementById('hash-input').value = state.hash; 
+                        document.getElementById('ledger').scrollIntoView({behavior: 'smooth'}); 
+                        
+                        setTimeout(TrackerEngine.search, 1000); 
+                    }, 500); 
                 }
+            };
 
-                if (scrolled > 50) {
-                    header.classList.add('shadow-xl', 'bg-surface-950/80');
-                    header.classList.remove('bg-surface-950/0');
-                } else {
-                    header.classList.remove('shadow-xl', 'bg-surface-950/80');
+            // --- 5. TRACKER ---
+            const TrackerEngine = {
+                search: () => {
+                    if (state.isDecoding) return; 
+                    
+                    const inp = document.getElementById('hash-input').value.trim().toUpperCase(); 
+                    if (!inp) return;
+                    
+                    state.isDecoding = true; 
+                    const b = document.getElementById('btn-search'); 
+                    b.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+                    
+                    document.getElementById('state-empty').classList.add('hidden'); 
+                    document.getElementById('state-result').classList.add('hidden'); 
+                    document.getElementById('state-result').classList.remove('opacity-100', 'pointer-events-auto');
+                    
+                    const ld = document.getElementById('state-loading'); 
+                    ld.classList.remove('pointer-events-none'); 
+                    ld.style.opacity = '1';
+                    
+                    UIEngine.bruteForceText(document.getElementById('loading-hash'), `DECRYPTING ${inp}...`, 2000);
+                    
+                    // Hex Dump Matrix Effect
+                    const hd = document.getElementById('hex-dump'); 
+                    hd.innerHTML = '<div class="absolute bottom-0 w-full h-24 bg-gradient-to-t from-black to-transparent z-10"></div>';
+                    let lc = 0; 
+                    
+                    const iv = setInterval(() => {
+                        if (lc > 15 || !state.isDecoding) {
+                            clearInterval(iv);
+                            return;
+                        }
+                        let line = Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0').toUpperCase() + ' ';
+                        for (let i = 0; i < 8; i++) {
+                            line += Math.floor(Math.random() * 0xFF).toString(16).padStart(2, '0').toUpperCase() + ' ';
+                        }
+                        
+                        const div = document.createElement('div'); 
+                        div.innerText = line; 
+                        hd.insertBefore(div, hd.firstChild); 
+                        lc++;
+                    }, 80);
+
+                    // Mock tempo de processamento
+                    setTimeout(() => {
+                        ld.style.opacity = '0'; 
+                        ld.classList.add('pointer-events-none');
+                        
+                        const data = DataStore.find(inp);
+                        if (data) {
+                            TrackerEngine.pop(data); 
+                            const res = document.getElementById('state-result');
+                            
+                            res.classList.remove('hidden'); 
+                            void res.offsetWidth; // trigger reflow
+                            res.classList.add('opacity-100', 'pointer-events-auto');
+                            
+                            setTimeout(() => {
+                                document.getElementById('res-progress').style.width = `${((data.step - 1) / 3) * 100}%`;
+                            }, 300);
+                        } else { 
+                            document.getElementById('state-empty').classList.remove('hidden'); 
+                            UIEngine.toast('Bloco (Hash) não localizado no Ledger.', true); 
+                        }
+                        
+                        state.isDecoding = false; 
+                        b.innerHTML = 'Decrypt';
+                    }, 2200);
+                },
+
+                pop: (d) => {
+                    document.getElementById('res-hash').innerText = d.hash;
+                    
+                    const fields = [
+                        { id: 'res-name', v: d.name },
+                        { id: 'res-cep', v: d.cep },
+                        { id: 'res-items', v: d.items }
+                    ];
+                    
+                    fields.forEach(t => UIEngine.bruteForceText(document.getElementById(t.id), t.v, 1000));
+                    
+                    document.getElementById('res-progress').style.width = '0%';
+                    
+                    document.querySelectorAll('.t-node').forEach(n => {
+                        const s = parseInt(n.getAttribute('data-step')); 
+                        const ic = n.querySelector('.t-icon'); 
+                        const tt = n.querySelector('.t-title'); 
+                        const dt = n.querySelector('.t-date');
+                        
+                        if (s <= d.step) { 
+                            ic.className = "t-icon w-16 h-16 rounded-full bg-quantum-neon border-4 border-black flex items-center justify-center text-black mx-auto md:mb-5 transition-all duration-700 relative z-10 shadow-[0_0_20px_rgba(0,255,163,0.5)] group-hover:scale-110"; 
+                            tt.className = "t-title text-sm font-bold text-white transition-colors"; 
+                            dt.innerText = (s === 1) ? d.date : "OK"; 
+                            dt.classList.replace('text-zinc-700', 'text-quantum-cyan'); 
+                        } else { 
+                            ic.className = "t-icon w-16 h-16 rounded-full bg-zinc-900 border-4 border-black flex items-center justify-center text-zinc-600 mx-auto md:mb-5 transition-all duration-700 relative z-10 shadow-inner group-hover:scale-110"; 
+                            tt.className = "t-title text-sm font-bold text-zinc-600 transition-colors"; 
+                            dt.innerText = "Pendente"; 
+                            dt.classList.replace('text-quantum-cyan', 'text-zinc-700'); 
+                        }
+                    });
                 }
+            };
 
-                // Controle do botão Voltar ao Topo
-                if (window.scrollY > 600) {
-                    btnBackToTop.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
-                    btnBackToTop.classList.add('opacity-100', 'translate-y-0', 'cursor-pointer');
-                } else {
-                    btnBackToTop.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
-                    btnBackToTop.classList.remove('opacity-100', 'translate-y-0', 'cursor-pointer');
+            // --- 6. TELEMETRY & CHARTS ---
+            const TelemetryEngine = {
+                open: () => {
+                    const m = document.getElementById('modal-telemetry'); 
+                    m.classList.remove('hidden'); 
+                    void m.offsetWidth; // trigger reflow
+                    
+                    m.classList.remove('opacity-0', 'pointer-events-none'); 
+                    m.querySelector('.modal-content').classList.replace('scale-95', 'scale-100'); 
+                    document.body.style.overflow = 'hidden';
+                    
+                    if (!state.chartsReady) {
+                        Chart.defaults.color = '#71717a'; 
+                        Chart.defaults.font.family = "'Inter', sans-serif";
+                        
+                        // Line Chart
+                        const cl = document.getElementById('chart-line').getContext('2d');
+                        let g = cl.createLinearGradient(0, 0, 0, 400); 
+                        g.addColorStop(0, 'rgba(0, 255, 163, 0.3)'); 
+                        g.addColorStop(1, 'rgba(0, 255, 163, 0)');
+                        
+                        const lc = new Chart(cl, { 
+                            type: 'line', 
+                            data: {
+                                labels: ['Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out'], 
+                                datasets: [{
+                                    data: [320, 450, 410, 680, 850, 750], 
+                                    borderColor: '#00ffa3', 
+                                    backgroundColor: g, 
+                                    borderWidth: 2, 
+                                    fill: true, 
+                                    tension: 0.4, 
+                                    pointBackgroundColor: '#000', 
+                                    pointBorderColor: '#00ffa3'
+                                }]
+                            }, 
+                            options: {
+                                responsive: true, 
+                                maintainAspectRatio: false, 
+                                plugins: { legend: { display: false } }, 
+                                scales: {
+                                    y: { grid: { color: 'rgba(255,255,255,0.02)' }, border: { display: false } }, 
+                                    x: { grid: { display: false }, border: { display: false } }
+                                }
+                            } 
+                        });
+                        
+                        // Simulacao ao vivo no grafico
+                        setInterval(() => {
+                            const d = lc.data.datasets[0].data; 
+                            d[d.length - 1] += (Math.random() * 20 - 10); 
+                            lc.update('none');
+                        }, 2000); 
+                        
+                        // Doughnut Chart
+                        const cd = document.getElementById('chart-doughnut').getContext('2d');
+                        new Chart(cd, { 
+                            type: 'doughnut', 
+                            data: {
+                                labels: ['Computação', 'Mobile', 'Rede'], 
+                                datasets: [{
+                                    data: [55, 25, 20], 
+                                    backgroundColor: ['#00ffa3', '#00e5ff', '#03120b'], 
+                                    borderColor: '#000', 
+                                    borderWidth: 2
+                                }]
+                            }, 
+                            options: {
+                                responsive: true, 
+                                maintainAspectRatio: false, 
+                                cutout: '75%', 
+                                plugins: {
+                                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+                                }
+                            } 
+                        });
+                        
+                        state.chartsReady = true;
+                    }
+                },
+                close: (e) => { 
+                    if(e && e.target !== e.currentTarget) return;
+
+                    const m = document.getElementById('modal-telemetry'); 
+                    m.classList.add('opacity-0', 'pointer-events-none'); 
+                    m.querySelector('.modal-content').classList.replace('scale-100', 'scale-95'); 
+                    
+                    setTimeout(() => {
+                        m.classList.add('hidden'); 
+                        document.body.style.overflow = '';
+                    }, 500); 
                 }
-            });
+            };
 
-            // Ação do Botão Voltar ao Topo
-            document.getElementById('btnBackToTop').addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        });
+            // API Pública Exposta
+            return {
+                init: () => { 
+                    UIEngine.boot(); 
+                    NetworkEngine.init(); 
+                    UIEngine.cursor(); 
+                    UIEngine.parallax3D(); 
+                    UIEngine.scrollReveal(); 
+                    UIEngine.header(); 
+                    UIEngine.terminal(); 
+                    DataStore.init(); 
+                    
+                    // Delay renderização do wizard pra evitar bugs de layout iniciais
+                    setTimeout(WizardEngine.render, 100); 
+                },
+                UI: { 
+                    copyHash: () => { 
+                        navigator.clipboard.writeText(document.getElementById('hash-display').innerText); 
+                        UIEngine.toast('Hash copiado para a área de transferência.'); 
+                    } 
+                },
+                Wizard: { 
+                    next: WizardEngine.next, 
+                    prev: WizardEngine.prev, 
+                    submit: WizardEngine.submit, 
+                    finish: WizardEngine.finish 
+                },
+                Tracker: { 
+                    search: TrackerEngine.search 
+                },
+                Telemetry: { 
+                    open: TelemetryEngine.open, 
+                    close: TelemetryEngine.close 
+                }
+            };
+        })();
 
+        document.addEventListener('DOMContentLoaded', SystemOS.init);
     </script>
 </body>
 </html>
