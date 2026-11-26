@@ -97,6 +97,9 @@ test("trata entrada inválida, referência ausente e registros legados", async (
   await input.fill("CT-1010-2020");
   await input.press("Enter");
   await expect(page.locator("#res-name")).toHaveText("Empresa anterior");
+  await expect(page.locator("#state-result")).toContainText(
+    "Código de referência",
+  );
   await expect(page.getByText("Registrado localmente")).toBeVisible();
   await expect(page.getByText("Não executado")).toHaveCount(3);
 });
