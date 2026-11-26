@@ -18,6 +18,30 @@ async function completeDraft(page, name = "Empresa Fictícia") {
   await page.getByText("Ciência da demonstração").click();
 }
 
+test("redireciona a URL legada para a página inicial", async ({ page }) => {
+  await page.goto("/ciclotech_nexus_os_enterprise_v6%20%281%29.html");
+  await expect(page).toHaveURL("/");
+});
+
+test("baixa apenas o manifesto atualmente exibido na consulta", async ({
+  page,
+}) => {
+  await page.goto("/#ledger");
+  const input = page.getByRole("textbox", { name: "Código de referência" });
+  const exportButton = page.getByRole("button", {
+    name: "Baixar manifesto (.txt)",
+  });
+  await expect(exportButton).toBeHidden();
+  await input.fill("CT-A1B2-C3D4");
+  await input.press("Enter");
+  const downloadPromise = page.waitForEvent("download");
+  await exportButton.click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe("ciclotech-CT-A1B2-C3D4.txt");
+  await input.fill("CT-1234-5678");
+  await expect(exportButton).toBeHidden();
+});
+
 test("valida etapas e consulta um manifesto persistido pelo mesmo navegador", async ({
   page,
 }) => {
@@ -173,6 +197,40 @@ test("recupera de falhas de armazenamento e cópia", async ({ page }) => {
       ),
     ),
   ).toHaveLength(1);
+});
+
+test("permite consultar um manifesto temporário até recarregar", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "localStorage", {
+      get() {
+        throw new DOMException("Armazenamento bloqueado", "SecurityError");
+      },
+    });
+  });
+  await page.goto("/#manifesto");
+  await completeDraft(page);
+  await page.getByRole("button", { name: "Salvar demonstração" }).click();
+  await expect(page.locator("#wizard-error")).toContainText(
+    "Não foi possível salvar",
+  );
+  await page.getByRole("button", { name: "Salvar só nesta aba" }).click();
+  const dialog = page.getByRole("dialog", { name: "Manifesto salvo" });
+  await expect(
+    dialog.getByText("Este manifesto ficará disponível"),
+  ).toBeVisible();
+  const reference = await dialog.locator("#hash-display").innerText();
+  await dialog.getByRole("button", { name: "Consultar código" }).click();
+  await expect(page.locator("#res-name")).toHaveText("Empresa Fictícia");
+
+  await page.reload();
+  const input = page.getByRole("textbox", { name: "Código de referência" });
+  await input.fill(reference);
+  await input.press("Enter");
+  await expect(page.locator("#tracker-status")).toContainText(
+    "Não foi possível consultar",
+  );
 });
 
 test("serve o favicon sem erros no console", async ({ page }) => {

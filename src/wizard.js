@@ -1,14 +1,16 @@
 import { byId, initDialog, showDialog } from "./dom.js";
 import { saveManifest, validateDraft } from "./ledger.js";
 
-/** @param {(reference: string) => void} openTracker */
-export function initWizard(openTracker) {
+/** @param {(reference: string) => void} openTracker @param {import("./ledger.js").Records} temporaryRecords */
+export function initWizard(openTracker, temporaryRecords) {
   const form = byId("wizard-form", HTMLFormElement);
   const name = byId("manifest-name", HTMLInputElement);
   const cep = byId("manifest-cep", HTMLInputElement);
   const consent = byId("manifest-consent", HTMLInputElement);
   const error = byId("wizard-error", HTMLElement);
+  const saveTemporarily = byId("save-temporarily", HTMLButtonElement);
   const result = byId("modal-success", HTMLDialogElement);
+  const temporaryNotice = byId("temporary-notice", HTMLElement);
   const reference = byId("hash-display", HTMLElement);
   const copyStatus = byId("copy-status", HTMLElement);
   const progress = byId("wizard-bar", HTMLElement);
@@ -55,12 +57,13 @@ export function initWizard(openTracker) {
 
   function clearError() {
     error.textContent = "";
+    saveTemporarily.hidden = true;
     form
       .querySelectorAll('[aria-invalid="true"]')
       .forEach((field) => field.removeAttribute("aria-invalid"));
   }
 
-  function advance() {
+  function advance(temporary = false) {
     if (result.open) return;
     clearError();
     const draft = readDraft();
@@ -91,12 +94,17 @@ export function initWizard(openTracker) {
       return;
     }
     try {
-      savedReference = saveManifest(window.localStorage, draft).reference;
+      savedReference = saveManifest(
+        temporary ? temporaryRecords : window.localStorage,
+        draft,
+      ).reference;
     } catch {
       error.textContent =
         "Não foi possível salvar neste navegador. Verifique o armazenamento local e tente novamente.";
+      saveTemporarily.hidden = temporary;
       return;
     }
+    temporaryNotice.hidden = !temporary;
     reference.textContent = savedReference;
     copyStatus.textContent = "";
     showDialog(result);
@@ -107,9 +115,10 @@ export function initWizard(openTracker) {
     advance();
   });
   form.addEventListener("input", clearError);
+  saveTemporarily.addEventListener("click", () => advance(true));
   form
     .querySelectorAll('[data-action="wizard-next"]')
-    .forEach((button) => button.addEventListener("click", advance));
+    .forEach((button) => button.addEventListener("click", () => advance()));
   form.querySelectorAll('[data-action="wizard-prev"]').forEach((button) => {
     button.addEventListener("click", () => {
       clearError();

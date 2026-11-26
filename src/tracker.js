@@ -1,12 +1,15 @@
 import { byId } from "./dom.js";
 import { findManifest, normalizeReference } from "./ledger.js";
+import { downloadManifest } from "./manifest-export.js";
 
-export function initTracker() {
+/** @param {import("./ledger.js").Records} temporaryRecords */
+export function initTracker(temporaryRecords) {
   const input = byId("hash-input", HTMLInputElement);
   const form = byId("tracker-form", HTMLFormElement);
   const status = byId("tracker-status", HTMLElement);
   const empty = byId("state-empty", HTMLElement);
   const output = byId("state-result", HTMLElement);
+  const download = byId("download-manifest", HTMLButtonElement);
   const fields = {
     reference: byId("res-hash", HTMLElement),
     name: byId("res-name", HTMLElement),
@@ -15,10 +18,18 @@ export function initTracker() {
     date: byId("res-date", HTMLElement),
   };
 
-  function search() {
+  /** @type {ReturnType<typeof findManifest>} */
+  let current = null;
+
+  function clearResult() {
+    current = null;
     output.hidden = true;
     empty.hidden = false;
     input.removeAttribute("aria-invalid");
+  }
+
+  function search() {
+    clearResult();
     const reference = normalizeReference(input.value);
     if (!reference) {
       input.setAttribute("aria-invalid", "true");
@@ -27,7 +38,9 @@ export function initTracker() {
     }
 
     try {
-      const result = findManifest(window.localStorage, reference);
+      const result =
+        findManifest(temporaryRecords, reference) ??
+        findManifest(window.localStorage, reference);
       if (!result) {
         status.textContent = "Código não encontrado neste navegador.";
         return;
@@ -37,6 +50,7 @@ export function initTracker() {
       fields.cep.textContent = result.cep;
       fields.items.textContent = result.items.join(", ");
       fields.date.textContent = result.date;
+      current = result;
       empty.hidden = true;
       output.hidden = false;
       status.textContent = "Manifesto de demonstração encontrado.";
@@ -49,6 +63,20 @@ export function initTracker() {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     search();
+  });
+  input.addEventListener("input", () => {
+    clearResult();
+    status.textContent = "";
+  });
+  download.addEventListener("click", () => {
+    if (!current) return;
+    try {
+      downloadManifest(current);
+      status.textContent = "Arquivo de demonstração preparado para download.";
+    } catch {
+      status.textContent =
+        "Não foi possível preparar o arquivo de demonstração.";
+    }
   });
 
   /** @param {string} reference */

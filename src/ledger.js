@@ -53,6 +53,11 @@ function readManifest(value, reference, legacy) {
   const record = /** @type {Record<string, unknown>} */ (value);
   if (
     (legacy ? record.hash : record.reference) !== reference ||
+    (legacy &&
+      (typeof record.step !== "number" ||
+        !Number.isInteger(record.step) ||
+        record.step < 1 ||
+        record.step > 4)) ||
     typeof record.name !== "string" ||
     typeof record.cep !== "string" ||
     typeof record.date !== "string" ||
