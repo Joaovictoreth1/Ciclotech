@@ -18,10 +18,10 @@ Abra o endereço informado pelo Vite. Para experimentar sem preencher o formulá
 
 ## Arquitetura e dados
 
-- `index.html` contém os componentes da página. Vite compila Tailwind CSS e entrega JS, CSS, ícones e fontes locais com nomes baseados em conteúdo. O Chart.js é carregado apenas quando o painel ESG é aberto.
+- `index.html` contém os componentes da página. Vite compila Tailwind CSS e entrega JS, CSS, ícones e fontes locais com nomes baseados em conteúdo. `src/icons.svg` agrupa apenas os ícones Font Awesome usados (CC BY 4.0). O Chart.js é carregado apenas quando o painel ESG é aberto.
 - `src/ledger.js` valida os dados, gera referências e salva um registro por código no `localStorage`. `src/wizard.js` e `src/tracker.js` ligam essa lógica ao formulário e à consulta, sem interpretar valores de usuário como HTML.
 - A organização fictícia, o CEP de exemplo, as categorias e a data ficam no navegador em texto simples. O armazenamento é separado por origem e perfil do navegador. Para apagar os registros, limpe os dados do site no navegador. Registros válidos da versão anterior no mesmo domínio continuam consultáveis; o site não migra nem regrava esses dados.
-- O mapa incorporado é a única dependência de rede do site em uso e faz requisições ao Google quando carregado. A lista de pontos e os indicadores ESG são ilustrativos. O formulário e a consulta não enviam os dados preenchidos.
+- O mapa incorporado só faz requisições ao Google após o clique em **Carregar mapa**. O link **Abrir mapa externo** continua disponível sem JavaScript. A lista de pontos e os indicadores ESG são ilustrativos. O formulário e a consulta não enviam os dados preenchidos.
 
 ## Verificações
 
@@ -42,4 +42,6 @@ Vitest verifica validação, referências, colisões, armazenamento indisponíve
 
 O repositório não publica automaticamente. No Netlify, conecte o repositório, configure `main` como branch de produção e use a raiz como diretório base. `netlify.toml` define Node.js 24, `npm run build` e a publicação de `dist/`. Não publique a raiz do repositório nem ative otimizações que injetem scripts na página.
 
-O build inclui `_headers` com CSP sem scripts inline, proteção contra enquadramento e cache imutável somente para `/assets/*`. Em outro provedor estático, configure os mesmos cabeçalhos no servidor e exija HTTPS. Depois da primeira publicação, confirme no domínio real os cabeçalhos com `curl -I https://<domínio>/`, abra o painel ESG e confira a abertura do mapa e o fluxo completo do formulário à consulta. Para validar localmente após o build, use `npm run preview`.
+O build inclui `_headers` com CSP sem scripts inline, proteção contra enquadramento e cache imutável somente para `/assets/*`. O Netlify também aplica HSTS e regras de cache para a página inicial e o cartão social a partir de `netlify.toml`. O canonical, o cartão social, `robots.txt` e `sitemap.xml` usam o domínio de produção `https://ciclotech.online/`.
+
+Depois da primeira publicação, confirme no domínio real os cabeçalhos com `curl -I https://ciclotech.online/`, abra o painel ESG e confira a abertura do mapa e o fluxo completo do formulário à consulta. Para validar localmente após o build, use `npm run preview`.

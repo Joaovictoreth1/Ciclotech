@@ -4,3 +4,18 @@ publish = "dist"
 
 [build.environment]
 NODE_VERSION = "24"
+
+[[headers]]
+for = "/*"
+[headers.values]
+Strict-Transport-Security = "max-age=31536000"
+
+[[headers]]
+for = "/"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+for = "/social-card.png"
+[headers.values]
+Cache-Control = "public, max-age=86400"
