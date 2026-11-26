@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .glass-morphism {
+        @apply bg-quantum-card/60 backdrop-blur-xl border border-quantum-border shadow-[0_8px_32px_0_rgba(0,0,0,0.8)];
+    }
+    .text-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-quantum-neon via-white to-quantum-cyan;
+    }
+    .input-quantum {
+        @apply bg-black/50 border border-quantum-border text-white placeholder-zinc-600 transition-all duration-300 focus:outline-none focus:border-quantum-neon focus:ring-1 focus:ring-quantum-neon focus:bg-quantum-card shadow-inner;
+    }
+    .input-error {
+        @apply border-quantum-error focus:border-quantum-error focus:ring-quantum-error;
+    }
+}
+
+/* Fundamentos Visuais */
+body { 
+    background-color: theme('colors.quantum.base'); 
+    color: #a1a1aa; 
+    overflow-x: hidden; 
+}
+
+/* Ocultar cursor nativo apenas se suportar mouse fino */
+@media (pointer: fine) {
+    body.custom-cursor-active { cursor: none; }
+    body.custom-cursor-active .interactive,
+    body.custom-cursor-active a,
+    body.custom-cursor-active button,
+    body.custom-cursor-active input,
+    body.custom-cursor-active textarea,
+    body.custom-cursor-active label {
+        cursor: none;
+    }
+}
+
+::selection { background: rgba(0,255,163,0.2); color: #00ffa3; }
+
+/* Cursores Magnéticos & Ambientais */
+#cursor-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: #00ffa3; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; box-shadow: 0 0 10px #00ffa3; opacity: 0; }
+#cursor-ring { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(0,255,163,0.4); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.15s ease-out, width 0.2s, height 0.2s, background 0.2s; opacity: 0; }
+.magnetic-hover #cursor-ring { width: 60px; height: 60px; background: rgba(0,255,163,0.05); border-color: #00ffa3; }
+
+/* Canvas Particle Network */
+#network-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.6; }
+
+/* Efeitos Holográficos (UI/HUD) */
+.hologram-border { position: relative; }
+.hologram-border::before { content: ''; position: absolute; inset: -1px; background: linear-gradient(135deg, rgba(0,255,163,0.5), transparent 40%, transparent 60%, rgba(0,229,255,0.5)); z-index: -1; border-radius: inherit; animation: rotateGradient 4s linear infinite; }
+@keyframes rotateGradient { 100% { filter: hue-rotate(360deg); } }
+
+/* Física 3D Elevada */
+.scene { perspective: 2500px; transform-style: preserve-3d; }
+.card-3d { transform-style: preserve-3d; transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform; }
+.z-layer-1 { transform: translateZ(30px); }
+.z-layer-2 { transform: translateZ(60px); }
+.glare { position: absolute; inset: 0; pointer-events: none; z-index: 50; border-radius: inherit; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent 50%); opacity: 0; transition: opacity 0.2s; mix-blend-mode: overlay; }
+
+/* Form Wizard */
+.wizard-container { position: relative; overflow: hidden; transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.wizard-step { position: absolute; top: 0; left: 0; width: 100%; opacity: 0; visibility: hidden; transform: translateX(50px) scale(0.95); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.wizard-step.active { opacity: 1; visibility: visible; transform: translateX(0) scale(1); position: relative; }
+
+/* Checkboxes Cyberpunk */
+.cyber-check label { cursor: pointer; } /* Fallback cursor if custom is off */
+@media (pointer: fine) { .cyber-check label { cursor: none; } }
+.cyber-check input:checked + div { border-color: #00ffa3; background: rgba(0,255,163,0.05); transform: translateY(-4px); box-shadow: 0 10px 20px -5px rgba(0,255,163,0.2), inset 0 0 15px rgba(0,255,163,0.1); }
+.cyber-check input:checked + div .check-icon { opacity: 1; transform: scale(1); background: #00ffa3; border-color: #00ffa3; color: black; }
+
+/* Preloader */
+#quantum-boot { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.6s ease; }
+.loader-ring { width: 150px; height: 150px; border: 2px solid rgba(0,255,163,0.1); border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; }
+.loader-ring::before { content: ''; position: absolute; inset: -2px; border: 2px solid transparent; border-top-color: #00ffa3; border-right-color: #00ffa3; border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* HUD do Mapa */
+.map-hud-container { position: relative; border-radius: 1.5rem; overflow: hidden; }
+.map-hud-corner { position: absolute; width: 30px; height: 30px; border-color: #00ffa3; z-index: 10; pointer-events: none; transition: all 0.3s ease; }
+.hud-tl { top: 10px; left: 10px; border-top: 3px solid; border-left: 3px solid; }
+.hud-tr { top: 10px; right: 10px; border-top: 3px solid; border-right: 3px solid; }
+.hud-bl { bottom: 10px; left: 10px; border-bottom: 3px solid; border-left: 3px solid; }
+.hud-br { bottom: 10px; right: 10px; border-bottom: 3px solid; border-right: 3px solid; }
+.map-scanline { position: absolute; top: 0; left: 0; width: 100%; height: 15px; background: linear-gradient(to bottom, transparent, rgba(0,255,163,0.4), transparent); z-index: 9; pointer-events: none; animation: hudScan 4s linear infinite; }
+.map-filter { filter: invert(100%) hue-rotate(150deg) contrast(1.2) sepia(0.3) saturate(1.5) opacity(0.85); transition: filter 0.5s ease; }
+.map-hud-container:hover .map-filter { filter: invert(100%) hue-rotate(150deg) contrast(1.3) sepia(0.2) saturate(2) opacity(1); }
+.map-hud-container:hover .map-hud-corner { width: 40px; height: 40px; border-width: 4px; }
+
+/* Tipografia Criptográfica */
+.brute-force-text { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+
+/* Scrollbar Premium */
+::-webkit-scrollbar { width: 6px; } 
+::-webkit-scrollbar-track { background: #000; } 
+::-webkit-scrollbar-thumb { background: rgba(0, 255, 163, 0.3); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 163, 0.6); }
+
+/* Reveals */
+.reveal { opacity: 0; transform: translateY(40px) scale(0.95); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal.active { opacity: 1; transform: translateY(0) scale(1); }
