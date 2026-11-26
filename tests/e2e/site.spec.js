@@ -175,6 +175,30 @@ test("recupera de falhas de armazenamento e cópia", async ({ page }) => {
   ).toHaveLength(1);
 });
 
+test("serve o favicon sem erros no console", async ({ page }) => {
+  const errors = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  await page.goto("/");
+  const ico = page.locator('link[rel="icon"][href="/favicon.ico"]');
+  await expect(ico).toHaveCount(1);
+  await expect(await page.request.get("/favicon.ico")).toBeOK();
+  const iconLoaded = await page
+    .locator('link[rel="icon"][type="image/svg+xml"]')
+    .evaluate(
+      (link) =>
+        new Promise((resolve) => {
+          const image = new Image();
+          image.onload = () => resolve(true);
+          image.onerror = () => resolve(false);
+          image.src = link.getAttribute("href");
+        }),
+    );
+  expect(iconLoaded).toBe(true);
+  expect(errors).toEqual([]);
+});
+
 test("usa os cabeçalhos de produção e carrega gráficos sob demanda", async ({
   page,
 }) => {
