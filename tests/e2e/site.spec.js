@@ -199,6 +199,15 @@ test("serve o favicon sem erros no console", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test("identifica o mapa como ilustrativo", async ({ page }) => {
+  await page.goto("/#nodes");
+  await expect(
+    page
+      .locator("#nodes")
+      .getByText("Visualização ilustrativa", { exact: true }),
+  ).toHaveCount(1);
+});
+
 test("usa os cabeçalhos de produção e carrega gráficos sob demanda", async ({
   page,
 }) => {
