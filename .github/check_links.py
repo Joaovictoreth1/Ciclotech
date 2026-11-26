@@ -20,7 +20,9 @@ class Page(HTMLParser):
 
 def main():
     root = Path.cwd()
-    pages = {path.resolve(): Page(path) for path in sorted(root.glob("*.html"))}
+    public = root / "public"
+    html_paths = sorted(root.glob("*.html")) + sorted(public.glob("*.html"))
+    pages = {path.resolve(): Page(path) for path in html_paths}
     if not pages:
         raise SystemExit("No HTML files found")
     failures = []
@@ -30,7 +32,14 @@ def main():
             if url.scheme or url.netloc:
                 continue
             path = unquote(url.path)
-            target = (root / path.lstrip("/") if path.startswith("/") else source.parent / path).resolve() if path else source
+            if not path:
+                target = source
+            elif path.startswith("/"):
+                target = (root / path.lstrip("/")).resolve()
+                if not target.exists():
+                    target = (public / path.lstrip("/")).resolve()
+            else:
+                target = (source.parent / path).resolve()
             if target.is_dir():
                 target /= "index.html"
             if not target.is_file() or not target.is_relative_to(root):
