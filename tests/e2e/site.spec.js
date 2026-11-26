@@ -23,6 +23,25 @@ test("redireciona a URL legada para a página inicial", async ({ page }) => {
   await expect(page).toHaveURL("/");
 });
 
+test("baixa apenas o manifesto atualmente exibido na consulta", async ({
+  page,
+}) => {
+  await page.goto("/#ledger");
+  const input = page.getByRole("textbox", { name: "Código de referência" });
+  const exportButton = page.getByRole("button", {
+    name: "Baixar manifesto (.txt)",
+  });
+  await expect(exportButton).toBeHidden();
+  await input.fill("CT-A1B2-C3D4");
+  await input.press("Enter");
+  const downloadPromise = page.waitForEvent("download");
+  await exportButton.click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe("ciclotech-CT-A1B2-C3D4.txt");
+  await input.fill("CT-1234-5678");
+  await expect(exportButton).toBeHidden();
+});
+
 test("valida etapas e consulta um manifesto persistido pelo mesmo navegador", async ({
   page,
 }) => {
