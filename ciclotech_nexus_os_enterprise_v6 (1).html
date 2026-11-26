@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Dependencies -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.2/dist/chart.umd.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -1126,7 +1126,12 @@
                             }]; 
                             localStorage.setItem(DB_KEY, JSON.stringify(state.ledger)); 
                         } else {
-                            state.ledger = JSON.parse(d);
+                            const ledger = JSON.parse(d);
+                            if (Array.isArray(ledger)) {
+                                state.ledger = ledger.filter(entry => entry
+                                    && ['hash', 'name', 'cep', 'items', 'date'].every(field => typeof entry[field] === 'string')
+                                    && Number.isInteger(entry.step) && entry.step >= 1 && entry.step <= 4);
+                            }
                         }
                     } catch (e) {
                         console.error('Falha ao acessar LocalStorage', e);
@@ -1134,7 +1139,11 @@
                 },
                 save: (entry) => { 
                     state.ledger.push(entry); 
-                    localStorage.setItem(DB_KEY, JSON.stringify(state.ledger)); 
+                    try {
+                        localStorage.setItem(DB_KEY, JSON.stringify(state.ledger));
+                    } catch {
+                        console.warn('Ledger disponível apenas nesta sessão.');
+                    }
                 },
                 find: (h) => state.ledger.find(e => e.hash === h)
             };
