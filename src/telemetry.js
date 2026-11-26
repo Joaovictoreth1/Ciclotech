@@ -31,8 +31,9 @@ export function initTelemetry() {
           status.textContent = "";
         }
       } catch {
-        if (dialog.open && current === sequence)
+        if (dialog.open && current === sequence) {
           status.textContent = "Os gráficos não puderam ser carregados.";
+        }
       }
     });
 }

@@ -1,8 +1,9 @@
 /** @template {HTMLElement} T @param {string} id @param {new (...args: never[]) => T} type */
 export function byId(id, type) {
   const element = document.getElementById(id);
-  if (!(element instanceof type))
+  if (!(element instanceof type)) {
     throw new Error(`Elemento ausente ou inválido: ${id}`);
+  }
   return element;
 }
 
@@ -12,8 +13,9 @@ export function initDialog(dialog) {
     if (event.target === dialog) dialog.close();
   });
   dialog.addEventListener("close", () => {
-    if (!document.querySelector("dialog[open]"))
+    if (!document.querySelector("dialog[open]")) {
       document.body.classList.remove("dialog-open");
+    }
   });
 }
 

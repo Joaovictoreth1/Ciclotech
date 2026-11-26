@@ -59,8 +59,9 @@ function initNetwork(motion) {
 
   function sync() {
     cancelAnimationFrame(frame);
-    if (!motion.matches && !document.hidden)
+    if (!motion.matches && !document.hidden) {
       frame = requestAnimationFrame(draw);
+    }
   }
 
   resize();
@@ -94,8 +95,9 @@ export function initEffects() {
         !finePointer.matches ||
         motion.matches ||
         event.pointerType !== "mouse"
-      )
+      ) {
         return;
+      }
       if (pointerFrame) return;
       pointerFrame = requestAnimationFrame(() => {
         pointerFrame = 0;

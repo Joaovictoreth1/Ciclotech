@@ -23,14 +23,16 @@ export function normalizeReference(value) {
 
 /** @param {Draft} draft */
 export function validateDraft(draft) {
-  if (draft.name.trim().length < 2 || draft.name.trim().length > 80)
+  if (draft.name.trim().length < 2 || draft.name.trim().length > 80) {
     return "name";
+  }
   if (!/^\d{5}-?\d{3}$/.test(draft.cep.trim())) return "cep";
   if (
     !draft.items.length ||
     draft.items.some((item) => !categories.includes(item))
-  )
+  ) {
     return "category";
+  }
   if (!draft.consent) return "consent";
   return null;
 }
@@ -55,15 +57,17 @@ function readManifest(value, reference, legacy) {
     typeof record.cep !== "string" ||
     typeof record.date !== "string" ||
     !/^\d{2}\/\d{2}\/\d{4}$/.test(record.date)
-  )
+  ) {
     return null;
+  }
 
   const items =
     legacy && typeof record.items === "string"
       ? record.items.split(", ")
       : record.items;
-  if (!Array.isArray(items) || items.some((item) => typeof item !== "string"))
+  if (!Array.isArray(items) || items.some((item) => typeof item !== "string")) {
     return null;
+  }
   const name = record.name.trim();
   const cep = record.cep.trim().replace(/^(\d{5})(\d{3})$/, "$1-$2");
   if (validateDraft({ name, cep, items, consent: true })) return null;
@@ -111,8 +115,9 @@ export function saveManifest(
     if (
       normalizeReference(reference) !== reference ||
       findManifest(storage, reference)
-    )
+    ) {
       continue;
+    }
     const manifest = {
       reference,
       name: draft.name.trim(),
