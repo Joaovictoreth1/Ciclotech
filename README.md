@@ -23,6 +23,7 @@ Abra o endereço informado pelo Vite. Para experimentar sem preencher o formulá
 - `src/ledger.js` valida os dados, gera referências e salva um registro por código no `localStorage`. `src/wizard.js` e `src/tracker.js` ligam essa lógica ao formulário e à consulta, sem interpretar valores de usuário como HTML.
 - A organização fictícia, o CEP de exemplo, as categorias e a data ficam no navegador em texto simples. O armazenamento é separado por origem e perfil do navegador. Para apagar os registros, limpe os dados do site no navegador. Registros válidos da versão anterior no mesmo domínio continuam consultáveis; o site não migra nem regrava esses dados.
 - O mapa incorporado é a única dependência de rede do site em uso e faz requisições ao Google quando carregado. A lista de pontos e os indicadores ESG são ilustrativos. O formulário e a consulta não enviam os dados preenchidos.
+- Se a gravação local falhar, é possível tentar novamente ou salvar só nesta aba. O manifesto temporário se perde ao recarregar ou fechar a página.
 
 ## Verificações
 

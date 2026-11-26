@@ -125,6 +125,14 @@ describe("persistência local", () => {
       null,
       {
         hash: reference,
+        name: "Etapa inválida",
+        cep: "01310100",
+        items: "Mobile",
+        date: "23/01/2025",
+        step: 5,
+      },
+      {
+        hash: reference,
         name: "  Empresa legada ",
         cep: "01310100",
         items: "Mobile, Computadores",

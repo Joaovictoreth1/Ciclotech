@@ -17,6 +17,16 @@ import { initTelemetry } from "./telemetry.js";
 import { initTracker } from "./tracker.js";
 import { initWizard } from "./wizard.js";
 
-initWizard(initTracker());
+/** @type {Map<string, string>} */
+const temporary = new Map();
+/** @type {import("./ledger.js").Records} */
+const temporaryRecords = {
+  getItem: (key) => temporary.get(key) ?? null,
+  setItem: (key, value) => {
+    temporary.set(key, value);
+  },
+};
+
+initWizard(initTracker(temporaryRecords), temporaryRecords);
 initTelemetry();
 initEffects();

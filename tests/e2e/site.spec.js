@@ -180,6 +180,40 @@ test("recupera de falhas de armazenamento e cópia", async ({ page }) => {
   ).toHaveLength(1);
 });
 
+test("permite consultar um manifesto temporário até recarregar", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "localStorage", {
+      get() {
+        throw new DOMException("Armazenamento bloqueado", "SecurityError");
+      },
+    });
+  });
+  await page.goto("/#manifesto");
+  await completeDraft(page);
+  await page.getByRole("button", { name: "Salvar demonstração" }).click();
+  await expect(page.locator("#wizard-error")).toContainText(
+    "Não foi possível salvar",
+  );
+  await page.getByRole("button", { name: "Salvar só nesta aba" }).click();
+  const dialog = page.getByRole("dialog", { name: "Manifesto salvo" });
+  await expect(
+    dialog.getByText("Este manifesto ficará disponível"),
+  ).toBeVisible();
+  const reference = await dialog.locator("#hash-display").innerText();
+  await dialog.getByRole("button", { name: "Consultar código" }).click();
+  await expect(page.locator("#res-name")).toHaveText("Empresa Fictícia");
+
+  await page.reload();
+  const input = page.getByRole("textbox", { name: "Código de referência" });
+  await input.fill(reference);
+  await input.press("Enter");
+  await expect(page.locator("#tracker-status")).toContainText(
+    "Não foi possível consultar",
+  );
+});
+
 test("serve o favicon sem erros no console", async ({ page }) => {
   const errors = [];
   page.on("console", (message) => {

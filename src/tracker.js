@@ -1,7 +1,8 @@
 import { byId } from "./dom.js";
 import { findManifest, normalizeReference } from "./ledger.js";
 
-export function initTracker() {
+/** @param {import("./ledger.js").Records} temporaryRecords */
+export function initTracker(temporaryRecords) {
   const input = byId("hash-input", HTMLInputElement);
   const form = byId("tracker-form", HTMLFormElement);
   const status = byId("tracker-status", HTMLElement);
@@ -27,7 +28,9 @@ export function initTracker() {
     }
 
     try {
-      const result = findManifest(window.localStorage, reference);
+      const result =
+        findManifest(temporaryRecords, reference) ??
+        findManifest(window.localStorage, reference);
       if (!result) {
         status.textContent = "Código não encontrado neste navegador.";
         return;

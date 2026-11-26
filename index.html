@@ -681,6 +681,14 @@
                   role="status"
                   class="relative mt-2 text-sm text-quantum-error"
                 ></p>
+                <button
+                  id="save-temporarily"
+                  type="button"
+                  class="interactive relative mt-2 text-sm text-quantum-neon underline"
+                  hidden
+                >
+                  Salvar só nesta aba
+                </button>
               </form>
             </div>
           </div>
@@ -1184,6 +1192,14 @@
           <p class="text-zinc-400 text-sm mb-8 relative z-10 font-light">
             Use o código abaixo para consultar esta simulação no mesmo
             navegador.
+          </p>
+          <p
+            id="temporary-notice"
+            class="relative z-10 mb-4 text-sm text-quantum-neon"
+            hidden
+          >
+            Este manifesto ficará disponível só nesta aba até recarregar ou
+            fechar a página.
           </p>
 
           <button
