@@ -1,82 +1,45 @@
-O CicloTech é uma plataforma avançada (Single-Page Application) de logística reversa para ativos de TI (e-waste). O projeto foca em resolver a principal barreira do descarte eletrônico: a segurança da informação. Através de protocolos de sanitização de dados (Data Wiping) aderentes à LGPD, o projeto recondiciona hardwares ociosos e os destina à educação pública, promovendo a economia circular.
+# CicloTech OS
 
-🔗 Acesse a demonstração ao vivo aqui (ciclotech.online)
+Demonstração em português de logística reversa de ativos eletrônicos. O site permite preencher um manifesto fictício, consultar o código no mesmo navegador, explorar indicadores ESG de exemplo e abrir um mapa ilustrativo.
 
-🚀 Funcionalidades Principais
+**Use apenas dados fictícios.** Nenhum ativo é coletado, agendado ou sanitizado. O código do manifesto é uma referência de busca local, não uma credencial. A demonstração não registra cadeia de custódia, não cifra os dados armazenados e não valida conformidade legal.
 
-Manifesto de Coleta Inteligente (Wizard): Formulário multi-etapas (Step-by-step) com validação de dados em tempo real e aceite de termos de sanitização LGPD.
+## Executar
 
-Ledger Tracker: Sistema de rastreabilidade de custódia utilizando hashes gerados dinamicamente para acompanhamento do status do lote (Agendado ➔ Trânsito ➔ Sanitizado ➔ Reaproveitado).
+Requisitos: Node.js 24 (veja `.nvmrc`) e npm. Não há servidor de aplicação, banco de dados, chaves ou variáveis de ambiente.
 
-Painel ESG (Data Intelligence): Dashboard analítico renderizado via Chart.js mostrando métricas de mitigação de CO2, volume arrecadado e distribuição de tipologia de e-waste.
+```sh
+nvm use
+npm ci
+npm run dev
+```
 
-Rede Node (Mapeamento Geoespacial): Integração com Leaflet.js mapeando Ecopontos e parceiros locais para entrega voluntária, com funcionalidade "Fly-to" na interface.
+Abra o endereço informado pelo Vite. Para experimentar sem preencher o formulário, use `CT-A1B2-C3D4` em **Consulta de manifesto**.
 
-UI/UX Premium: Design imersivo em "Dark Mode" utilizando Glassmorphism, animações interativas (blobs, tilt-cards, mouse glow) e feedback visual sem a utilização de alertas nativos do navegador (Custom Toast Notifications).
+## Arquitetura e dados
 
-🛠️ Arquitetura e Tecnologias
+- `index.html` contém os componentes da página. Vite compila Tailwind CSS e entrega JS, CSS, ícones e fontes locais com nomes baseados em conteúdo. O Chart.js é carregado apenas quando o painel ESG é aberto.
+- `src/ledger.js` valida os dados, gera referências e salva um registro por código no `localStorage`. `src/wizard.js` e `src/tracker.js` ligam essa lógica ao formulário e à consulta, sem interpretar valores de usuário como HTML.
+- A organização fictícia, o CEP de exemplo, as categorias e a data ficam no navegador em texto simples. O armazenamento é separado por origem e perfil do navegador. Para apagar os registros, limpe os dados do site no navegador. Registros válidos da versão anterior no mesmo domínio continuam consultáveis; o site não migra nem regrava esses dados.
+- O mapa incorporado é a única dependência de rede do site em uso e faz requisições ao Google quando carregado. A lista de pontos e os indicadores ESG são ilustrativos. O formulário e a consulta não enviam os dados preenchidos.
 
-O projeto foi construído utilizando uma arquitetura Vanilla JS modular, sem frameworks pesados, garantindo performance e facilidade de manutenção.
+## Verificações
 
-Frontend UI: HTML5 semântico + Tailwind CSS (via CDN para facilitar o deploy estático).
+```sh
+npm audit --audit-level=low
+npm run lint
+npm run format:check
+npm run typecheck
+npm run test:coverage
+npm run build
+npx playwright install chromium
+npm run test:e2e
+```
 
-Comportamento / Lógica: Vanilla JavaScript (ES6+).
+Vitest verifica validação, referências, colisões, armazenamento indisponível e leitura de registros legados. O mínimo é de 90% para funções, instruções, linhas e ramos do módulo de regras e persistência. Playwright usa o build de produção em Chromium desktop e com emulação de celular; ele substitui a resposta do mapa para não depender da rede externa e executa com a política de segurança de produção. Em Linux, se faltarem dependências do Chromium, use `npx playwright install --with-deps chromium`. O GitHub Actions executa essas verificações em pushes e pull requests.
 
-Gerenciamento de Estado: Utilização de Proxy reativo para controlar o fluxo da interface (ex: avanço do Wizard).
+## Publicar
 
-Persistência de Dados: Padrão de serviço (Storage Service) utilizando localStorage para simular um banco de dados relacional no front-end.
+O repositório não publica automaticamente. No Netlify, conecte o repositório, configure `main` como branch de produção e use a raiz como diretório base. `netlify.toml` define Node.js 24, `npm run build` e a publicação de `dist/`. Não publique a raiz do repositório nem ative otimizações que injetem scripts na página.
 
-Bibliotecas Externas:
-
-Chart.js (Visualização de dados).
-
-Leaflet.js (Mapas interativos).
-
-FontAwesome (Ícones vetoriais).
-
-🌍 Impacto e Sustentabilidade (Agenda 2030 - ONU)
-
-Este projeto de extensão universitária está alinhado com os Objetivos de Desenvolvimento Sustentável (ODS):
-
-📚 ODS 4 (Educação de Qualidade): Inclusão digital através do fornecimento de infraestrutura tecnológica para estudantes carentes.
-
-♻️ ODS 12 (Consumo e Produção Responsáveis): Mitigação do descarte tóxico e fomento à economia circular através da logística reversa.
-
-⚙️ Como Executar o Projeto
-
-Como a aplicação foi arquitetada para ser 100% Client-Side (Client-Side Rendering) e contida em um único arquivo, a execução é extremamente simples.
-
-Execução Local
-
-Faça o clone deste repositório:
-
-git clone https://github.com/SEU-USUARIO/ciclotech.git
-
-
-Abra o arquivo index.html em qualquer navegador moderno (Chrome, Edge, Firefox, Safari). Nenhuma compilação (build step) é necessária.
-
-Deploy na Nuvem (Netlify / Vercel / GitHub Pages)
-
-O projeto está "Deploy Ready". Para publicar no Netlify, por exemplo:
-
-Crie uma conta no Netlify.
-
-Arraste a pasta do projeto (ou conecte este repositório do GitHub) na aba "Sites".
-
-O deploy será concluído em segundos.
-
-👨‍💻 Estrutura do Código (Vanilla JS Enterprise Pattern)
-
-O arquivo HTML contém scripts modulares divididos em classes responsabilidades claras:
-
-AppConfig: Constantes globais do sistema.
-
-AppState: Estado reativo da aplicação.
-
-StorageService: Abstração de banco de dados (CRUD no localStorage).
-
-UIController: Manipulação direta do DOM, Modais e Toasts.
-
-WizardController: Lógica de negócio do formulário de coleta.
-
-ChartService & MapService: Encapsulamento das bibliotecas externas.
+O build inclui `_headers` com CSP sem scripts inline, proteção contra enquadramento e cache imutável somente para `/assets/*`. Em outro provedor estático, configure os mesmos cabeçalhos no servidor e exija HTTPS. Depois da primeira publicação, confirme no domínio real os cabeçalhos com `curl -I https://<domínio>/`, abra o painel ESG e confira a abertura do mapa e o fluxo completo do formulário à consulta. Para validar localmente após o build, use `npm run preview`.
