@@ -10,7 +10,7 @@ export function byId(id, type) {
 /** @param {HTMLDialogElement} dialog */
 export function initDialog(dialog) {
   dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
+    if (event.target === dialog && event.detail === 1) dialog.close();
   });
   dialog.addEventListener("close", () => {
     if (!document.querySelector("dialog[open]")) {

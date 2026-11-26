@@ -63,6 +63,35 @@ test("valida etapas e consulta um manifesto persistido pelo mesmo navegador", as
   await expect(page.locator("#res-name")).toHaveText("Empresa Fictícia");
 });
 
+test("mantém o código visível após clique duplo ao salvar", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Gesto de mouse no desktop");
+  await page.goto("/#manifesto");
+  await completeDraft(page);
+  const save = page.getByRole("button", { name: "Salvar demonstração" });
+  await save.evaluate((button) =>
+    button.scrollIntoView({ block: "end", behavior: "instant" }),
+  );
+  await save.dblclick();
+
+  const dialog = page.getByRole("dialog", { name: "Manifesto salvo" });
+  const reference = dialog.locator("#hash-display");
+  await expect(dialog).toBeVisible();
+  await expect(reference).toBeVisible();
+  await expect(reference).toHaveText(/^CT-[0-9A-F]{4}-[0-9A-F]{4}$/);
+  expect(
+    await page.evaluate(() =>
+      Object.keys(localStorage).filter((key) =>
+        key.startsWith("ciclotech:manifest:"),
+      ),
+    ),
+  ).toHaveLength(1);
+
+  await page.mouse.click(10, 10);
+  await expect(dialog).toBeHidden();
+});
+
 test("trata entrada inválida, referência ausente e registros legados", async ({
   page,
 }) => {
