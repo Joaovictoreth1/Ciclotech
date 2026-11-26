@@ -220,6 +220,13 @@ test("menu de 320 px fecha com Escape e leva o foco à seção", async ({
   ).toBe(true);
   const toggle = page.locator("#menu-mobile summary");
   const navigation = page.locator("#menu-mobile nav");
+  expect(
+    await toggle.evaluate(
+      (summary) =>
+        summary.getBoundingClientRect().right <=
+        document.getElementById("nav-header").getBoundingClientRect().right,
+    ),
+  ).toBe(true);
   await expect(navigation).toBeHidden();
   await toggle.press("Enter");
   await expect(navigation).toBeVisible();
