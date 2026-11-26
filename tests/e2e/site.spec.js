@@ -208,6 +208,83 @@ test("identifica o mapa como ilustrativo", async ({ page }) => {
   ).toHaveCount(1);
 });
 
+test("menu de 320 px fecha com Escape e leva o foco à seção", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto("/");
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth === innerWidth,
+    ),
+  ).toBe(true);
+  const toggle = page.locator("#menu-mobile summary");
+  const navigation = page.locator("#menu-mobile nav");
+  await expect(navigation).toBeHidden();
+  await toggle.press("Enter");
+  await expect(navigation).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(navigation).toBeHidden();
+  await expect(toggle).toBeFocused();
+  await toggle.press("Space");
+  await navigation.getByRole("link", { name: "Consulta" }).press("Enter");
+  await expect(page).toHaveURL(/#ledger$/);
+  await expect(navigation).toBeHidden();
+  const ledger = page.locator("#ledger");
+  await expect(ledger).toBeFocused();
+  await expect
+    .poll(() =>
+      ledger.evaluate(
+        (section) =>
+          section.getBoundingClientRect().top >=
+          document.getElementById("nav-header").getBoundingClientRect().bottom,
+      ),
+    )
+    .toBe(true);
+});
+
+test("só solicita o mapa após ação explícita e mantém o link externo", async ({
+  page,
+}) => {
+  const requested = [];
+  page.on("request", (request) => {
+    if (request.url().startsWith("https://www.google.com/maps/embed?")) {
+      requested.push(request.url());
+    }
+  });
+  await page.goto("/#nodes");
+  const button = page.getByRole("button", { name: "Carregar mapa" });
+  const iframe = page.getByTitle("Mapa de São Paulo");
+  await expect(button).toBeVisible();
+  await expect(iframe).toBeHidden();
+  expect(requested).toHaveLength(0);
+  await button.click();
+  await expect(iframe).toBeVisible();
+  await expect(
+    page.frameLocator("#demo-map").getByText("Mapa ilustrativo"),
+  ).toBeVisible();
+  expect(requested).toHaveLength(1);
+  await expect(
+    page.getByRole("link", { name: "Abrir mapa externo" }),
+  ).toBeVisible();
+});
+
+test("mantém o mapa externo quando o endereço de incorporação está ausente", async ({
+  page,
+}) => {
+  await page.goto("/#nodes");
+  const iframe = page.getByTitle("Mapa de São Paulo");
+  await iframe.evaluate((map) => map.removeAttribute("data-src"));
+  await page.getByRole("button", { name: "Carregar mapa" }).click();
+  await expect(page.locator("#map-status")).toContainText(
+    "Mapa incorporado indisponível",
+  );
+  await expect(iframe).toBeHidden();
+  await expect(
+    page.getByRole("link", { name: "Abrir mapa externo" }),
+  ).toBeVisible();
+});
+
 test("usa os cabeçalhos de produção e carrega gráficos sob demanda", async ({
   page,
 }) => {

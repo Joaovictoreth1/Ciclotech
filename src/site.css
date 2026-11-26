@@ -10,7 +10,7 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-quantum-neon via-white to-quantum-cyan;
   }
   .input-quantum {
-    @apply bg-black/50 border border-quantum-border text-white placeholder-zinc-600 transition-all duration-300 focus:outline-none focus:border-quantum-neon focus:ring-1 focus:ring-quantum-neon focus:bg-quantum-card shadow-inner;
+    @apply bg-black/50 border border-quantum-border text-white placeholder-zinc-400 transition-all duration-300 focus:outline-none focus:border-quantum-neon focus:ring-1 focus:ring-quantum-neon focus:bg-quantum-card shadow-inner;
   }
   .input-error {
     @apply border-quantum-error focus:border-quantum-error focus:ring-quantum-error;
@@ -22,6 +22,36 @@ body {
   background-color: theme("colors.quantum.base");
   color: #a1a1aa;
   overflow-x: hidden;
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex: none;
+  fill: currentColor;
+}
+
+.menu-toggle {
+  display: grid;
+  place-items: center;
+  list-style: none;
+  cursor: pointer;
+}
+
+.menu-toggle::-webkit-details-marker {
+  display: none;
+}
+
+#menu-mobile:not([open]) nav,
+#map-status:empty {
+  display: none;
+}
+
+#menu-mobile nav {
+  max-height: calc(100dvh - 6rem);
+  overflow-y: auto;
 }
 
 /* Ocultar cursor nativo apenas se suportar mouse fino */
@@ -344,7 +374,7 @@ body.dialog-open dialog a {
   width: 0;
 }
 
-:where(a, button, input, iframe):focus-visible,
+:where(a, button, input, iframe, summary):focus-visible,
 .cyber-check input:focus-visible + div,
 #manifest-consent:focus-visible + div {
   outline: 2px solid #00e5ff;
@@ -357,7 +387,7 @@ input[type="checkbox"][aria-invalid="true"] + div {
 }
 
 main section {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 6rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
